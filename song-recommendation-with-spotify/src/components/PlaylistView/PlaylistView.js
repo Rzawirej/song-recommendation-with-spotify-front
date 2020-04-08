@@ -18,7 +18,6 @@ import Collapse from '@material-ui/core/Collapse'
 import Box from '@material-ui/core/Box'
 import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
-import { Divider } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -86,7 +85,7 @@ export default function PlaylistView() {
                         <Typography variant="h3" color="textPrimary">
                             Nazwa wydarzenia
                         </Typography>
-                        <Typography variant="h6" color="textSecondary">
+                        <Typography color="textSecondary">
                             Założyciel <Box component="span" color="text.primary"> Nazwa użytkownika</Box>
                         </Typography>
                         <Box className={classes.eventInfo}>
@@ -152,16 +151,18 @@ export default function PlaylistView() {
                     </Box>
                 </Box>
                 <List className={classes.list}>
-                    {['Wydarzenie 1', 'Wydarzenie 2', 'Wydarzenie 3'].map((text, index) => (
+                    {['Tytuł singla1', 'Tytuł singla2', 'Tytuł singla3', 'Tytuł singla4', 'Tytuł singla5', 'Tytuł singla6', 'Tytuł singla7', 'Tytuł singla8'].map((text, index) => (
                         <>
-                    <ListItem button onClick={handleClick1}>
-                        1.
+                    <ListItem  onClick={handleClick1}>
+                        <span style={{marginRight: '40px'}}>
+                            1.
+                        </span>
                         <ListItemIcon className={classes.listItem} >
                         <ExpandMore />
                         </ListItemIcon>
-                        <ListItemText primary="TWOJE WYDARZENIA" />
+                        <ListItemText primary={text} />
                         <ListItemText primary="4:23" />
-                        <ListItemText primary="X" />
+                        <ListItemText style={{textAlign:"right", margin:0}} primary="X" />
                     </ListItem>
                     <Collapse in={expand1} timeout="auto" unmountOnExit>
                         <List >
@@ -172,9 +173,9 @@ export default function PlaylistView() {
                                     </ListItem>
                                     
                                 ))}
-                            </List>
+                        </List>
                     </Collapse>
-                    <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px'}}></hr>
+                    <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none"}}></hr>
                     </>
                     ))}
                 </List>
