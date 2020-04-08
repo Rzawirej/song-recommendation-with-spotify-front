@@ -12,12 +12,13 @@ const useStyles = makeStyles((theme) => ({
     rightDivider: {
 
         marginLeft: '70%',
-        borderRight: '0.1em solid '+COLOR.white,
-        padding: '0.5em'    
-
+        borderRight: '0.01em solid '+COLOR.white,
+        padding: theme.spacing(1),    
+        textDecoration: "none",
     },
     toolbarItem: {
-        padding: '0.5em'
+        textDecoration: "none",
+        padding: theme.spacing(1)
     },
     toolbar: {
         fontSize: '14px',

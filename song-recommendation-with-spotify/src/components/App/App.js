@@ -1,8 +1,9 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import TopBar from './../TopBar/TopBar';
-import SideMenu from './../SideMenu/SideMenu'
-import PlaylistView from './../PlaylistView/PlaylistView'
+import SideMenu from './../SideMenu/SideMenu';
+import PlaylistView from './../PlaylistView/PlaylistView';
+import ParticipantsMenu from './../ParticipantsMenu/ParticipantsMenu';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,6 +19,7 @@ export default function App() {
             <TopBar/>
             <SideMenu/>
             <PlaylistView/>
+            <ParticipantsMenu/>
         </div>
     );
 }

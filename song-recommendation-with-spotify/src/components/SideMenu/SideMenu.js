@@ -4,19 +4,39 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-const drawerWidth = 240;
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
+import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import COLOR from './../../assets/colors'
+import { ListItemIcon, Divider } from '@material-ui/core';
+const drawerWidth = '15%';
 const useStyles = makeStyles((theme) => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
+        
     },
     drawerPaper: {
         width: drawerWidth,  
+        color: COLOR.white,
+        paddingLeft: theme.spacing(2),
+        paddingTop: theme.spacing(6),
+    },
+    listItem:{
+        color: COLOR.white
+    },
+    end:{
+        position: 'absolute',
+        bottom: '10%',
+        paddingLeft: theme.spacing(2)
+        
+    },
+    infoColor:{
+        color: 'rgba(255, 255, 255, 0.4)',
     },
     toolbar: theme.mixins.toolbar,
 }));
@@ -24,46 +44,89 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SideMenu() {
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expand1, setExpand1] = React.useState(false);
+    const [expand2, setExpand2] = React.useState(false);
 
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
+    const handleClick1 = () => {
+        setExpand1(!expand1);
+    }
+    const handleClick2 = () => {
+        setExpand2(!expand2);
+    }
     return(
-            <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper,}}>
+            
+            <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}>
                 <div className={classes.toolbar} />
+                
                 <List>
-                    {['Profil', 'Ustawienia'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                    
+                    <ListItem  button key={"STRONA GŁÓWNA"}>
+                        <ListItemIcon className={classes.listItem}>
+                            <RadioButtonUncheckedOutlinedIcon/>
+                        </ListItemIcon>
+                        
+                        <ListItemText  primary={"STRONA GŁÓWNA"} />
+                    </ListItem>
+                    <ListItem button key={"USTAWIENIA"}>
+                        <ListItemIcon className={classes.listItem}>
+                            <SettingsOutlinedIcon/>
+                        </ListItemIcon>
+                        
+                        <ListItemText className={classes.listItem} primary={"USTAWIENIA"} />
+                    </ListItem>
                 </List>
-                <Divider variant="middle"/>
-                <List>
-                    {['Wszystkie wydarzenia'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-                <ExpansionPanel expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                    <ExpansionPanelSummary
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
-                        >
-                        <Typography className={classes.heading}>Twoje wydarzenia</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                <List className={classes.list}>
+                    
+                    <ListItem button key={"DODAJ WYDARZENIE"}>
+                        <ListItemIcon className={classes.listItem}>
+                            <AddCircleOutlineOutlinedIcon/>
+                        </ListItemIcon>
+                        
+                        <ListItemText className={classes.listItem} primary={"DODAJ WYDARZENIE"} />
+                    </ListItem>
+                    <ListItem button onClick={handleClick1}>
+                        <ListItemIcon className={classes.listItem} >
+                           <ExpandMore />
+                        </ListItemIcon>
+                        <ListItemText primary="TWOJE WYDARZENIA" />
+                    </ListItem>
+                    <Collapse in={expand1} timeout="auto" unmountOnExit>
                         <List >
-                            {['Wydarzenie 1', 'Wydarzenie 2', 'Wydarzenie 3'].map((text, index) => (
-                                <ListItem button key={text}>
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                                {['Wydarzenie 1', 'Wydarzenie 2', 'Wydarzenie 3'].map((text, index) => (
+                                    <ListItem button key={text}>
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                    </Collapse>
+                    <ListItem button onClick={handleClick2}>
+                        <ListItemIcon className={classes.listItem} >
+                           <ExpandMore />
+                        </ListItemIcon>
+                        <ListItemText primary="WSZYSTKIE WYDARZENIA" />
+                    </ListItem>
+                    <Collapse in={expand2} timeout="auto" unmountOnExit>
+                        <List >
+                                {['Wydarzenie 1', 'Wydarzenie 2', 'Wydarzenie 3'].map((text, index) => (
+                                    <ListItem button key={text}>
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                    </Collapse>
+                    
+                </List>
+                
+                <List className={classes.end}>
+                    <ListItem  button key={"STRONA GŁÓWNA"}>
+                        <ListItemIcon className={classes.infoColor}>
+                           <InfoOutlinedIcon/>
+                        </ListItemIcon>
+                        
+                        <Typography className={classes.infoColor}>INFO</Typography>
+                    </ListItem>
+                </List>
+                
             </Drawer>
     )
 }
