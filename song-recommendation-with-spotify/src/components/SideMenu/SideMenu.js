@@ -11,7 +11,7 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import COLOR from './../../assets/colors'
+import COLOR from '../../assets/colors'
 import { ListItemIcon, Divider } from '@material-ui/core';
 const drawerWidth = '15%';
 const useStyles = makeStyles((theme) => ({

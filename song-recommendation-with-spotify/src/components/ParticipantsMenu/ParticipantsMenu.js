@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Switch from '@material-ui/core/Switch';
 import Box from '@material-ui/core/Box'
-import COLOR from './../../assets/colors'
+import COLOR from '../../assets/colors'
 import image from '../../assets/panda.jpg'
 
 const drawerWidth = '15%';
