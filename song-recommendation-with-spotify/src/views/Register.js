@@ -9,7 +9,12 @@ class Register extends React.Component{
     }
     
     render() {
+
+        const registerAction = () => {
+            console.log("cos");
+        }
         return(
+            
             <div className="App">
                 <Grid container alignItems="center" direction="column" spacing="2">
                     <Grid item>
@@ -25,7 +30,9 @@ class Register extends React.Component{
                         <_Field label="Nazwa Użytkownika"/>
                     </Grid>
                     <Grid item>
-                        <_Button useClassGreen={false} label='ZAREJESTRUJ SIĘ'/>
+                        <span onClick={registerAction}>
+                            <_Button useClassGreen={false} label='ZAREJESTRUJ SIĘ'  />
+                        </span>            
                     </Grid>
                 </Grid>
             </div>

@@ -55,8 +55,10 @@ const styles = theme => ({
 
 
 class _Button extends React.Component {
+        
       render() {
           const { classes, fieldProps } = this.props;
+          
              return (
                 <Button
                 {...fieldProps}
@@ -65,9 +67,11 @@ class _Button extends React.Component {
                 variant="outlined"
                 >
                 {this.props.label}
+                
                 </Button>
         );
     }
+    
 }
 
 _Button.propTypes = {

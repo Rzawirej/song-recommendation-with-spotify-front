@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -64,6 +65,21 @@ export default function PlaylistView() {
     const [age, setAge] = React.useState('');
     const [expand1, setExpand1] = React.useState(false);
     const [expand2, setExpand2] = React.useState(false);
+    const [data, setData] = React.useState({
+        name: ''
+    });
+    React.useEffect(async () => {
+        let token = localStorage.getItem('token');
+        console.log(token)
+        const result = await axios.get('/events', {headers:{
+            'Authorization': `Bearer ${token}`
+        }
+        })
+        
+        console.log(result.data.events[0]);
+        setData(result.data.events[0]);
+        console.log(data)
+    },[]);
 
     const handleChange = (event) => {
         setAge(event.target.value);
@@ -83,7 +99,7 @@ export default function PlaylistView() {
                     <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
                     <Box >
                         <Typography variant="h3" color="textPrimary">
-                            Nazwa wydarzenia
+                           {data.name}
                         </Typography>
                         <Typography color="textSecondary">
                             Założyciel <Box component="span" color="text.primary"> Nazwa użytkownika</Box>

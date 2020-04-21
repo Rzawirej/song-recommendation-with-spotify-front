@@ -11,21 +11,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-class Event extends React.Component{
-    constructor(props){
-        super(props);
-    }
-    
-    render() {
+function Event(){
+
+        const classes = useStyles();
         return(
-            <div className="App">
+            <div className={classes.root}>
                 <TopBar/>
                 <SideMenu/>
                 <PlaylistView/>
                 <ParticipantsMenu/>
             </div>
         )
-    }
+
 }
 
 export default Event;

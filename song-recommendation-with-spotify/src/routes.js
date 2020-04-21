@@ -10,7 +10,7 @@ export default [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/register" />
+    component: () => <Redirect to="/event" />
   },
   {
     path: "/register",
