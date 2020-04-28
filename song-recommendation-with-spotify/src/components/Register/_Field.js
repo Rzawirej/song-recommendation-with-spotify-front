@@ -53,23 +53,28 @@ const styles = theme => ({
 });
 
 class _Field extends React.Component {
-      render() {
-          const { classes, fieldProps } = this.props;
-             return (
-                <TextField
-                {...fieldProps}
-                label={this.props.label || "<Un-labeled>"}
-                InputProps={{ classes: {notchedOutline: classes.notchedOutline},
-                style: { color: 'white'} }}
-                InputLabelProps={{
-                    style: { color: '#fff' },
-                  }}
-                className={classes.field}
-                margin="dense"
-                variant="outlined"
-            />
-        );
+    constructor(props){
+        super(props);
     }
+
+    render() {
+        const { classes, fieldProps } = this.props;
+            return (
+            <TextField
+            {...fieldProps}
+            label={this.props.label || "<Un-labeled>"}
+            InputProps={{ classes: {notchedOutline: classes.notchedOutline},
+            style: { color: 'white'} }}
+            InputLabelProps={{
+                style: { color: '#fff' },
+                }}
+            className={classes.field}
+            onChange={this.props.onChange}
+            margin="dense"
+            variant="outlined"
+        />
+    );
+}
 }
 
 _Field.propTypes = {
