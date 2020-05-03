@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import Register from "../../views/Register";
 import Login from "../../views/Login";
 import Event from "../../views/Event";
+import Events from "../../views/Events";
 import './App.css';
 import axios from 'axios';
 
@@ -30,7 +31,9 @@ export default class App extends React.Component {
                 </Route>
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
-                <Route path="/event" component={Event} onEnter={this.requireAuth}/>
+                <Route path="/event" component={Events} onEnter={this.requireAuth}/>
+                <Route path="/event/id" component={Event}/>
+                
             </Switch>
         </Router>
         );

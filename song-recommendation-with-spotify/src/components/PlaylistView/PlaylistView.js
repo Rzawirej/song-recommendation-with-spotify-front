@@ -68,7 +68,8 @@ export default function PlaylistView() {
     const [data, setData] = React.useState({
         name: ''
     });
-    React.useEffect(async () => {
+    React.useEffect(() => {
+        async function getEventInfo(){
         let token = localStorage.getItem('token');
         console.log(token)
         const result = await axios.get('/events', {headers:{
@@ -79,7 +80,9 @@ export default function PlaylistView() {
         console.log(result.data.events[0]);
         setData(result.data.events[0]);
         console.log(data)
-    },[]);
+        }
+        getEventInfo();
+    });
 
     const handleChange = (event) => {
         setAge(event.target.value);
