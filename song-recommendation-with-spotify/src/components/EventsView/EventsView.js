@@ -5,6 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Fab from '@material-ui/core/Fab';
+import Grid from '@material-ui/core/Grid';
 
 import AddIcon from '@material-ui/icons/Add';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -14,6 +15,7 @@ import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 
 import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
+import CreateEventModal from '.././CreateEventModal/CreateEventModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,12 +63,52 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PlaylistView() {
+    const menuItems = [{
+        label: <Typography color="textSecondary"> USUŃ WYDARZENIE </Typography>,
+        icon: <HighlightOffIcon color='primary'/>
+    },{
+        label: <Typography color="textPrimary"> ZAPROŚ </Typography>,
+        icon: <AddCircleOutlineIcon style={{color: COLOR.white}}/>
+    },{
+        label: <Typography color="textPrimary"> ODŚWIEŻ PLAYLISTĘ </Typography>,
+        icon: <RefreshOutlinedIcon style={{color: COLOR.white}}/>
+    },{
+        label: <Typography color="textPrimary"> EDYTUJ WYDARZENIE </Typography>,
+        icon: <SettingsOutlinedIcon style={{color: COLOR.white}}/>
+    },];
     const classes = useStyles();
+    const gridLeftColumnInfo = 3;
+    const gridRightColumnInfo = 9;
+
+    const getDurationString = (duration) =>{
+        console.log(duration)
+        if(duration===5){
+            return "5 godzin, 100 utworów"
+        }
+        if(duration===10){
+            return "10 godzin, 200 utworów"
+        }
+        if(duration === 15) {
+            return "15 godzin, 300 utworów"
+        }
+        if(duration === 24) {
+            return "24 godziny, 500 utworów"
+        }
+        return ""
+
+    }
 
     const [events, setEvents] = React.useState([{
         name: '',
-        participants: []
+        participants: [],
+        start_date: '',
+        end_date: '',
     }]);
+    
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+    };
     React.useEffect(() => {
         async function getEventInfo(){
         let token = localStorage.getItem('token');
@@ -95,55 +137,92 @@ export default function PlaylistView() {
                     events.map((event, index) => (
                     <Box className={classes.flexRow}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
-                        
-                    
                         <Box >
                             <Typography variant="h5" color="textPrimary">
                             {event.name}
                             </Typography>
-                            <Typography color="textSecondary">
-                                Opis wydarzenia <Box component="span" color="text.primary"> Lorem ipsum</Box>
-                            </Typography>
-                            <Typography color="textSecondary">
-                                Liczba uczestników <Box component="span" color="text.primary"> {event.participants.length}/30</Box>
-                            </Typography>
-                            <Typography color="textSecondary">
-                                Administratorzy 
-                                <Box component="span" color="text.primary"> 
-                                {event.participants.map((participant, index ) => {
+                            <Grid container spacing={2}>
+                                <Grid item xs = {gridLeftColumnInfo} align = 'right' >
+                                    <Typography color="textSecondary">
+                                                Opis wydarzenia 
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridRightColumnInfo}>
+                                    <Typography color="textPrimary">
+                                                Lorem ipsum
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridLeftColumnInfo} align='right'>
+                                    <Typography color="textSecondary">
+                                                Liczba uczestników
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridRightColumnInfo}>
+                                    <Typography color="textPrimary">
+                                                {event.participants.length}/30
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridLeftColumnInfo} align='right'>
+                                    <Typography color="textSecondary">
+                                                Administratorzy
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridRightColumnInfo}>
+                                    <Typography color="textPrimary">
+                                                {event.participants.map((participant, index ) => {
                                     if (participant.role === "admin")
-                                        return " "+participant.user_id+" |";
+                                        return " "+participant.user+" |";
                                     return ""
-                                })} Lorem ipsum</Box>
-                            </Typography>
-                            <Typography color="textSecondary">
-                                Dostępność <Box component="span" color="text.primary"> od 22-04-2020 do 30-04-2020</Box>
-                            </Typography>
-                            <Typography color="textSecondary">
-                                Czas trwania ≈ ilość utworów muzycznych<Box component="span" color="text.primary"> 5 godzin, 100 utworów</Box>
-                            </Typography>
+                                })} Lorem ipsum
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridLeftColumnInfo} align='right'>
+                                    <Typography color="textSecondary">
+                                                Dostępność
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridRightColumnInfo}>
+                                    <Typography color="textPrimary">
+                                                od {event.start_date.split(' ')[0]} do {event.end_date.split(' ')[0]}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridLeftColumnInfo} align='right'>
+                                    <Typography color="textSecondary">
+                                                Czas trwania ≈ ilość utworów muzycznych
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={gridRightColumnInfo}>
+                                    <Typography color="textPrimary">
+                                                {getDurationString(event.duration_time)}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Box>
 
                         <Box >
-                            <Typography color="textSecondary">
-                                USUŃ WYDARZENIE <HighlightOffIcon/>
-                            </Typography>
-                            
-                            <Typography color="textPrimary">
-                                ZAPROŚ <AddCircleOutlineIcon/>
-                            </Typography>
-                            <Typography color = "textPrimary" >
-                                ODŚWIEŻ PLAYLISTĘ <RefreshOutlinedIcon/>
-                            </Typography>
-                            <Typography color = "textPrimary" >
-                                EDYTUJ WYDARZENIE <SettingsOutlinedIcon/>
-                            </Typography>
+                            <Grid container spacing={2}>
+                                {menuItems.map((item,index) =>(
+                                    <>
+                                    <Grid item xs = {5} align = 'right' >
+                                        {item.label}
+                                    </Grid>
+                                    <Grid item xs={7}>
+                                        {item.icon}
+                                    </Grid>
+                                    </>
+                                ))}
+                                
+                                
+                                
+                            </Grid>
+
                         </Box>
                     </Box>
                     ))
                 }
                 <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none"}}></hr>              
-                <Fab label = {'Add'} className = {classes.fab} color = {'primary'}>
+                <CreateEventModal open={open} setOpen={setOpen}/>
+                <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
                     <AddIcon className = {classes.fabIcon} color = {COLOR.white}/>
                 </Fab>    
             </main>
