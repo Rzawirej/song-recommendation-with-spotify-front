@@ -47,8 +47,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(10),
         marginRight: theme.spacing(3),
         height: theme.spacing(20),
-        width: theme.spacing(20),
-        
+        width: theme.spacing(20),      
     },
     flexRow: {
         display: 'flex',
@@ -61,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
 }));
+
+
 
 export default function PlaylistView() {
     const menuItems = [{
@@ -135,6 +136,7 @@ export default function PlaylistView() {
                 </Typography>
                 {
                     events.map((event, index) => (
+                        <>
                     <Box className={classes.flexRow}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
                         <Box >
@@ -171,7 +173,7 @@ export default function PlaylistView() {
                                     <Typography color="textPrimary">
                                                 {event.participants.map((participant, index ) => {
                                     if (participant.role === "admin")
-                                        return " "+participant.user+" |";
+                                        return " "+participant.user.username+" |";
                                     return ""
                                 })} Lorem ipsum
                                     </Typography>
@@ -218,9 +220,11 @@ export default function PlaylistView() {
 
                         </Box>
                     </Box>
+                     <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none"}}></hr>
+                    </>
                     ))
                 }
-                <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none"}}></hr>              
+                             
                 <CreateEventModal open={open} setOpen={setOpen}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
                     <AddIcon className = {classes.fabIcon} color = {COLOR.white}/>
