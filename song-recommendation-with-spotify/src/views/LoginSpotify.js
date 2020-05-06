@@ -3,10 +3,10 @@ import Grid from "@material-ui/core/Grid";
 import _Field from '../components/Register/_Field'
 import _Button from '../components/Register/_Button'
 import axios from 'axios'
-import Link from '@material-ui/core/Link'
+import {Link} from "react-router-dom"
 import TopBar from '../components/TopBar/TopBar';
 
-class Login extends React.Component{
+class LoginSpotify extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -44,9 +44,7 @@ class Login extends React.Component{
                 <TopBar/>
                 <Grid container alignItems="center" direction="column" spacing="2">
                     <Grid item>
-                        <Link href="https://song-recommendation.herokuapp.com/api/login/spotify" style={{ textDecoration: 'none' }}>
-                            <_Button useClassGreen={true} label='ZAREJESTRUJ SIĘ PRZEZ SPOTIFY' />
-                        </Link>
+                        <_Button useClassGreen={true} label='ZALOGUJ SIĘ PRZEZ SPOTIFY'/>
                     </Grid>
                     <Grid item>
                         <_Field label="E-mail lub nazwa użytkownika" type="" onChange={this.handleEmailChange}/>
@@ -60,6 +58,8 @@ class Login extends React.Component{
                             <_Button useClassGreen={false} label='ZALOGUJ SIĘ'/>
                         </span>
                     </Link>
+                    
+                        
                     </Grid>
                 </Grid>
             </div>
@@ -67,4 +67,4 @@ class Login extends React.Component{
     }
 }
 
-export default Login;
+export default LoginSpotify;

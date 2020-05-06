@@ -4,6 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Link from '@material-ui/core/Link'
 import COLOR from './../../assets/colors'
+import Button from '@material-ui/core/Button';
+
 const useStyles = makeStyles((theme) => ({
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -37,10 +39,10 @@ export default function TopBar() {
                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.rightDivider}>
                         ENGLISH VERSION
                      </Link>
-                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.toolbarItem}>
-                        Zarejestruj się
+                     <Link href="/register" color="inherit" className={classes.toolbarItem}>
+                        Zarejestrtuj się
                      </Link>
-                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.toolbarItem}>
+                     <Link href="/login" color="inherit" className={classes.toolbarItem}>
                         Zaloguj się
                      </Link>
                 </Toolbar>

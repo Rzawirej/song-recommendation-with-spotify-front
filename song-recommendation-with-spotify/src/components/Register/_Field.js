@@ -72,6 +72,7 @@ class _Field extends React.Component {
             onChange={this.props.onChange}
             margin="dense"
             variant="outlined"
+            type={this.props.type}
         />
     );
 }

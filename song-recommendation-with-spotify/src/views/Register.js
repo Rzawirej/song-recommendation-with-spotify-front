@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import _Field from '../components/Register/_Field'
 import _Button from '../components/Register/_Button'
 import TopBar from '../components/TopBar/TopBar';
+import Link from '@material-ui/core/Link'
 import axios from 'axios'
   
 class Register extends React.Component{
@@ -51,7 +52,9 @@ class Register extends React.Component{
                 <TopBar/>
                 <Grid container alignItems="center" direction="column" spacing="2">
                     <Grid item>
-                        <_Button useClassGreen={true} label='ZAREJESTRUJ SIĘ PRZEZ SPOTIFY'/>
+                        <Link href="https://song-recommendation.herokuapp.com/api/login/spotify" style={{ textDecoration: 'none' }}>
+                            <_Button useClassGreen={true} label='ZAREJESTRUJ SIĘ PRZEZ SPOTIFY' />
+                        </Link>
                     </Grid>
                     <Grid item>
                         <_Field label="E-mail" onChange={this.handleEmailChange}/>

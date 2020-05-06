@@ -76,9 +76,9 @@ export default function PlaylistView() {
         }
         })
         
-        console.log(result.data.events[0]);
-        setData(result.data.events[0]);
-        console.log(data)
+        // console.log(result.data.events[0]);
+        // setData(result.data.events[0]);
+        // console.log(data)
     },[]);
 
     const handleChange = (event) => {
