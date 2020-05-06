@@ -59,14 +59,6 @@ export default function SideMenu() {
                 <div className={classes.toolbar} />
                 
                 <List>
-                    
-                    <ListItem  button key={"STRONA GŁÓWNA"}>
-                        <ListItemIcon className={classes.listItem}>
-                            <RadioButtonUncheckedOutlinedIcon/>
-                        </ListItemIcon>
-                        
-                        <ListItemText  primary={"STRONA GŁÓWNA"} />
-                    </ListItem>
                     <ListItem button key={"USTAWIENIA"}>
                         <ListItemIcon className={classes.listItem}>
                             <SettingsOutlinedIcon/>
@@ -74,9 +66,6 @@ export default function SideMenu() {
                         
                         <ListItemText className={classes.listItem} primary={"USTAWIENIA"} />
                     </ListItem>
-                </List>
-                <List className={classes.list}>
-                    
                     <ListItem button key={"DODAJ WYDARZENIE"}>
                         <ListItemIcon className={classes.listItem}>
                             <AddCircleOutlineOutlinedIcon/>
@@ -99,26 +88,10 @@ export default function SideMenu() {
                                 ))}
                             </List>
                     </Collapse>
-                    <ListItem button onClick={handleClick2}>
-                        <ListItemIcon className={classes.listItem} >
-                           <ExpandMore />
-                        </ListItemIcon>
-                        <ListItemText primary="WSZYSTKIE WYDARZENIA" />
-                    </ListItem>
-                    <Collapse in={expand2} timeout="auto" unmountOnExit>
-                        <List >
-                                {['Wydarzenie 1', 'Wydarzenie 2', 'Wydarzenie 3'].map((text, index) => (
-                                    <ListItem button key={text}>
-                                        <ListItemText primary={text} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                    </Collapse>
-                    
                 </List>
                 
                 <List className={classes.end}>
-                    <ListItem  button key={"STRONA GŁÓWNA"}>
+                    <ListItem  button key={"INFO"}>
                         <ListItemIcon className={classes.infoColor}>
                            <InfoOutlinedIcon/>
                         </ListItemIcon>

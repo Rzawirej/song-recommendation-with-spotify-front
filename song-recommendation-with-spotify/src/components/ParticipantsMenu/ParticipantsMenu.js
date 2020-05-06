@@ -1,12 +1,9 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Switch from '@material-ui/core/Switch';
 import Box from '@material-ui/core/Box'
 import COLOR from '../../assets/colors'
@@ -23,12 +20,20 @@ const useStyles = makeStyles((theme) => ({
         width: drawerWidth,  
         backgroundColor: COLOR.black,
         color: COLOR.white,
-        paddingLeft: 10,
-        paddingTop: 50,
+        paddingLeft: theme.spacing(1),
+        paddingTop: theme.spacing(6),
     },
     columnFlex: {
         display: 'flex',
         flexDirection: 'column'
+    },
+    participant: {
+        display: 'flex',
+        flexDirection: 'row',
+        marginBottom: theme.spacing(5),
+        justifyContent: 'space-between',
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
     },
     toolbar: theme.mixins.toolbar,
 }));
@@ -66,20 +71,46 @@ const AntSwitch = withStyles((theme) => ({
     checked: {},
 }))(Switch);
 
-export default function SideMenu() {
+export default function ParticipantsMenu(props) {
     const classes = useStyles();
-    const [state, setState] = React.useState({
-        checkedA: true,
-        checkedB: true,
-        checkedC: true,
-    });
+    const [state, setState] = React.useState(
+        props.event.participants
+    );
+    const [a, setA] = React.useState(
+        false
+    );
+    React.useEffect(() => {
+        async function getEventInfo() {
+            setState(props.event.participants);
+            console.log(state)
+        }
+        getEventInfo();
+    }, [state, props]);
 
-    const handleChange = (event) => {
-        setState({
-            ...state,
-            [event.target.name]: event.target.checked
-        });
+    const grantAdmin = async(index,token) =>{
+        
+        let res = await axios.get('/event/'+props.event.id+'/grant-admin?username='+state[index].user.username, {headers:{
+            'Authorization': `Bearer ${token}`
+        }});
+        state[index].role = 'admin'
+    }
+    const revokeAdmin = async(index,token) =>{
+        
+        let res = await axios.get('/event/'+props.event.id+'/revoke-admin?username='+state[index].user.username, {headers:{
+            'Authorization': `Bearer ${token}`
+        }});
+        state[index].role = 'member'
+    }
+    const handleChange = async (event) => {
+        let token = localStorage.getItem('token');
+        console.log(state[event.target.name])
+        console.log(event.target.checked)
+        await (event.target.checked? grantAdmin(event.target.name,token): revokeAdmin(event.target.name,token));
+        console.log(state)
+
+        setA(!a);  
     };
+    
     return(
             
             <Drawer anchor="right" className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}>
@@ -88,35 +119,42 @@ export default function SideMenu() {
                     <Typography style={{lineHeight: "1.5rem",textAlign: "center"}} variant="h5" color="textPrimary">
                         Uczestnicy
                     </Typography>
-                    <Typography style={{lineHeight: "1.25rem",textAlign: "center"}} color="textPrimary">
+                    <Typography style={{lineHeight: "1.25rem",textAlign: "center", marginBottom: '24px'}} color="textPrimary">
                             wydarzenia
-                        </Typography>
+                    </Typography>
  
                         
-                        <List >
+
+                    {state.map((participant, index) => (
+                            <div className={classes.participant}>
+
+                            
+                                <Avatar
+                                    style={{height:'56px', width:'56px'}}
+                                    alt={`Avatar`}
+                                    src={participant.avatar_url || image}
+                                />
+                                <div className={classes.columnFlex}>    
+                                <Typography color = 'textPrimary' >
+                                    {participant.user.username}
+                                </Typography>
+                                <Typography color = 'textSecondary'
+                                style = {
                                     {
-                                        ['Nazwa uzytkownika', 'Nazwa uzytkownika 2', 'Nazwa uzytkownika 3'].map((text, index) => (
-                                        
-                                        <ListItem key={text}>
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    alt={`Avatar`}
-                                                    src={image}
-                                                />
-                                            </ListItemAvatar>
-                                            <div className={classes.columnFlex}>    
-                                            <ListItemText primary={text} secondary={"BASIC"}/>
-                                            <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedA" />
-                                            </div>
-                                            <Box className={{alignSelf: "flex-end"}}>
-                                                X
-                                            </Box>
-                                            
-                                            
-                                        </ListItem>
-                                        
-                                    ))}
-                            </List>
+                                        fontSize: '12px',
+                                        marginBottom: '4px',
+                                    }
+                                } >
+                                    {participant.role==='admin'?'ADMIN':'BASIC'}
+                                </Typography>
+                                <AntSwitch checked={participant.role==='admin'?true:false} onChange={handleChange} name={index}/>
+                                </div>
+                                <span style = {{alignSelf: 'flex-end'}} >
+                                    X
+                                </span>
+                            </div>
+                    ))}
+
                     
                 
                 

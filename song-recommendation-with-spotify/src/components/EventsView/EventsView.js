@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -16,6 +18,7 @@ import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
 import CreateEventModal from '.././CreateEventModal/CreateEventModal';
+import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(10)
     },
     fab: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: theme.spacing(10),
         right: theme.spacing(10),
         height: theme.spacing(10),
@@ -51,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
     },
     flexRow: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        
     },
     flexColumn: {
         display: 'flex',
@@ -63,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function PlaylistView() {
+export default withRouter(function EventsView(props) {
     const menuItems = [{
         label: <Typography color="textSecondary"> USUŃ WYDARZENIE </Typography>,
         icon: <HighlightOffIcon color='primary'/>
@@ -106,9 +110,15 @@ export default function PlaylistView() {
         end_date: '',
     }]);
     
-    const [open, setOpen] = React.useState(false);
+    const [openCreate, setOpenCreate] = React.useState(false);
+    const [openInvite, setOpenInvite] = React.useState(false);
+    const [eventId, setEventId] = React.useState('');
+    const [invLink, setInvLink] = React.useState('');
     const handleOpen = () => {
-        setOpen(true);
+        setOpenCreate(true);
+    };
+    const openEvent = (id) => {
+        props.history.push('/event/'+id)
     };
     React.useEffect(() => {
         async function getEventInfo(){
@@ -137,7 +147,7 @@ export default function PlaylistView() {
                 {
                     events.map((event, index) => (
                         <>
-                    <Box className={classes.flexRow}>
+                    <Box className={classes.flexRow} onClick={()=>openEvent(event.id)}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
                         <Box >
                             <Typography variant="h5" color="textPrimary">
@@ -220,15 +230,16 @@ export default function PlaylistView() {
 
                         </Box>
                     </Box>
-                     <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none"}}></hr>
+                     <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
                     </>
                     ))
                 }
                              
-                <CreateEventModal open={open} setOpen={setOpen}/>
+                <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId}/>
+                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
                     <AddIcon className = {classes.fabIcon} color = {COLOR.white}/>
                 </Fab>    
             </main>
     )
-}
+})

@@ -149,6 +149,9 @@ export default function CreateEventModal(props) {
     const [description, setDescription] = React.useState('');
     const [name, setName] = React.useState('');
     
+    const handleClose = () => {
+        props.setOpen(false);
+    };
     const handleDurationChange = (event) => {
         setDuration(event.target.value);
     };
@@ -176,12 +179,20 @@ export default function CreateEventModal(props) {
             }
         })
         console.log(res)
+        handleClose()
+        res = await axios.get('/events', {headers:{
+            'Authorization': `Bearer ${token}`
+        }});
+        const events = res.data.events;
+        props.setInvLink(events[events.length-1].invitation_link);
+        props.setEventId(events[events.length-1].id);
+        props.setOpen(false);
+        props.setOpenInvite(true);
+        
     }
     
 
-    const handleClose = () => {
-        props.setOpen(false);
-    };
+    
 
     return (
         <div>
@@ -195,7 +206,7 @@ export default function CreateEventModal(props) {
                 
                 <div className = { classes.paper} >
                     <HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>
-                    <Typography variant="h5" className = {classes.title}>WYDARZENIE {name}</Typography>
+                    <Typography variant="h5" className = {classes.title}>WYDARZENIE</Typography>
                     <Grid container spacing={2} className={classes.grid}>
                         {/*<Grid item xs={3} align='right'>
                             <Typography color="textSecondary">
