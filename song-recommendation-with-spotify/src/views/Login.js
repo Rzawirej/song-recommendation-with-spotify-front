@@ -5,6 +5,7 @@ import _Button from '../components/Register/_Button'
 import axios from 'axios'
 import Link from '@material-ui/core/Link'
 import TopBar from '../components/TopBar/TopBar';
+import { login } from '../utils/UserFunctions'
 
 class Login extends React.Component{
     constructor(props){
@@ -18,12 +19,18 @@ class Login extends React.Component{
         this.loginAction = this.loginAction.bind(this);
     }
 
-    loginAction = async () => {
-        console.log(this.state)
-        const { data } = await axios.post('/login', {email: this.state.email, password: this.state.password});
-        localStorage.setItem('token', data.access_token);
-        console.log(localStorage.getItem('token'));
-        console.log(data)
+    loginAction(e) {
+        e.preventDefault()
+        const user = {
+            email: this.state.email,
+            password: this.state.password
+        }
+
+        login(user).then(res => {
+            if (res.access_token) {
+                this.props.history.push(`/event`)
+        }
+        })
     }
 
     handleEmailChange(event){
@@ -45,7 +52,7 @@ class Login extends React.Component{
                 <Grid container alignItems="center" direction="column" spacing="2">
                     <Grid item>
                         <Link href="https://song-recommendation.herokuapp.com/api/login/spotify" style={{ textDecoration: 'none' }}>
-                            <_Button useClassGreen={true} label='ZAREJESTRUJ SIĘ PRZEZ SPOTIFY' />
+                            <_Button useClassGreen={true} label='ZALOGUJ SIĘ PRZEZ SPOTIFY' />
                         </Link>
                     </Grid>
                     <Grid item>

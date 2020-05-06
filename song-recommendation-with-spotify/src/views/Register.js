@@ -5,7 +5,8 @@ import _Button from '../components/Register/_Button'
 import TopBar from '../components/TopBar/TopBar';
 import Link from '@material-ui/core/Link'
 import axios from 'axios'
-  
+import { register } from '../utils/UserFunctions'
+
 class Register extends React.Component{
     constructor(props){
         super(props);
@@ -21,10 +22,20 @@ class Register extends React.Component{
     }
 
     
-    registerAction = async () => {
-        const { data } = await axios.post('/register', {email: this.state.email, username: this.state.username, password: this.state.password});
-        console.log(data)
-    }
+    registerAction(e) {
+        e.preventDefault()
+    
+        const newUser = {
+          first_name: this.state.first_name,
+          last_name: this.state.last_name,
+          email: this.state.email,
+          password: this.state.password
+        }
+    
+        register(newUser).then(res => {
+          this.props.history.push(`/login`)
+        })
+    } 
     
     handleEmailChange(event){
         this.setState({
@@ -60,7 +71,7 @@ class Register extends React.Component{
                         <_Field label="E-mail" onChange={this.handleEmailChange}/>
                     </Grid>
                     <Grid item>
-                        <_Field label="Hasło" onChange={this.handlePasswordChange}/>
+                        <_Field label="Hasło" type="password" onChange={this.handlePasswordChange}/>
                     </Grid>
                     <Grid item>
                         <_Field label="Nazwa Użytkownika" onChange={this.handleUsernameChange}/>
