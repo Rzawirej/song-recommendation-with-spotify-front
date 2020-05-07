@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Switch from '@material-ui/core/Switch';
-import Box from '@material-ui/core/Box'
+import ClearIcon from '@material-ui/icons/Clear';
 import COLOR from '../../assets/colors'
 import image from '../../assets/panda.jpg'
 
@@ -99,7 +99,18 @@ export default function ParticipantsMenu(props) {
         let res = await axios.get('/event/'+props.event.id+'/revoke-admin?username='+state[index].user.username, {headers:{
             'Authorization': `Bearer ${token}`
         }});
+        console.log(res)
         state[index].role = 'member'
+    }
+    const removeUser = async(event) =>{
+        let token = localStorage.getItem('token');
+        const index = event.target.className;
+        console.log(index)
+        let res = await axios.get('/event/'+props.event.id+'/remove-user?username='+state[index].user.username, {headers:{
+            'Authorization': `Bearer ${token}`
+        }});
+        state.splice(index, 1);
+        setA(!a);
     }
     const handleChange = async (event) => {
         let token = localStorage.getItem('token');
@@ -149,7 +160,18 @@ export default function ParticipantsMenu(props) {
                                 </Typography>
                                 <AntSwitch checked={participant.role==='admin'?true:false} onChange={handleChange} name={index}/>
                                 </div>
-                                <span style = {{alignSelf: 'flex-end'}} >
+                                <span span style = {
+                                    {
+                                        alignSelf: 'flex-end',
+                                        cursor: 'pointer'
+                                    }
+                                }
+                                onClick = {
+                                    removeUser
+                                }
+                                class = {
+                                    index
+                                } >
                                     X
                                 </span>
                             </div>

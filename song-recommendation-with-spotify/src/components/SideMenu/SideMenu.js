@@ -77,7 +77,7 @@ export default function SideMenu() {
                         <ListItemIcon className={classes.listItem} >
                            <ExpandMore />
                         </ListItemIcon>
-                        <ListItemText primary="TWOJE WYDARZENIA" />
+                        <ListItemText primary="WYDARZENIA" />
                     </ListItem>
                     <Collapse in={expand1} timeout="auto" unmountOnExit>
                         <List >

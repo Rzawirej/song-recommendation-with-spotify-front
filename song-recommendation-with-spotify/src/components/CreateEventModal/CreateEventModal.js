@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 
 import image from '../../assets/panda.jpg'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Grid from '@material-ui/core/Grid';
 
 import COLOR from './../../assets/colors'
@@ -37,6 +38,8 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '16px 16px 16px 16px',
         borderStyle: 'solid',
         borderColor: COLOR.white,
+        maxHeight: '90%',
+        overflowY: 'scroll',
     },
     closeButton: {
         position: 'absolute',
@@ -125,6 +128,7 @@ const useStyles = makeStyles(theme => ({
         height: 48,
         padding: '0 30px',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        marginTop: theme.spacing(4),
     },
 }));
 
@@ -184,8 +188,14 @@ export default function CreateEventModal(props) {
             'Authorization': `Bearer ${token}`
         }});
         const events = res.data.events;
-        props.setInvLink(events[events.length-1].invitation_link);
-        props.setEventId(events[events.length-1].id);
+        let eventAdded = events[events.length-1];
+        events.forEach((event) => {
+            if(event.name === name){
+                eventAdded = event;
+            }
+        })
+        props.setInvLink(eventAdded.invitation_link);
+        props.setEventId(eventAdded.id);    
         props.setOpen(false);
         props.setOpenInvite(true);
         
@@ -297,7 +307,7 @@ export default function CreateEventModal(props) {
                             </RadioGroup>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={3} align='right'>
+                        {/*<Grid item xs={3} align='right'>
                             <Typography color="textSecondary">
                                         Dostępność 
                             </Typography>
@@ -322,6 +332,50 @@ export default function CreateEventModal(props) {
                                 </Grid>
                             </Grid>
                         </Grid>
+                        <Grid item xs={3} align='right'>
+                            
+                        </Grid>
+                        <Grid item xs={9} align='center'>
+                            
+
+                            <div styles = {
+                                {
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }
+                            } >
+
+                            
+                            <TextField
+                                InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused},} }
+                                id="date"
+                                label="Rozpocznij"
+                                type="date"
+                                variant='outlined'
+                                labelPlacement='top'
+                                defaultValue={new Date().toJSON().split("T")[0]}
+                                className={classes.field}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            <ArrowForwardIcon style={{color: COLOR.white}}/>
+                            <TextField
+                                InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused},} }
+                                id="date"
+                                label="Zakończ"
+                                type="date"
+                                variant='outlined'
+                                defaultValue={new Date().toJSON().split("T")[0]}
+                                className={classes.field}
+                                InputLabelProps={{
+                                    shrink: true,
+
+                                }}
+                            />
+                            </div>
+                        </Grid>*/}
+                        
                     </Grid>
                     <div style={{textAlign: 'center'}}>
                     <Button

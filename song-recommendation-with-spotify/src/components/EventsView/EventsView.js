@@ -144,9 +144,8 @@ export default withRouter(function EventsView(props) {
                 <Typography className={`${classes.title} ${classes.list}`} variant="h3" color="textPrimary">
                            Wydarzenia
                 </Typography>
-                {
-                    events.map((event, index) => (
-                        <>
+                {   events.length >= 1 && events[0].name?
+                    events.map((event, index) => {let firstAdmin = true; return(<>
                     <Box className={classes.flexRow} onClick={()=>openEvent(event.id)}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
                         <Box >
@@ -161,7 +160,7 @@ export default withRouter(function EventsView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                Lorem ipsum
+                                                {event.description}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -171,7 +170,7 @@ export default withRouter(function EventsView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                {event.participants.length}/30
+                                                <span style={{color:COLOR.orange}}>{event.participants.length}</span>/30
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -183,9 +182,18 @@ export default withRouter(function EventsView(props) {
                                     <Typography color="textPrimary">
                                                 {event.participants.map((participant, index ) => {
                                     if (participant.role === "admin")
-                                        return " "+participant.user.username+" |";
+                                        if(!firstAdmin){
+                                            
+                                            return <span><span style={{color:COLOR.orange}}> |</span>{participant.user.username}</span>;  
+                                        }
+                                        else
+                                        {
+                                            firstAdmin = false;
+                                            return <span>{participant.user.username}</span>;
+                                        }
+                                            
                                     return ""
-                                })} Lorem ipsum
+                                })}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -200,7 +208,7 @@ export default withRouter(function EventsView(props) {
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
                                     <Typography color="textSecondary">
-                                                Czas trwania ≈ ilość utworów muzycznych
+                                                Czas trwania
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
@@ -212,7 +220,7 @@ export default withRouter(function EventsView(props) {
                         </Box>
 
                         <Box >
-                            <Grid container spacing={2}>
+                            <Grid container spacing={2} style={{opacity: 0.5,}}>
                                 {menuItems.map((item,index) =>(
                                     <>
                                     <Grid item xs = {5} align = 'right' >
@@ -232,11 +240,11 @@ export default withRouter(function EventsView(props) {
                     </Box>
                      <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
                     </>
-                    ))
+                    )}):null
                 }
                              
                 <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId}/>
-                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId}/>
+                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
                     <AddIcon className = {classes.fabIcon} color = {COLOR.white}/>
                 </Fab>    

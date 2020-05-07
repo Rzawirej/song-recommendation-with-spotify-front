@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -30,10 +31,28 @@ const useStyles = makeStyles((theme) => ({
 export default function TopBar() {
     const classes = useStyles();
     const preventDefault = (event) => event.preventDefault();
+    const [user, setUser] = React.useState({
+        username: ''
+    })
+    React.useEffect(() => {
+        async function getUser(){
+        let token = localStorage.getItem('token');
+        console.log(token)
+        await axios.get('/user/current', {headers:{
+            'Authorization': `Bearer ${token}`
+        }
+        }).then(({data}) => {
+            console.log(data);
+            setUser(data);
+        })
+        }
+        getUser();
+    }, []);
     return(
         <>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
+                    {!user.username ?<>
                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.rightDivider}>
                         ENGLISH VERSION
                      </Link>
@@ -42,7 +61,11 @@ export default function TopBar() {
                      </Link>
                      <Link href="#" onClick={preventDefault} color="inherit" className={classes.toolbarItem}>
                         Zaloguj się
-                     </Link>
+                     </Link></>
+                     :
+                     <Link href = "#" onClick = {preventDefault} color = "inherit" className = {classes.rightDivider}>
+                        {user.username}
+                     </Link>}
                 </Toolbar>
             </AppBar>
             <div className={classes.offset} />

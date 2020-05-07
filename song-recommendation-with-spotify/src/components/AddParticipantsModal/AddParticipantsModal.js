@@ -73,6 +73,7 @@ const useStyles = makeStyles(theme => ({
     button: {
         minWidth: 304,
         background: COLOR.pink,
+        marginTop: '20px',
         borderRadius: 50,
         border: 0,
         color: 'white',
@@ -103,6 +104,7 @@ export default function AddPaticipantsModal(props) {
             })
             console.log(res)
         }
+        props.openEvent(props.eventId)
         handleClose();
     }
     

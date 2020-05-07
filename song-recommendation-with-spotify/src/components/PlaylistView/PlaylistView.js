@@ -72,6 +72,7 @@ export default function PlaylistView(props) {
     const event = props.event
     const gridLeftColumnInfo = 3;
     const gridRightColumnInfo = 9;
+    let firstAdmin = true;
         const menuItems = [{
         label: <Typography color="textSecondary"> USUŃ WYDARZENIE </Typography>,
         icon: <HighlightOffIcon color='primary'/>
@@ -135,7 +136,7 @@ export default function PlaylistView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                {event.participants.length}/30
+                                                <span style={{color:COLOR.orange}}>{event.participants.length}</span>/30
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -147,9 +148,18 @@ export default function PlaylistView(props) {
                                     <Typography color="textPrimary">
                                                 {event.participants.map((participant, index ) => {
                                     if (participant.role === "admin")
-                                        return " "+participant.user.username+" |";
+                                        if(!firstAdmin){
+                                            
+                                            return <span><span style={{color:COLOR.orange}}> |</span>{participant.user.username}</span>;  
+                                        }
+                                        else
+                                        {
+                                            firstAdmin = false;
+                                            return <span>{participant.user.username}</span>;
+                                        }
+                                            
                                     return ""
-                                })} Lorem ipsum
+                                })}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
