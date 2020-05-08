@@ -1,24 +1,24 @@
 import React from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import Collapse from '@material-ui/core/Collapse'
-import Box from '@material-ui/core/Box'
 
+import AddIcon from '@material-ui/icons/Add';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 
 import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
+import CreateEventModal from '.././CreateEventModal/CreateEventModal';
+import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +27,21 @@ const useStyles = makeStyles((theme) => ({
             padding: theme.spacing(3),
             background: COLOR.darkBlue,
         },
+    title: {
+        marginLeft: theme.spacing(25),
+        marginBottom: theme.spacing(10)
+    },
+    fab: {
+        position: 'fixed',
+        bottom: theme.spacing(10),
+        right: theme.spacing(10),
+        height: theme.spacing(10),
+        width: theme.spacing(10)
+    },
+    fabIcon: {
+        height: theme.spacing(8),
+        width: theme.spacing(8)
+    },
     media: {
         height: 0,
         paddingTop: '56.25%', // 16:9
@@ -35,45 +50,25 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(10),
         marginRight: theme.spacing(3),
         height: theme.spacing(20),
-        width: theme.spacing(20),
-        
-    },
-    eventInfo: {
-        display: 'flex',
-        flexDirection: 'row'
-    },
-    eventInfoText: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
+        width: theme.spacing(20),      
     },
     flexRow: {
         display: 'flex',
         flexDirection: 'row',
         
     },
-    list:{
-        color: COLOR.white
-    },
-    listItem:{
-        color: COLOR.white
-    },
+    flexColumn: {
+        display: 'flex',
+        flexDirection: 'column'
+    },  
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
 }));
 
-export default function PlaylistView(props) {
 
-    const classes = useStyles();
-    const [expand1, setExpand1] = React.useState(false);
-    const event = props.event
-    const gridLeftColumnInfo = 3;
-    const gridRightColumnInfo = 9;
-    let firstAdmin = true;
-        const menuItems = [{
+
+export default withRouter(function EventsView(props) {
+    const menuItems = [{
         label: <Typography color="textSecondary"> USUŃ WYDARZENIE </Typography>,
         icon: <HighlightOffIcon color='primary'/>
     },{
@@ -86,8 +81,10 @@ export default function PlaylistView(props) {
         label: <Typography color="textPrimary"> EDYTUJ WYDARZENIE </Typography>,
         icon: <SettingsOutlinedIcon style={{color: COLOR.white}}/>
     },];
-    
-   
+    const classes = useStyles();
+    const gridLeftColumnInfo = 3;
+    const gridRightColumnInfo = 9;
+
     const getDurationString = (duration) =>{
         console.log(duration)
         if(duration===5){
@@ -103,16 +100,53 @@ export default function PlaylistView(props) {
             return "24 godziny, 500 utworów"
         }
         return ""
+
     }
-    const handleClick1 = () => {
-        console.log(event.playlist)
-        setExpand1(!expand1);
-    }
+
+    const [events, setEvents] = React.useState([{
+        name: '',
+        participants: [],
+        start_date: '',
+        end_date: '',
+    }]);
+    
+    const [openCreate, setOpenCreate] = React.useState(false);
+    const [openInvite, setOpenInvite] = React.useState(false);
+    const [eventId, setEventId] = React.useState('');
+    const [invLink, setInvLink] = React.useState('');
+    const handleOpen = () => {
+        setOpenCreate(true);
+    };
+    const openEvent = (id) => {
+        props.history.push('/event/'+id)
+    };
+    React.useEffect(() => {
+        async function getEventInfo(){
+        let token = localStorage.getItem('token');
+        console.log(token)
+        await axios.get('/events', {headers:{
+            'Authorization': `Bearer ${token}`
+        }
+        }).then(({data}) => {
+            console.log(data.events);
+            setEvents(data.events);
+        })
+        
+        
+        }
+        getEventInfo();
+    }, []);
 
     return(
             <main className={classes.content}>
+                
                 <div className={classes.toolbar} />
-                <Box className={classes.flexRow} >
+                <Typography className={`${classes.title} ${classes.list}`} variant="h3" color="textPrimary">
+                           Wydarzenia
+                </Typography>
+                {   events.length >= 1 && events[0].name?
+                    events.map((event, index) => {let firstAdmin = true; return(<>
+                    <Box className={classes.flexRow} onClick={()=>openEvent(event.id)}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
                         <Box >
                             <Typography variant="h5" color="textPrimary">
@@ -126,7 +160,7 @@ export default function PlaylistView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                Lorem ipsum
+                                                {event.description}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -186,7 +220,7 @@ export default function PlaylistView(props) {
                         </Box>
 
                         <Box >
-                            <Grid container spacing={2}>
+                            <Grid container spacing={2} style={{opacity: 0.5,}}>
                                 {menuItems.map((item,index) =>(
                                     <>
                                     <Grid item xs = {5} align = 'right' >
@@ -204,41 +238,16 @@ export default function PlaylistView(props) {
 
                         </Box>
                     </Box>
-                <List className={classes.list}>
-                    {event.playlist.length>0?[event.playlist].map((playlist, index) => (
-                        <>
-                    <ListItem  onClick={handleClick1}>
-                        <span style={{marginRight: '40px'}}>
-                            1.
-                        </span>
-                        <ListItemIcon className={classes.listItem} >
-                        <ExpandMore />
-                        </ListItemIcon>
-                        <ListItemText primary='tytul' />
-                        <ListItemText primary="4:23" />
-                        <ListItemText style={{textAlign:"right", margin:0}} primary="X" />
-                    </ListItem>
-                    <Collapse in={expand1} timeout="auto" unmountOnExit>
-                        <List >
-                                {['Wydarzenie 1', 'Wydarzenie 2', 'Wydarzenie 3'].map((text, index) => (
-                                    <ListItem button key={text}>
-                                        <ListItemText primary={text} />
-                                        
-                                    </ListItem>
-                                    
-                                ))}
-                        </List>
-                    </Collapse>
-                    <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none"}}></hr>
+                     <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
                     </>
-                    ))
-                    :
-                    <Typography color="textPrimary">
-                            To wydarzenie nie ma jeszcze playlisty
-                    </Typography>}
-                </List>
-                    
-                    
+                    )}):null
+                }
+                             
+                <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId}/>
+                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent}/>
+                <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
+                    <AddIcon className = {classes.fabIcon} color = {COLOR.white}/>
+                </Fab>    
             </main>
     )
-}
+})

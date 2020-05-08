@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, withStyles} from '@material-ui/core/styles';
+import axios from 'axios'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Link from '@material-ui/core/Link'
@@ -27,41 +28,55 @@ const useStyles = theme => ({
 });
 
 
-class TopBar extends React.Component {
-    constructor(props){
-        super(props);
-    }
-
-    render(){
-        const classes = this.props.classes
-        console.log(classes)
-        //const logOut = (event) => {
-        //   event.preventDefault()
-        //    localStorage.removeItem('usertoken')
-        //}
-
-        return(
-            <>
-                <AppBar position="fixed" className={classes.appBar}>
-                    <Toolbar className={classes.toolbar}>
-                        <Link href="#" color="inherit" className={classes.rightDivider}>
-                            ENGLISH VERSION
-                        </Link>
-                        <Link href="/register" color="inherit" className={classes.toolbarItem}>
-                            Zarejestrtuj się
-                        </Link>
-                        <Link href="/login" color="inherit" className={classes.toolbarItem}>
-                            Zaloguj się
-                        </Link>
-                        <Link href="/login" color="inherit" className={classes.toolbarItem}>
+export default function TopBar() {
+    const classes = useStyles();
+    const preventDefault = (event) => event.preventDefault();
+    const [user, setUser] = React.useState({
+        username: ''
+    })
+    //const logOut = (event) => {
+    //   event.preventDefault()
+    //    localStorage.removeItem('usertoken')
+    //}
+    React.useEffect(() => {
+        async function getUser(){
+        let token = localStorage.getItem('token');
+        console.log(token)
+        await axios.get('/user/current', {headers:{
+            'Authorization': `Bearer ${token}`
+        }
+        }).then(({data}) => {
+            console.log(data);
+            setUser(data);
+        })
+        }
+        getUser();
+    }, []);
+    return(
+        <>
+            <AppBar position="fixed" className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    {!user.username ?<>
+                    <Link href="#" onClick={preventDefault} color="inherit" className={classes.rightDivider}>
+                        ENGLISH VERSION
+                     </Link>
+                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.toolbarItem}>
+                        Zarejestruj się
+                     </Link>
+                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.toolbarItem}>
+                        Zaloguj się
+                     </Link></>
+                     :<>
+                     <Link href = "#" onClick = {preventDefault} color = "inherit" className = {classes.rightDivider}>
+                        {user.username}
+                     </Link>
+                     <Link href="/login" color="inherit" className={classes.toolbarItem}>
                             Wyloguj się
-                        </Link>
-                    </Toolbar>
-                </AppBar>
-                <div className={classes.offset} />
-            </>
-        )
-    }
+                    </Link></>}
+                </Toolbar>
+            </AppBar>
+            <div className={classes.offset} />
+        </>
+    )
 }
 
-export default withStyles(useStyles)(TopBar);
