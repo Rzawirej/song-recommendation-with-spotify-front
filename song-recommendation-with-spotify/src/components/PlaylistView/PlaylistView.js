@@ -69,16 +69,16 @@ export default function PlaylistView() {
         name: ''
     });
     React.useEffect(async () => {
-        let token = localStorage.getItem('token');
+        let token = localStorage.getItem('usertoken');
         console.log(token)
         const result = await axios.get('/events', {headers:{
             'Authorization': `Bearer ${token}`
         }
         })
         
-        console.log(result.data.events[0]);
-        setData(result.data.events[0]);
-        console.log(data)
+        // console.log(result.data.events[0]);
+        // setData(result.data.events[0]);
+        // console.log(data)
     },[]);
 
     const handleChange = (event) => {
