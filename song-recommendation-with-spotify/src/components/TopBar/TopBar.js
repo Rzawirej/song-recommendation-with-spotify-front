@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Link from '@material-ui/core/Link'
 import COLOR from './../../assets/colors'
 
-const useStyles = theme => ({
+const useStyles = makeStyles((theme) => ({
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
         backgroundColor: COLOR.black,
@@ -25,7 +25,7 @@ const useStyles = theme => ({
         fontSize: '14px',
     },
     offset: theme.mixins.toolbar,
-});
+}));
 
 
 export default function TopBar() {

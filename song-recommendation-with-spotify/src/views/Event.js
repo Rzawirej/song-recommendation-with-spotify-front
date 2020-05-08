@@ -7,11 +7,11 @@ import SideMenu from '../components/SideMenu/SideMenu';
 import PlaylistView from '../components/PlaylistView/PlaylistView';
 import ParticipantsMenu from '../components/ParticipantsMenu/ParticipantsMenu';
 
-const useStyles = theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
-});
+}));
 
 function Event(props){
 
