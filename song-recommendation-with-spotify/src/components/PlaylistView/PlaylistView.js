@@ -113,7 +113,7 @@ export default function PlaylistView(props) {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Box className={classes.flexRow} >
-                        <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
+                        <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={classes.eventPhoto} />
                         <Box >
                             <Typography variant="h5" color="textPrimary">
                             {event.name}

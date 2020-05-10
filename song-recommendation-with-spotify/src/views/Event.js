@@ -19,6 +19,7 @@ function Event(props){
         const [event, setEvent] = React.useState({
             name: '',
             participants: [],
+            image_url: '',
             start_date: '',
             end_date: '',
             playlist: [],
