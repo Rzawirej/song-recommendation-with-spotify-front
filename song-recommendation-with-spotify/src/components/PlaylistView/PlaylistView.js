@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -19,6 +20,7 @@ import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
 
 import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,17 +67,18 @@ const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
 }));
 
-export default function PlaylistView(props) {
+export default withRouter(function PlaylistView(props) {
 
     const classes = useStyles();
     const [expand1, setExpand1] = React.useState(false);
+    
     const event = props.event
     const gridLeftColumnInfo = 3;
     const gridRightColumnInfo = 9;
     let firstAdmin = true;
         const menuItems = [{
         label: <Typography color="textSecondary"> USUŃ WYDARZENIE </Typography>,
-        icon: <HighlightOffIcon color='primary'/>
+        icon: <HighlightOffIcon color='primary'/>,
     },{
         label: <Typography color="textPrimary"> ZAPROŚ </Typography>,
         icon: <AddCircleOutlineIcon style={{color: COLOR.white}}/>
@@ -107,6 +110,21 @@ export default function PlaylistView(props) {
     const handleClick1 = () => {
         console.log(event.playlist)
         setExpand1(!expand1);
+    }
+    const handleMenuClick = (index) => {
+        if(index === 0){
+            props.setOpenDelete(true);
+        }
+        if (index === 1) {
+            props.setOpenInvite(true);
+        }
+        if (index === 2) {
+
+        }
+        if (index === 3) {
+            props.setOpenEdit(true);
+        }
+        props.setA(!props.a);
     }
 
     return(
@@ -192,7 +210,7 @@ export default function PlaylistView(props) {
                                     <Grid item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid item xs={7}>
+                                    <Grid item xs={7} onClick={()=>handleMenuClick(index)}>
                                         {item.icon}
                                     </Grid>
                                     </>
@@ -237,8 +255,8 @@ export default function PlaylistView(props) {
                             To wydarzenie nie ma jeszcze playlisty
                     </Typography>}
                 </List>
-                    
+    
                     
             </main>
     )
-}
+})

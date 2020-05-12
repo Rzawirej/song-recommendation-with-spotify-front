@@ -105,8 +105,8 @@ export default function ParticipantsMenu(props) {
     const removeUser = async(event) =>{
         let token = localStorage.getItem('token');
         const index = event.target.className;
-        console.log(index)
-        let res = await axios.get('/event/'+props.event.id+'/remove-user?username='+state[index].user.username, {headers:{
+        console.log('/event/'+props.event.id+'/remove-user?username='+state[index].user.username)
+        let res = await axios.post('/event/'+props.event.id+'/remove-user?username='+state[index].user.username, {headers:{
             'Authorization': `Bearer ${token}`
         }});
         state.splice(index, 1);

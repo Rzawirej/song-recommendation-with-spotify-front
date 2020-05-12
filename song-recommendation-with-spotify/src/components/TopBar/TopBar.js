@@ -47,7 +47,7 @@ export default function TopBar() {
         }
         }).then(({data}) => {
             console.log(data);
-            setUser(data);
+            setUser(data.user);
         })
         }
         getUser();

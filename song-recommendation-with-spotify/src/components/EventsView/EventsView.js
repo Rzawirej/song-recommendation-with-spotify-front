@@ -15,10 +15,10 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 
-import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
 import CreateEventModal from '.././CreateEventModal/CreateEventModal';
 import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
+import DeleteEventModal from '../DeleteEventModal/DeleteEventModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -111,11 +111,30 @@ export default withRouter(function EventsView(props) {
     }]);
     
     const [openCreate, setOpenCreate] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [openInvite, setOpenInvite] = React.useState(false);
+    const [openDelete, setOpenDelete] = React.useState(false);
     const [eventId, setEventId] = React.useState('');
     const [invLink, setInvLink] = React.useState('');
     const handleOpen = () => {
         setOpenCreate(true);
+    };
+    const handleMenuClick = (index, event) => {
+        console.log(event);
+        setEventId(event.id);
+        setInvLink(event.invitation_link);
+        if(index === 0){
+            setOpenDelete(true);
+        }
+        if (index === 1) {
+            setOpenInvite(true);
+        }
+        if (index === 2) {
+            
+        }
+        if (index === 3) {
+            setOpenEdit(true);
+        }
     };
     const openEvent = (id) => {
         props.history.push('/event/'+id)
@@ -147,8 +166,8 @@ export default withRouter(function EventsView(props) {
                 {   events.length >= 1 && events[0].name?
                     events.map((event, index) => {let firstAdmin = true; return(<>
                     <Box className={classes.flexRow} onClick={()=>openEvent(event.id)}>
-                        <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
-                        <Box >
+                        <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={classes.eventPhoto} />
+                        <Box>
                             <Typography variant="h5" color="textPrimary">
                             {event.name}
                             </Typography>
@@ -226,7 +245,7 @@ export default withRouter(function EventsView(props) {
                                     <Grid item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid item xs={7}>
+                                    <Grid item xs = {7} onClick = {(e) => {e.stopPropagation(); handleMenuClick(index, event)}}>
                                         {item.icon}
                                     </Grid>
                                     </>
@@ -243,8 +262,11 @@ export default withRouter(function EventsView(props) {
                     )}):null
                 }
                              
-                <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId}/>
+                <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} isEdit={false}/>
+                <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} eventId={eventId} isEdit={true}/>
                 <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent}/>
+
+                <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={eventId}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
                     <AddIcon className = {classes.fabIcon} color = {COLOR.white}/>
                 </Fab>    

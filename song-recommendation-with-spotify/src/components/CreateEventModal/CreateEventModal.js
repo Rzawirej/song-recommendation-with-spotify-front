@@ -18,6 +18,7 @@ import image3 from '../../assets/ikona3.png'
 import image4 from '../../assets/ikona4.png'
 import image5 from '../../assets/ikona5.png'
 import image6 from '../../assets/ikona6.png'
+import backgroundPopup from '../../assets/popup_954.png'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Grid from '@material-ui/core/Grid';
@@ -31,11 +32,13 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        
     },
     paper: {
         position: 'fixed',
         width: 600,
         backgroundColor: theme.palette.background.paper,
+        
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
         top: `50%`,
@@ -63,7 +66,8 @@ const useStyles = makeStyles(theme => ({
     photosGrid:{
         display: 'grid',
         gridTemplateColumns: '70px 70px auto 70px 70px',
-        margin: theme.spacing(0,7)
+        margin: theme.spacing(0,7),
+        backgroundImage: image2,
     },
     eventPhoto: {
         height: theme.spacing(24),
@@ -187,6 +191,26 @@ export default function CreateEventModal(props) {
     const [name, setName] = React.useState('');
     const [photo, setPhoto] = React.useState(image1);
     
+    React.useEffect(() => {
+        async function getEventInfo() {
+            let token = localStorage.getItem('token');
+            console.log(token)
+            const result = await axios.get('/event/' + props.eventId, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const event = result.data.event;
+            setDuration(event.duration_time+'');
+            setAvailability('1');
+            setDescription(event.description);
+            setName(event.name);
+            setPhoto(event.image_url);
+            console.log(event);
+        }
+        getEventInfo();
+    }, [props]);
+
     const handleClose = () => {
         props.setOpen(false);
     };
@@ -208,35 +232,51 @@ export default function CreateEventModal(props) {
     const handleSubmit = async () => {
         let token = localStorage.getItem('token');
         let date = new Date().toJSON().split("T")[0];
-        let res = await axios.post('/event', {
-            name: name,
-            description: description,
-            image_url: photo,
-            start_date: date,
-            end_date: date,
-            duration_time: parseInt(duration)
-        },{
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        console.log(res)
+        if(props.isEdit){
+            console.log(props.eventId)
+            let res = await axios.put('/event/'+props.eventId, {
+                name: name,
+                description: description,
+                image_url: photo,
+                start_date: date,
+                end_date: date,
+                duration_time: parseInt(duration)
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+        }else{
+            let res = await axios.post('/event', {
+                name: name,
+                description: description,
+                image_url: photo,
+                start_date: date,
+                end_date: date,
+                duration_time: parseInt(duration)
+            },{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            res = await axios.get('/events', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const events = res.data.events;
+            let eventAdded = events[events.length - 1];
+            events.forEach((event) => {
+                if (event.name === name) {
+                    eventAdded = event;
+                }
+            })
+            props.setInvLink(eventAdded.invitation_link);
+            props.setEventId(eventAdded.id);
+            props.setOpen(false);
+            props.setOpenInvite(true);
+        }
         handleClose()
-        res = await axios.get('/events', {headers:{
-            'Authorization': `Bearer ${token}`
-        }});
-        const events = res.data.events;
-        let eventAdded = events[events.length-1];
-        events.forEach((event) => {
-            if(event.name === name){
-                eventAdded = event;
-            }
-        })
-        props.setInvLink(eventAdded.invitation_link);
-        props.setEventId(eventAdded.id);    
-        props.setOpen(false);
-        props.setOpenInvite(true);
-        
     }
     
 
@@ -254,25 +294,8 @@ export default function CreateEventModal(props) {
                 
                 <div className = { classes.paper} >
                     <HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>
-                    <Typography variant="h5" className = {classes.title}>WYDARZENIE</Typography>
+                    <Typography variant="h5" className = {classes.title}>{props.isEdit?'EDYTUJ WYDARZENIE':'WYDARZENIE'}</Typography>
                     <Grid container spacing={2} className={classes.grid}>
-                        {/*<Grid item xs={3} align='right'>
-                            <Typography color="textSecondary">
-                                        Etapy 
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={9}>
-                            <div style={{display: 'flex', flexDirection: 'row'}}>
-                            <FormControl component="fieldset">
-                            <RadioGroup row defaultValue="5" aria-label="czas trwania" name="customized-radios">
-                                        <div className={classes.radioContainer}>
-                                        <FormControlLabel classes={{label: classes.radioLabel}} value="5" control={<StyledRadio disabled/>} label="etap 1" labelPlacement="bottom"/>
-                                        <FormControlLabel disabled classes={{label: classes.radioLabel}} value="2" control={<StyledRadio/>} label="etap 2" labelPlacement="bottom"/>
-                                        </div>
-                            </RadioGroup>
-                            </FormControl>
-                            </div>
-                        </Grid>*/}
                         <Grid item xs={3} align='right'>
                             <Typography color="textSecondary">
                                         Wizualna reprezentacja wydarzenia 
@@ -460,7 +483,7 @@ export default function CreateEventModal(props) {
                         variant="outlined"
                         onClick={handleSubmit}
                         >
-                        UTWÓRZ WYDARZENIE
+                        {props.isEdit?'EDYTUJ WYDARZENIE':'UTWÓRZ WYDARZENIE'}
                 
                     </Button>
                                             
