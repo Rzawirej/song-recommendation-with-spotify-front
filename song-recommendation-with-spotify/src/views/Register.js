@@ -63,9 +63,33 @@ class Register extends React.Component{
                 <TopBar/>
                 <Grid container alignItems="center" direction="column" spacing="2">
                     <Grid item>
+                    </Grid>
+                    <Grid item>
+                    </Grid>
+                    <Grid item>
                         <Link href="https://song-recommendation.herokuapp.com/api/login/spotify" style={{ textDecoration: 'none' }}>
                             <_Button useClassGreen={true} label='ZAREJESTRUJ SIĘ PRZEZ SPOTIFY' />
                         </Link>
+                    </Grid>
+                    <Grid item>
+                        <div style={{
+                            display: 'inline',
+                            alignItems: 'center',
+                            color: '#FFFFFF',
+                            fontFamily: 'NunitoSans'
+                        }}>
+                            lub
+                        </div>
+                    </Grid>
+                    <Grid item>
+                        <div style={{
+                            display: 'inline',
+                            alignItems: 'center',
+                            color: '#FFFFFF',
+                            fontFamily: 'NunitoSans'
+                        }}>
+                        Zarejestruj się przy użyciu swojego adresu e-mail.
+                        </div>     
                     </Grid>
                     <Grid item>
                         <_Field label="E-mail" onChange={this.handleEmailChange}/>

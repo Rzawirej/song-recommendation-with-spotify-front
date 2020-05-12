@@ -1,6 +1,6 @@
 body {
-  background: #0B1830;
-
+  background-image: url(../../assets/background.png);
+  background-size: cover;
 }
 
 /* 

@@ -6,18 +6,7 @@ import axios from 'axios'
 import Link from '@material-ui/core/Link'
 import TopBar from '../components/TopBar/TopBar';
 import { login } from '../utils/UserFunctions'
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: 208,
-        height: 40,
-        left: 796,
-        top: 610
-    },
-}));
+import background from '../assets/background.png'
 
 class Login extends React.Component{
     constructor(props){
@@ -61,13 +50,37 @@ class Login extends React.Component{
         const classes = this.props.classes
         
         return(
-            <div className="App">
+            <div className="App" >
                 <TopBar/>
                 <Grid container alignItems="center" direction="column" spacing="2">
+                    <Grid item>
+                    </Grid>
+                    <Grid item>
+                    </Grid>
                     <Grid item>
                         <Link href="https://song-recommendation.herokuapp.com/api/login/spotify" style={{ textDecoration: 'none' }}>
                             <_Button useClassGreen={true} label='ZALOGUJ SIĘ PRZEZ SPOTIFY' />
                         </Link>
+                    </Grid>
+                    <Grid item>
+                        <div style={{
+                            display: 'inline',
+                            alignItems: 'center',
+                            color: '#FFFFFF',
+                            fontFamily: 'NunitoSans'
+                        }}>
+                            lub
+                        </div>
+                    </Grid>
+                    <Grid item>
+                        <div style={{
+                            display: 'inline',
+                            alignItems: 'center',
+                            color: '#FFFFFF',
+                            fontFamily: 'NunitoSans'
+                        }}>
+                        Zaloguj się przy użyciu swojego adresu e-mail.
+                        </div>     
                     </Grid>
                     <Grid item>
                         <_Field label="E-mail lub nazwa użytkownika" type="" onChange={this.handleEmailChange}/>
@@ -109,4 +122,4 @@ class Login extends React.Component{
     }
 }
 
-export default withStyles(useStyles)(Login);
+export default Login;
