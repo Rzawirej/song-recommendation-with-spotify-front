@@ -81,6 +81,27 @@ class Register extends React.Component{
                             <_Button useClassGreen={false} label='ZAREJESTRUJ SIĘ'  />
                         </span>            
                     </Grid>
+                    <Grid item>
+                        <div style={{
+                            display: 'inline',
+                            alignItems: 'center',
+                            color: '#FFFFFF',
+                            fontFamily: 'NunitoSans'
+                        }}>
+                            Masz już konto?{" "}
+                        </div>
+                        <div style={{
+                            display: 'inline',
+                            alignItems: 'center',
+                            color: '#FF0080',
+                            fontFamily: 'NunitoSans',
+                            fontWeight: 'Bold'
+                        }}> 
+                        <Link href="/login">
+                             Zaloguj się.
+                        </Link>
+                        </div>     
+                    </Grid>
                 </Grid>
             </div>
         )
