@@ -6,6 +6,18 @@ import axios from 'axios'
 import Link from '@material-ui/core/Link'
 import TopBar from '../components/TopBar/TopBar';
 import { login } from '../utils/UserFunctions'
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        width: 208,
+        height: 40,
+        left: 796,
+        top: 610
+    },
+}));
 
 class Login extends React.Component{
     constructor(props){
@@ -46,6 +58,8 @@ class Login extends React.Component{
     }
     
     render() {
+        const classes = this.props.classes
+        
         return(
             <div className="App">
                 <TopBar/>
@@ -68,10 +82,31 @@ class Login extends React.Component{
                         </span>
                     </Link>
                     </Grid>
+                    <Grid item>
+                        <div style={{
+                            display: 'inline',
+                            alignItems: 'center',
+                            color: '#FFFFFF',
+                            fontFamily: 'NunitoSans'
+                        }}>
+                            Nie masz jeszcze konta? {" "}
+                        </div>
+                        <div style={{
+                            display: 'inline',
+                            alignItems: 'center',
+                            color: '#FF0080',
+                            fontFamily: 'NunitoSans',
+                            fontWeight: 'Bold'
+                        }}> 
+                        <Link href="/register">
+                            Zarejestruj się.
+                        </Link>
+                        </div>     
+                    </Grid>
                 </Grid>
             </div>
         )
     }
 }
 
-export default Login;
+export default withStyles(useStyles)(Login);

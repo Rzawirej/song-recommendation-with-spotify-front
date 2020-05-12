@@ -34,10 +34,9 @@ export default function TopBar() {
     const [user, setUser] = React.useState({
         username: ''
     })
-    //const logOut = (event) => {
-    //   event.preventDefault()
-    //    localStorage.removeItem('usertoken')
-    //}
+    const logOut = (event) => {
+       localStorage.removeItem('token')
+    }
     React.useEffect(() => {
         async function getUser(){
         let token = localStorage.getItem('token');
@@ -47,7 +46,7 @@ export default function TopBar() {
         }
         }).then(({data}) => {
             console.log(data);
-            setUser(data);
+            setUser(data.user);
         })
         }
         getUser();
@@ -60,18 +59,18 @@ export default function TopBar() {
                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.rightDivider}>
                         ENGLISH VERSION
                      </Link>
-                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.toolbarItem}>
+                     <Link href="/register" color="inherit" className={classes.toolbarItem}>
                         Zarejestruj się
                      </Link>
-                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.toolbarItem}>
+                     <Link href="/login" color="inherit" className={classes.toolbarItem}>
                         Zaloguj się
                      </Link></>
                      :<>
                      <Link href = "#" onClick = {preventDefault} color = "inherit" className = {classes.rightDivider}>
                         {user.username}
                      </Link>
-                     <Link href="/login" color="inherit" className={classes.toolbarItem}>
-                            Wyloguj się
+                     <Link href="/login" onClick={logOut} color="inherit" className={classes.toolbarItem}>
+                        Wyloguj się
                     </Link></>}
                 </Toolbar>
             </AppBar>

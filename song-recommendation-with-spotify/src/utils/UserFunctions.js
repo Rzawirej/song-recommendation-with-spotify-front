@@ -19,7 +19,8 @@ export const login = user => {
       password: user.password
     })
     .then(response => {
-      localStorage.setItem('tokenuser', response.data.access_token)
+      console.log(response);
+      localStorage.setItem('token', response.data.access_token)
       return response.data
     })
     .catch(err => {
