@@ -53,7 +53,7 @@ function Event(props){
                 <SideMenu/>
                 <PlaylistView event={event} setOpenInvite={setOpenInvite} setOpenEdit={setOpenEdit} setOpenDelete={setOpenDelete} a={a} setA={setA}/>
                 <ParticipantsMenu event={event}/>
-                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={event.invitation_link} eventId={event.id} eventPage={true}/>
+                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={event.invitation_link} eventId={event.id} eventPage={true} a={a} setA={setA}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={event.invitation_link} eventId={event.id} isEdit={true}/>
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={event.id}/>
             </div>

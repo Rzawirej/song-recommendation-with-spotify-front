@@ -61,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column'
     },  
+    inactive:{
+        opacity: 0.1,
+    },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
 }));
@@ -114,6 +117,7 @@ export default withRouter(function EventsView(props) {
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openInvite, setOpenInvite] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [a, setA] = React.useState(false);
     const [eventId, setEventId] = React.useState('');
     const [invLink, setInvLink] = React.useState('');
     const handleOpen = () => {
@@ -136,8 +140,11 @@ export default withRouter(function EventsView(props) {
             setOpenEdit(true);
         }
     };
-    const openEvent = (id) => {
-        props.history.push('/event/'+id)
+    const openEvent = (id, isActive) => {
+        if(isActive){
+            props.history.push('/event/'+id)
+        }
+        
     };
     React.useEffect(() => {
         async function getEventInfo(){
@@ -164,9 +171,9 @@ export default withRouter(function EventsView(props) {
                            Wydarzenia
                 </Typography>
                 {   events.length >= 1 && events[0].name?
-                    events.map((event, index) => {let firstAdmin = true; return(<>
-                    <Box className={classes.flexRow} onClick={()=>openEvent(event.id)}>
-                        <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={classes.eventPhoto} />
+                    events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=3; return(<>
+                    <Box className={classes.flexRow} onClick={()=>openEvent(event.id, isActive)}>
+                        <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} />
                         <Box>
                             <Typography variant="h5" color="textPrimary">
                             {event.name}
@@ -242,10 +249,12 @@ export default withRouter(function EventsView(props) {
                             <Grid container spacing={2} style={{opacity: 0.5,}}>
                                 {menuItems.map((item,index) =>(
                                     <>
-                                    <Grid item xs = {5} align = 'right' >
+                                    <Grid className = { !isActive && index===2?classes.inactive:''} item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid item xs = {7} onClick = {(e) => {e.stopPropagation(); handleMenuClick(index, event)}}>
+                                    <Grid className = {!isActive && index === 2 ? classes.inactive : ''} item xs = {7} 
+                                        onClick = {(e) => { e.stopPropagation(); handleMenuClick(index, event)}
+                                    } >
                                         {item.icon}
                                     </Grid>
                                     </>
@@ -264,7 +273,7 @@ export default withRouter(function EventsView(props) {
                              
                 <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} isEdit={false}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} eventId={eventId} isEdit={true}/>
-                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent}/>
+                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent} a={a} setA={setA}/>
 
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={eventId}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>

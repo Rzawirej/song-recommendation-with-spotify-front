@@ -233,7 +233,7 @@ export default function CreateEventModal(props) {
         let token = localStorage.getItem('token');
         let date = new Date().toJSON().split("T")[0];
         if(props.isEdit){
-            console.log(props.eventId)
+            
             let res = await axios.put('/event/'+props.eventId, {
                 name: name,
                 description: description,

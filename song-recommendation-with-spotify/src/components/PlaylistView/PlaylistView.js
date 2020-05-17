@@ -73,8 +73,8 @@ export default withRouter(function PlaylistView(props) {
     const [expand1, setExpand1] = React.useState(false);
     
     const event = props.event
-    const gridLeftColumnInfo = 3;
-    const gridRightColumnInfo = 9;
+    const gridLeftColumnInfo = 4;
+    const gridRightColumnInfo = 8;
     let firstAdmin = true;
         const menuItems = [{
         label: <Typography color="textSecondary"> USUŃ WYDARZENIE </Typography>,
@@ -109,6 +109,7 @@ export default withRouter(function PlaylistView(props) {
     }
     const handleClick1 = () => {
         console.log(event.playlist)
+        
         setExpand1(!expand1);
     }
     const handleMenuClick = (index) => {
@@ -117,6 +118,7 @@ export default withRouter(function PlaylistView(props) {
         }
         if (index === 1) {
             props.setOpenInvite(true);
+            console.log(props.a);
         }
         if (index === 2) {
 
@@ -144,7 +146,7 @@ export default withRouter(function PlaylistView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                Lorem ipsum
+                                                {event.description}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>

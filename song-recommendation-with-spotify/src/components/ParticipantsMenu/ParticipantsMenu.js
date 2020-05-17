@@ -105,10 +105,12 @@ export default function ParticipantsMenu(props) {
     const removeUser = async(event) =>{
         let token = localStorage.getItem('token');
         const index = event.target.className;
+        console.log(token);
         console.log('/event/'+props.event.id+'/remove-user?username='+state[index].user.username)
         let res = await axios.post('/event/'+props.event.id+'/remove-user?username='+state[index].user.username, {headers:{
             'Authorization': `Bearer ${token}`
-        }});
+        }}).then(e => console.log(e)).catch(e=>console.log(e));
+        console.log(res);
         state.splice(index, 1);
         setA(!a);
     }
