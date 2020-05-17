@@ -46,7 +46,7 @@ function Event(props){
                 console.log(event.playlist)
             }
             getEventInfo();
-        }, []);
+        }, [openInvite, openEdit, openDelete]);
         return(
             <div className={classes.root}>
                 <TopBar/>

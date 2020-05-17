@@ -93,6 +93,7 @@ export default withRouter(function PlaylistView(props) {
    
     const getDurationString = (duration) =>{
         console.log(duration)
+        
         if(duration===5){
             return "5 godzin, 100 utworów"
         }

@@ -157,11 +157,11 @@ export default withRouter(function EventsView(props) {
             console.log(data.events);
             setEvents(data.events);
         })
-        
+        console.log("test")
         
         }
         getEventInfo();
-    }, []);
+    }, [openEdit, openInvite, openDelete, openCreate]);
 
     return(
             <main className={classes.content}>

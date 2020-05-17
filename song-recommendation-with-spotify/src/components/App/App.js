@@ -10,7 +10,7 @@ import axios from 'axios';
 
 export default class App extends React.Component {
     async componentDidMount (){
-        axios.defaults.baseURL = 'https://song-recommendation.herokuapp.com/api';
+        axios.defaults.baseURL = 'http://156.17.130.143/api';
         
         //const token = localStorage.getItem('token');
         //if (token) {
