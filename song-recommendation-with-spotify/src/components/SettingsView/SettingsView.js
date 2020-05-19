@@ -20,6 +20,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import EditPreferencesModal from '../EditPreferencesModal/EditPreferencesModal';
 
 
 const useStyles = theme => ({
@@ -78,12 +79,14 @@ class SettingsView extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.getUser = this.getUser.bind(this);
+        this.changePreferences = this.changePreferences.bind(this);
         this.state = {
             expanded: null,
             language: "polish",
             user: {
                 username: '',
-            }
+            },
+            openPreferences: false,
         };
     }
 
@@ -98,6 +101,11 @@ class SettingsView extends React.Component{
     handleChange = panel => (event, expanded) => {
         this.setState({
           expanded: expanded ? panel : false
+        });
+    };
+    changePreferences = () => {
+        this.setState({
+            openPreferences: !this.state.openPreferences
         });
     };
 
@@ -293,12 +301,13 @@ class SettingsView extends React.Component{
                                         gatunek4 <br></br>
                                     </Typography>
                                 </ExpansionPanelSummary>
-                                <ExpansionPanelDetails className = {classes.flexColumn}>
+                                <ExpansionPanelDetails className = {classes.flexColumn} onClick={this.changePreferences}>
                                     <_Button label='Zmień' />
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         </Grid>
                     </Grid>
+                    <EditPreferencesModal open={this.state.openPreferences} setOpen={this.changePreferences} preferences={this.state.user.pref_genres}/>
                 </Box> 
             </main>
         )
