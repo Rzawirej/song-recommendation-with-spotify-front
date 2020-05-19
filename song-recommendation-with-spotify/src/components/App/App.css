@@ -1,9 +1,12 @@
 body {
+  background-color: #0B1830;
+}
+/* 
+body {
   background-image: url(../../assets/background.png);
   background-size: cover;
 }
 
-/* 
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,800,800i,900i&display=swap');
 button{
   position: absolute;

@@ -6,7 +6,7 @@ import axios from 'axios'
 import Link from '@material-ui/core/Link'
 import TopBar from '../components/TopBar/TopBar';
 import { login } from '../utils/UserFunctions'
-import background from '../assets/background.png'
+import background from '../assets/background.png'; // Import using relative path
 
 class Login extends React.Component{
     constructor(props){
@@ -67,7 +67,11 @@ class Login extends React.Component{
         const classes = this.props.classes
         
         return(
-            <div className="App" >
+            <div style = {{
+                backgroundImage: `url(${background})`,
+                backgroundSize: "cover",
+                height: '100vh'
+            }}>
                 <TopBar/>
                 <Grid container alignItems="center" direction="column" spacing="2">
                     <Grid item>
