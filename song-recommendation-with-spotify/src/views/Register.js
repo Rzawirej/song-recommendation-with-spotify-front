@@ -95,7 +95,7 @@ class Register extends React.Component{
                     <Grid item>
                     </Grid>
                     <Grid item>
-                        <Link href="https://song-recommendation.herokuapp.com/api/login/spotify" style={{ textDecoration: 'none' }}>
+                        <Link href="http://156.17.130.143/api/login/spotify" style={{ textDecoration: 'none' }}>
                             <_Button useClassGreen={true} label='ZAREJESTRUJ SIĘ PRZEZ SPOTIFY' />
                         </Link>
                     </Grid>

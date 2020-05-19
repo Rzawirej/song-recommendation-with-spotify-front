@@ -5,13 +5,13 @@ import { Redirect } from "react-router-dom";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import Event from "./views/Event";
-import Forget from "./views/Settings";
+import Settings from "./views/Settings";
 
 export default [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/event" />
+    component: () => <Redirect to="/settings" />
   },
   {
     path: "/register",

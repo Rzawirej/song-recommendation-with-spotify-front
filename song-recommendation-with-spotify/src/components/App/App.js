@@ -4,6 +4,7 @@ import Register from "../../views/Register";
 import Login from "../../views/Login";
 import Event from "../../views/Event";
 import Events from "../../views/Events";
+import Settings from "../../views/Settings";
 import './App.css';
 import axios from 'axios';
 
@@ -31,7 +32,8 @@ export default class App extends React.Component {
                 </Route>
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
-                <Route path="/event/:id" component={Event}/>
+                <Route path="/settings" component={Register}/>
+                <Route path="/event/:id" component={Settings}/>
                 <Route path="/event" component={Events} onEnter={this.requireAuth}/>
                 
                 
