@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import Event from "./views/Event";
-import Forget from "./views/Forget";
+import Forget from "./views/Settings";
 
 export default [
   {
@@ -26,7 +26,7 @@ export default [
     component: Event
   },
   {
-    path: "/forget",
-    component: Login
+    path: "/settings",
+    component: Settings
   }
 ];

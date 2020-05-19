@@ -13,7 +13,8 @@ class Login extends React.Component{
         super(props);
         this.state = {
             email:'',
-            password:''
+            password:'',
+            loginErrorMessage: ''
         }
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -27,10 +28,21 @@ class Login extends React.Component{
             password: this.state.password
         }
 
-        login(user).then(res => {
-            if (res.access_token) {
+        axios.post('/login', {
+            email: user.email,
+            password: user.password
+        })
+        .then(res => {
+            if (res.data.access_token) {
+                localStorage.setItem('token', res.data.access_token)
                 this.props.history.push(`/event`)
-        }
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            this.setState({
+                loginErrorMessage: err.response.data.message
+            });
         })
     }
 
@@ -88,10 +100,13 @@ class Login extends React.Component{
                         </div>     
                     </Grid>
                     <Grid item>
-                        <_Field label="E-mail lub nazwa użytkownika" type="" onChange={this.handleEmailChange}/>
+                        <_Field label="E-mail" type="" onChange={this.handleEmailChange}/>
                     </Grid>
                     <Grid item>
                         <_Field label="Hasło" type="password" onChange={this.handlePasswordChange}/>
+                    </Grid>
+                    <Grid item>
+                        <p style={{color:"red"}} >{this.state.loginErrorMessage}</p>
                     </Grid>
                     <Grid item>
                     <Link to="/event">

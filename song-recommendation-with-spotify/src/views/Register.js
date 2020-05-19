@@ -1,7 +1,8 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
-import _Field from '../components/Register/_Field'
-import _Button from '../components/Register/_Button'
+import _Field from '../components/Register/_Field';
+import _PField from '../components/Register/_PField';
+import _Button from '../components/Register/_Button';
 import TopBar from '../components/TopBar/TopBar';
 import Link from '@material-ui/core/Link'
 import axios from 'axios'
@@ -13,28 +14,51 @@ class Register extends React.Component{
         this.state = {
             email:'',
             password:'',
-            username:''
+            username:'',
+            passwordRepeat:'',
+            registerErrorMessage: ''
         }
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleRepeatPasswordChange = this.handleRepeatPasswordChange.bind(this);
         this.registerAction = this.registerAction.bind(this);
     }
 
     
     registerAction(e) {
         e.preventDefault()
-    
-        const newUser = {
-          username: this.state.username,
-          email: this.state.email,
-          password: this.state.password
+        console.log(this.state);
+        
+        if(this.state.password != this.state.passwordRepeat){
+            this.setState({registerErrorMessage:'Hasła nie są takie same!'});
         }
-    
-        register(newUser).then(res => {
-          this.props.history.push(`/login`)
-        })
-    } 
+        else{
+            const newUser = {
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password
+            }
+
+            axios.post('/register', {
+                email: newUser.email,
+                password: newUser.password,
+                username: newUser.username
+            }).then(res => {
+                this.props.history.push(`/login`)
+            }).catch(err => {
+                if (err.response.data.message.email){
+                    this.setState({
+                        registerErrorMessage:'Niepoprawny email.'});
+                }else{
+                    const text = JSON.stringify(err.response.data.message);
+                    this.setState({
+                        registerErrorMessage: text.slice(1,2).toUpperCase() + text.slice(2, text.length)
+                    });
+                }
+            })
+        }
+    }
     
     handleEmailChange(event){
         this.setState({
@@ -54,8 +78,13 @@ class Register extends React.Component{
         })
     }
     
-    render() {
+    handleRepeatPasswordChange(event){
+        this.setState({
+            passwordRepeat: event.target.value
+        })
+    }
 
+    render() {
         return(
             
             <div className="App">
@@ -91,13 +120,19 @@ class Register extends React.Component{
                         </div>     
                     </Grid>
                     <Grid item>
+                        <_Field label="Nazwa Użytkownika" onChange={this.handleUsernameChange}/>
+                    </Grid>
+                    <Grid item>
                         <_Field label="E-mail" onChange={this.handleEmailChange}/>
                     </Grid>
                     <Grid item>
-                        <_Field label="Hasło" type="password" onChange={this.handlePasswordChange}/>
+                        <_PField label="Hasło" onChange={this.handlePasswordChange}/>
                     </Grid>
                     <Grid item>
-                        <_Field label="Nazwa Użytkownika" onChange={this.handleUsernameChange}/>
+                        <_PField label="Powtórz hasło" onChange={this.handleRepeatPasswordChange}/>
+                    </Grid>
+                    <Grid item>
+                        <p style={{color:"red"}} >{this.state.registerErrorMessage}</p>
                     </Grid>
                     <Grid item>
                         <span onClick={this.registerAction}>
