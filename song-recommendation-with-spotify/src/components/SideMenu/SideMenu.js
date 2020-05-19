@@ -6,10 +6,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
-import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
+import { withRouter } from 'react-router-dom'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import Collapse from '@material-ui/core/Collapse';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import COLOR from '../../assets/colors'
 import { ListItemIcon, Divider } from '@material-ui/core';
@@ -42,16 +41,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SideMenu() {
+export default withRouter(function SideMenu(props) {
     const classes = useStyles();
-    const [expand1, setExpand1] = React.useState(false);
-    const [expand2, setExpand2] = React.useState(false);
 
     const handleClick1 = () => {
-        setExpand1(!expand1);
-    }
-    const handleClick2 = () => {
-        setExpand2(!expand2);
+        props.history.push('/event/')
     }
     return(
             
@@ -79,15 +73,6 @@ export default function SideMenu() {
                         </ListItemIcon>
                         <ListItemText primary="WYDARZENIA" />
                     </ListItem>
-                    <Collapse in={expand1} timeout="auto" unmountOnExit>
-                        <List >
-                                {['Wydarzenie 1', 'Wydarzenie 2', 'Wydarzenie 3'].map((text, index) => (
-                                    <ListItem button key={text}>
-                                        <ListItemText primary={text} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                    </Collapse>
                 </List>
                 
                 <List className={classes.end}>
@@ -102,4 +87,4 @@ export default function SideMenu() {
                 
             </Drawer>
     )
-}
+})

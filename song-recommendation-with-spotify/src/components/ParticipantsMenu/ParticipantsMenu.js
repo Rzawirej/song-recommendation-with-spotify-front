@@ -5,9 +5,8 @@ import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Switch from '@material-ui/core/Switch';
-import ClearIcon from '@material-ui/icons/Clear';
 import COLOR from '../../assets/colors'
-import image from '../../assets/panda.jpg'
+import image from '../../assets/no_spotify_icon.png';
 
 const drawerWidth = '15%';
 const useStyles = makeStyles((theme) => ({
@@ -89,14 +88,14 @@ export default function ParticipantsMenu(props) {
 
     const grantAdmin = async(index,token) =>{
         
-        let res = await axios.get('/event/'+props.event.id+'/grant-admin?username='+state[index].user.username, {headers:{
+        let res = await axios.post('/event/'+props.event.id+'/grant-admin?username='+state[index].user.username,{}, {headers:{
             'Authorization': `Bearer ${token}`
         }});
         state[index].role = 'admin'
     }
     const revokeAdmin = async(index,token) =>{
         
-        let res = await axios.get('/event/'+props.event.id+'/revoke-admin?username='+state[index].user.username, {headers:{
+        let res = await axios.post('/event/'+props.event.id+'/revoke-admin?username='+state[index].user.username,{}, {headers:{
             'Authorization': `Bearer ${token}`
         }});
         console.log(res)
@@ -105,10 +104,12 @@ export default function ParticipantsMenu(props) {
     const removeUser = async(event) =>{
         let token = localStorage.getItem('token');
         const index = event.target.className;
-        console.log(index)
-        let res = await axios.get('/event/'+props.event.id+'/remove-user?username='+state[index].user.username, {headers:{
+        console.log(token);
+        console.log('/event/'+props.event.id+'/remove-user?username='+state[index].user.username)
+        let res = await axios.post('/event/'+props.event.id+'/remove-user?username='+state[index].user.username,{}, {headers:{
             'Authorization': `Bearer ${token}`
         }});
+        console.log(res);
         state.splice(index, 1);
         setA(!a);
     }
@@ -158,8 +159,11 @@ export default function ParticipantsMenu(props) {
                                 } >
                                     {participant.role==='admin'?'ADMIN':'BASIC'}
                                 </Typography>
+                                {props.isAdmin?
                                 <AntSwitch checked={participant.role==='admin'?true:false} onChange={handleChange} name={index}/>
+                                :''}
                                 </div>
+                                {props.isAdmin?
                                 <span span style = {
                                     {
                                         alignSelf: 'flex-end',
@@ -174,6 +178,7 @@ export default function ParticipantsMenu(props) {
                                 } >
                                     X
                                 </span>
+                                :''}
                             </div>
                     ))}
 
