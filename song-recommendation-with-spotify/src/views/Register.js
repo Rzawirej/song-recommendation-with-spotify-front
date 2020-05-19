@@ -26,8 +26,7 @@ class Register extends React.Component{
         e.preventDefault()
     
         const newUser = {
-          first_name: this.state.first_name,
-          last_name: this.state.last_name,
+          username: this.state.username,
           email: this.state.email,
           password: this.state.password
         }

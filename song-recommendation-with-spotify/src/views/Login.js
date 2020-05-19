@@ -46,6 +46,11 @@ class Login extends React.Component{
         })
     }
     
+    saveSpotifyToken(){
+        console.log('spotifyfToken')
+        console.log(window.location.href);
+    }
+
     render() {
         const classes = this.props.classes
         
