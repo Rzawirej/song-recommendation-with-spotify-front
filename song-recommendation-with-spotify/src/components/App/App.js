@@ -31,7 +31,7 @@ export default class App extends React.Component {
     }
     async componentDidMount (){
         axios.defaults.baseURL = 'http://156.17.130.143/api';
-        let token = localStorage.getItem('token');
+       /* let token = localStorage.getItem('token');
         axios.get('/user/current', {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -43,7 +43,7 @@ export default class App extends React.Component {
                 this.setState({
                     user: data.user
                 });
-        }).catch(()=>this.setState({user:{username:''}}))
+        }).catch(()=>this.setState({user:{username:''}}))*/
     }
     requireAuth(nextState, replace){
         console.log("typ musi byc zalogowany")
@@ -57,7 +57,7 @@ export default class App extends React.Component {
                     <Redirect to="/login" />
                 </Route>
                 <Route path="/login" component={Login}/>
-                <PrivateRoute path="/register" component={Register} user={this.state.user}/>
+                <Route path="/register" component={Register}/>
                 <Route path="/event/:id" component={Event}/>
                 <Route path="/event" component={Events} onEnter={this.requireAuth}/>
                 
