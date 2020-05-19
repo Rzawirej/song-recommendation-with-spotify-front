@@ -5,14 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 
 import TextField from '@material-ui/core/TextField';
-
 import Button from '@material-ui/core/Button';
-
-
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Grid from '@material-ui/core/Grid';
 
-import background from './../../assets/popup_954.png'
 import COLOR from './../../assets/colors'
 
 

@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
+        '&::last-child': {
+            paddingBottom: '200px'
+        }
     },
     toolbar: theme.mixins.toolbar,
 }));
@@ -87,7 +90,7 @@ export default function ParticipantsMenu(props) {
 
     const grantAdmin = async(index,token) =>{
         
-        let res = await axios.post('/event/'+props.event.id+'/grant-admin?username='+state[index].user.username,{}, {headers:{
+        await axios.post('/event/'+props.event.id+'/grant-admin?username='+state[index].user.username,{}, {headers:{
             'Authorization': `Bearer ${token}`
         }});
         state[index].role = 'admin'

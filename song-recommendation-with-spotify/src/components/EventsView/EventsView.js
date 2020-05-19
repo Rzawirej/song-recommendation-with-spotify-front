@@ -285,11 +285,11 @@ export default withRouter(function EventsView(props) {
                             <Grid container spacing={2} style={{opacity: 0.5}}>
                                 {menuItems.map((item,index) =>(
                                     <>
-                                    <Grid className = { !isActive && index===2 || !isAdmin?classes.inactive:''} item xs = {5} align = 'right' >
+                                    <Grid className = { (!isActive && index===2) || !isAdmin?classes.inactive:''} item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid className = { !isActive && index === 2 || !isAdmin ? classes.inactive : ''} item xs = {7}
-                                        onClick = {!isActive && index === 2 || !isAdmin?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}>
+                                    <Grid className = { (!isActive && index === 2) || !isAdmin ? classes.inactive : ''} item xs = {7}
+                                        onClick = {(!isActive && index === 2) || !isAdmin?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}>
                                         {item.icon}
                                     </Grid>
                                     </>

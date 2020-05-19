@@ -239,7 +239,7 @@ export default function CreateEventModal(props) {
         let token = localStorage.getItem('token');
         if(props.isEdit){
             
-            let res = await axios.put('/event/'+props.eventId, {
+            await axios.put('/event/'+props.eventId, {
                 name: name,
                 description: description,
                 image_url: photo,

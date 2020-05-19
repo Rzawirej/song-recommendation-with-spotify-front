@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar';
@@ -123,10 +122,9 @@ export default withRouter(function PlaylistView(props) {
         }
         if (index === 1) {
             props.setOpenInvite(true);
-            console.log(props.a);
         }
         if (index === 2) {
-
+            props.setOpenRefresh(true);
         }
         if (index === 3) {
             props.setOpenEdit(true);

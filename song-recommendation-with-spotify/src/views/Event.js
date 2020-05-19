@@ -9,6 +9,7 @@ import ParticipantsMenu from '../components/ParticipantsMenu/ParticipantsMenu';
 import AddParticipantsModal from '../components/AddParticipantsModal/AddParticipantsModal';
 import CreateEventModal from '../components/CreateEventModal/CreateEventModal';
 import DeleteEventModal from '../components/DeleteEventModal/DeleteEventModal';
+import RefreshPlaylistModal from '../components/RefreshPlaylistModal/RefreshPlaylistModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,10 +23,12 @@ function Event(props){
         const [openInvite, setOpenInvite] = React.useState(false);
         const [openEdit, setOpenEdit] = React.useState(false);
         const [openDelete, setOpenDelete] = React.useState(false);
+        const [openRefresh, setOpenRefresh] = React.useState(false);
         const [a, setA] = React.useState(false);
         const [user, setUser] = React.useState({
             username: ''
         })
+        
         const [event, setEvent] = React.useState({
             name: '',
             participants: [],
@@ -66,7 +69,7 @@ function Event(props){
             getEventInfo();
             
             
-        }, [openInvite, openEdit, openDelete]);
+        }, [openInvite, openEdit, openDelete, openRefresh]);
         const checkAdmin = (event,user) => {
             event.participants.forEach((participant, index) => {
                 if (participant.user.username === user.username && participant.role === 'admin') {
@@ -80,12 +83,13 @@ function Event(props){
                 <TopBar/>
                 <SideMenu/>
                 
-                <PlaylistView isAdmin={isAdmin} event={event} setOpenInvite={setOpenInvite} setOpenEdit={setOpenEdit} setOpenDelete={setOpenDelete} a={a} setA={setA}/>
+                <PlaylistView isAdmin={isAdmin} event={event} setOpenInvite={setOpenInvite} setOpenEdit={setOpenEdit} setOpenDelete={setOpenDelete} setOpenRefresh={setOpenRefresh} a={a} setA={setA}/>
                 <ParticipantsMenu isAdmin={isAdmin} event={event}/>
                 
                 <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={event.invitation_link} eventId={event.id} eventPage={true} a={a} setA={setA}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={event.invitation_link} eventId={event.id} isEdit={true}/>
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={event.id}/>
+                <RefreshPlaylistModal open={openRefresh} setOpen={setOpenRefresh} eventId={event.id} eventDuration={event.duration_time}/>
             </div>
         )
     }   
