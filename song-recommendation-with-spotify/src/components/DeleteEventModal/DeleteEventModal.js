@@ -1,6 +1,7 @@
 import React from "react";
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     paper: {
         position: 'fixed',
         width: 600,
-        Color: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
         top: `50%`,
@@ -84,40 +85,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function AddPaticipantsModal(props) {
+export default withRouter(function DeleteEventModal(props) {
     const classes = useStyles();
-    const [username, setUsername] = React.useState('');
-    
-    const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
-    };
+
     const handleSubmit = async () => {
-        if(username!==''){
-            let token = localStorage.getItem('token');
-            console.log(props.eventId);
-            let res = await axios.post('/event/' + props.eventId + '/invite', {
-                username: username,
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            console.log(res)
-            props.setA(!props.a);
-        }
-        if(!props.eventPage){
-           // props.openEvent(props.eventId)
-        }
-        
+        let token = localStorage.getItem('token');
+        let res = await axios.delete('/event/'+props.eventId,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
         handleClose();
     }
     
 
     const handleClose = () => {
-        console.log(props.a);
-        props.setA(!props.a);
-        console.log(props.a);
         props.setOpen(false);
+        props.history.push('/event/');
     };
 
     return (
@@ -132,47 +116,17 @@ export default function AddPaticipantsModal(props) {
                 
                 <div className = { classes.paper} >
                     <HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>
-                    <Typography variant="h5" className = {classes.title}>ZAPROŚ ZNAJOMYCH </Typography>
+                    <Typography variant="h5" className = {classes.title}>USUŃ WYDARZENIE </Typography>
                     <Grid container spacing={2} className={classes.grid}>
+                        
                         <Grid item xs={3} align='right'>
                         </Grid>
                         <Grid item xs={9}>
                             <Typography color="textPrimary">
-                                        Zaproś swoich znajomych. Aby wydarzenie stało się aktywne potrzebujesz minimum 3. użytkowników z kontem <span style={{color: COLOR.spotifyGreen}}>Spotify</span>. Do czasu, aż przynajmniej 2. zaproszonych użytkowników nie odpowie na Twoje zaproszenie, wydarzenie pozostanie nieaktywne. W wydarzeniu może uczestniczyć maksylnie 30 osób. Link udostępniający możesz wysłać do większej ilości osób, ale uczestnictwo otrzyma pierwszych 30.
+                                Czy chcesz usunąć wydarzenie? Usuwając wydarzenie rezygnujesz z uczestnictwa w nim. Możesz ponownie do niego dołączyć zostając zaproszoną/ym przez inną Użytkowniczkę/ innego Użytkownika aplikacji z funkcją Aministratorki/a. Wydarzenie zostanie trwale usunięte w momencie kiedy każdy uczestnik o funkcji Administratorki/a również je usunie.
                             </Typography>
                         </Grid>
-                        <Grid item xs={3} align='right'>
-                            <Typography color="textSecondary">
-                                        Zaproś używając Nazwy Użytkownika 
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={9}>
-                            <TextField
-                                InputProps={{ classes: {notchedOutline: classes.notchedOutline},} }
-                                placeholder = "Wpisz nazwę"
-                                className={classes.field}
-                                onChange={handleUsernameChange}
-                                value={username}
-                                margin="dense"
-                                variant="outlined"
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={3} align='right'>
-                            <Typography color="textSecondary">
-                                        Skopiuj link do udostępnienia 
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={9}>
-                            <TextField
-                                InputProps={{ classes: {notchedOutline: classes.notchedOutline, disabled: classes.field},} }
-                                className={classes.field}
-                                value={'http://156.17.130.143/join-event/'+props.invLink}
-                                margin="dense"
-                                variant="outlined"
-                                fullWidth
-                            />
-                        </Grid>
+                        
 
 
                     </Grid>
@@ -183,7 +137,7 @@ export default function AddPaticipantsModal(props) {
                         variant="outlined"
                         onClick={handleSubmit}
                         >
-                        GOTOWE!
+                        USUŃ
                 
                     </Button>
                                             
@@ -192,4 +146,4 @@ export default function AddPaticipantsModal(props) {
             </Modal>
         </div>
     );
-}
+})

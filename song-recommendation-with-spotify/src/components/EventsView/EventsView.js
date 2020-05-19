@@ -15,10 +15,10 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 
-import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
 import CreateEventModal from '.././CreateEventModal/CreateEventModal';
 import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
+import DeleteEventModal from '../DeleteEventModal/DeleteEventModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column'
     },  
+    inactive:{
+        opacity: 0.1,
+    },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
 }));
@@ -111,15 +114,41 @@ export default withRouter(function EventsView(props) {
     }]);
     
     const [openCreate, setOpenCreate] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [openInvite, setOpenInvite] = React.useState(false);
+    const [openDelete, setOpenDelete] = React.useState(false);
+    const [a, setA] = React.useState(false);
     const [eventId, setEventId] = React.useState('');
     const [invLink, setInvLink] = React.useState('');
     const handleOpen = () => {
         setOpenCreate(true);
     };
-    const openEvent = (id) => {
-        props.history.push('/event/'+id)
+    const handleMenuClick = (index, event) => {
+        console.log(event);
+        setEventId(event.id);
+        setInvLink(event.invitation_link);
+        if(index === 0){
+            setOpenDelete(true);
+        }
+        if (index === 1) {
+            setOpenInvite(true);
+        }
+        if (index === 2) {
+            
+        }
+        if (index === 3) {
+            setOpenEdit(true);
+        }
     };
+    const openEvent = (id, isActive) => {
+        if(isActive){
+            props.history.push('/event/'+id)
+        }
+        
+    };
+    const [user, setUser] = React.useState({
+        username: ''
+    })
     React.useEffect(() => {
         async function getEventInfo(){
         let token = localStorage.getItem('token');
@@ -131,11 +160,37 @@ export default withRouter(function EventsView(props) {
             console.log(data.events);
             setEvents(data.events);
         })
-        
-        
+        console.log("test")
+        getUser()
+        }
+        async function getUser() {
+            let token = localStorage.getItem('token');
+            console.log(token)
+            await axios.get('/user/current', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(({
+                data
+            }) => {
+                console.log(data);
+                setUser(data.user);
+                
+            })
+
         }
         getEventInfo();
-    }, []);
+    }, [openEdit, openInvite, openDelete, openCreate]);
+
+    const checkAdmin = (event,user) => {
+        let ret = false;
+        event.participants.forEach((participant, index) => {
+            if (participant.user.username === user.username && participant.role === 'admin') {
+                ret=true
+            }
+        })
+        return ret
+    }
 
     return(
             <main className={classes.content}>
@@ -145,12 +200,12 @@ export default withRouter(function EventsView(props) {
                            Wydarzenia
                 </Typography>
                 {   events.length >= 1 && events[0].name?
-                    events.map((event, index) => {let firstAdmin = true; return(<>
-                    <Box className={classes.flexRow} onClick={()=>openEvent(event.id)}>
-                        <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
-                        <Box >
+                    events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=3; let isAdmin=checkAdmin(event,user); return(<>
+                    <Box className={classes.flexRow} onClick={()=>openEvent(event.id, isActive)}>
+                        <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} />
+                        <Box>
                             <Typography variant="h5" color="textPrimary">
-                            {event.name}
+                            {event.name}{}
                             </Typography>
                             <Grid container spacing={2}>
                                 <Grid item xs = {gridLeftColumnInfo} align = 'right' >
@@ -184,7 +239,7 @@ export default withRouter(function EventsView(props) {
                                     if (participant.role === "admin")
                                         if(!firstAdmin){
                                             
-                                            return <span><span style={{color:COLOR.orange}}> |</span>{participant.user.username}</span>;  
+                                            return <span><span style={{color:COLOR.orange}}> |</span> {participant.user.username}</span>;  
                                         }
                                         else
                                         {
@@ -203,7 +258,7 @@ export default withRouter(function EventsView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                od {event.start_date.split(' ')[0]} do {event.end_date.split(' ')[0]}
+                                                {event.end_date.split(' ')[0] === '4000-01-01'?'Bezterminowo':`od ${event.start_date.split(' ')[0]} do ${event.end_date.split(' ')[0]}`}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -223,10 +278,11 @@ export default withRouter(function EventsView(props) {
                             <Grid container spacing={2} style={{opacity: 0.5,}}>
                                 {menuItems.map((item,index) =>(
                                     <>
-                                    <Grid item xs = {5} align = 'right' >
+                                    <Grid className = { !isActive && index===2 || !isAdmin?classes.inactive:''} item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid item xs={7}>
+                                    <Grid className = { !isActive && index === 2 || !isAdmin ? classes.inactive : ''} item xs = {7}
+                                        onClick = {!isActive && index === 2 || !isAdmin?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}>
                                         {item.icon}
                                     </Grid>
                                     </>
@@ -243,8 +299,11 @@ export default withRouter(function EventsView(props) {
                     )}):null
                 }
                              
-                <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId}/>
-                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent}/>
+                <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} isEdit={false}/>
+                <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} eventId={eventId} isEdit={true}/>
+                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent} a={a} setA={setA}/>
+
+                <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={eventId}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
                     <AddIcon className = {classes.fabIcon} color = {COLOR.white}/>
                 </Fab>    

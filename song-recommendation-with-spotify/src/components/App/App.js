@@ -8,17 +8,43 @@ import Settings from "../../views/Settings";
 import './App.css';
 import axios from 'axios';
 
+export const PrivateRoute = ({ component: Component, roles, user, ...rest }) => (
+    <Route {...rest} render={(props) => {
+        console.log(user);
+            if (!user.username) {
+            // not logged in so redirect to login page with the return url
+
+            return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+        }
+        // authorised so return component
+        return <Component {...props} />
+        
+    }}
+     />
+)
 
 export default class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            user: {username: 'a'}
+        };
+    }
     async componentDidMount (){
-        axios.defaults.baseURL = 'https://song-recommendation.herokuapp.com/api';
-        
-        //const token = localStorage.getItem('token');
-        //if (token) {
-        //    axios.defaults.headers.common['x-auth-token'] = token;
-        //    await this.props.getCurrentUser();
-        //    this.props.history.push('/');
-        //}
+        axios.defaults.baseURL = 'http://156.17.130.143/api';
+       /* let token = localStorage.getItem('token');
+        axios.get('/user/current', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(({
+            data
+        }) => {
+            console.log(data);
+                this.setState({
+                    user: data.user
+                });
+        }).catch(()=>this.setState({user:{username:''}}))*/
     }
     requireAuth(nextState, replace){
         console.log("typ musi byc zalogowany")
@@ -26,6 +52,7 @@ export default class App extends React.Component {
     render(){
         return (
         <Router basename={process.env.REACT_APP_BASENAME || ""}>
+        
             <Switch>
                 <Route path="/" exact>
                     <Redirect to="/login" />
@@ -35,7 +62,6 @@ export default class App extends React.Component {
                 <Route path="/settings" component={Settings}/>
                 <Route path="/event/:id" component={Event}/>
                 <Route path="/event" component={Events} onEnter={this.requireAuth}/>
-                
                 
             </Switch>
         </Router>

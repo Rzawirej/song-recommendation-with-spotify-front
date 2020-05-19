@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -17,8 +18,8 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
 
-import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,21 +62,27 @@ const useStyles = makeStyles((theme) => ({
     listItem:{
         color: COLOR.white
     },
+    inactive: {
+        opacity: 0.1,
+    },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
 }));
 
-export default function PlaylistView(props) {
+export default withRouter(function PlaylistView(props) {
 
     const classes = useStyles();
     const [expand1, setExpand1] = React.useState(false);
+    
     const event = props.event
-    const gridLeftColumnInfo = 3;
-    const gridRightColumnInfo = 9;
+    
+    
+    const gridLeftColumnInfo = 4;
+    const gridRightColumnInfo = 8;
     let firstAdmin = true;
         const menuItems = [{
         label: <Typography color="textSecondary"> USUŃ WYDARZENIE </Typography>,
-        icon: <HighlightOffIcon color='primary'/>
+        icon: <HighlightOffIcon color='primary'/>,
     },{
         label: <Typography color="textPrimary"> ZAPROŚ </Typography>,
         icon: <AddCircleOutlineIcon style={{color: COLOR.white}}/>
@@ -90,6 +97,7 @@ export default function PlaylistView(props) {
    
     const getDurationString = (duration) =>{
         console.log(duration)
+        
         if(duration===5){
             return "5 godzin, 100 utworów"
         }
@@ -106,14 +114,31 @@ export default function PlaylistView(props) {
     }
     const handleClick1 = () => {
         console.log(event.playlist)
+        
         setExpand1(!expand1);
+    }
+    const handleMenuClick = (index) => {
+        if(index === 0){
+            props.setOpenDelete(true);
+        }
+        if (index === 1) {
+            props.setOpenInvite(true);
+            console.log(props.a);
+        }
+        if (index === 2) {
+
+        }
+        if (index === 3) {
+            props.setOpenEdit(true);
+        }
+        props.setA(!props.a);
     }
 
     return(
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Box className={classes.flexRow} >
-                        <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
+                        <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={classes.eventPhoto} />
                         <Box >
                             <Typography variant="h5" color="textPrimary">
                             {event.name}
@@ -126,7 +151,7 @@ export default function PlaylistView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                Lorem ipsum
+                                                {event.description}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -150,7 +175,7 @@ export default function PlaylistView(props) {
                                     if (participant.role === "admin")
                                         if(!firstAdmin){
                                             
-                                            return <span><span style={{color:COLOR.orange}}> |</span>{participant.user.username}</span>;  
+                                            return <span><span style={{color:COLOR.orange}}> |</span> {participant.user.username}</span>;  
                                         }
                                         else
                                         {
@@ -169,7 +194,8 @@ export default function PlaylistView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                od {event.start_date.split(' ')[0]} do {event.end_date.split(' ')[0]}
+                                                {event.end_date.split(' ')[0] === '4000-01-01'?'Bezterminowo':`od ${event.start_date.split(' ')[0]} do ${event.end_date.split(' ')[0]}`}
+
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -189,10 +215,10 @@ export default function PlaylistView(props) {
                             <Grid container spacing={2}>
                                 {menuItems.map((item,index) =>(
                                     <>
-                                    <Grid item xs = {5} align = 'right' >
+                                    <Grid className={props.isAdmin?'':classes.inactive} item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid item xs={7}>
+                                    <Grid className={props.isAdmin?'':classes.inactive} item xs={7} onClick={props.isAdmin?()=>handleMenuClick(index):undefined}>
                                         {item.icon}
                                     </Grid>
                                     </>
@@ -237,8 +263,8 @@ export default function PlaylistView(props) {
                             To wydarzenie nie ma jeszcze playlisty
                     </Typography>}
                 </List>
-                    
+    
                     
             </main>
     )
-}
+})

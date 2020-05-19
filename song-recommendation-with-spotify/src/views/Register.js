@@ -7,6 +7,7 @@ import TopBar from '../components/TopBar/TopBar';
 import Link from '@material-ui/core/Link'
 import axios from 'axios'
 import { register } from '../utils/UserFunctions'
+import background from '../assets/background.png';
 
 class Register extends React.Component{
     constructor(props){
@@ -86,8 +87,11 @@ class Register extends React.Component{
 
     render() {
         return(
-            
-            <div className="App">
+            <div style = {{
+                backgroundImage: `url(${background})`,
+                backgroundSize: "cover",
+                height: '100vh'
+            }}>
                 <TopBar/>
                 <Grid container alignItems="center" direction="column" spacing="2">
                     <Grid item>
