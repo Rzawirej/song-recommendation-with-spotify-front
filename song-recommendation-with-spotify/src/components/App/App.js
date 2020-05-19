@@ -32,8 +32,8 @@ export default class App extends React.Component {
                 </Route>
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
-                <Route path="/settings" component={Register}/>
-                <Route path="/event/:id" component={Settings}/>
+                <Route path="/settings" component={Settings}/>
+                <Route path="/event/:id" component={Event}/>
                 <Route path="/event" component={Events} onEnter={this.requireAuth}/>
                 
                 

@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import TopBar from '../components/TopBar/TopBar';
 import SideMenu from '../components/SideMenu/SideMenu';
-import EventsView from '../components/EventsView/EventsView';
+import SettingsView from '../components/SettingsView/SettingsView';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,7 +20,7 @@ class Settings extends React.Component{
             <div >
                 <TopBar/>
                 <SideMenu/>
-                <EventsView/>
+                <SettingsView/>
             </div>
         )
     }
