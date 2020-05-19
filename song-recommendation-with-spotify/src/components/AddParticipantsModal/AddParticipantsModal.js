@@ -167,7 +167,7 @@ export default function AddPaticipantsModal(props) {
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, disabled: classes.field},} }
                                 className={classes.field}
-                                value={'https://song-recommendation.herokuapp.com/join-event/'+props.invLink}
+                                value={'http://156.17.130.143/join-event/'+props.invLink}
                                 margin="dense"
                                 variant="outlined"
                                 fullWidth

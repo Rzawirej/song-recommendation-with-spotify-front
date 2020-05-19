@@ -18,7 +18,6 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
 
-import image from '../../assets/panda.jpg'
 import COLOR from './../../assets/colors'
 
 
@@ -63,6 +62,9 @@ const useStyles = makeStyles((theme) => ({
     listItem:{
         color: COLOR.white
     },
+    inactive: {
+        opacity: 0.1,
+    },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
 }));
@@ -73,6 +75,8 @@ export default withRouter(function PlaylistView(props) {
     const [expand1, setExpand1] = React.useState(false);
     
     const event = props.event
+    
+    
     const gridLeftColumnInfo = 4;
     const gridRightColumnInfo = 8;
     let firstAdmin = true;
@@ -171,7 +175,7 @@ export default withRouter(function PlaylistView(props) {
                                     if (participant.role === "admin")
                                         if(!firstAdmin){
                                             
-                                            return <span><span style={{color:COLOR.orange}}> |</span>{participant.user.username}</span>;  
+                                            return <span><span style={{color:COLOR.orange}}> |</span> {participant.user.username}</span>;  
                                         }
                                         else
                                         {
@@ -190,7 +194,8 @@ export default withRouter(function PlaylistView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                od {event.start_date.split(' ')[0]} do {event.end_date.split(' ')[0]}
+                                                {event.end_date.split(' ')[0] === '4000-01-01'?'Bezterminowo':`od ${event.start_date.split(' ')[0]} do ${event.end_date.split(' ')[0]}`}
+
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -210,10 +215,10 @@ export default withRouter(function PlaylistView(props) {
                             <Grid container spacing={2}>
                                 {menuItems.map((item,index) =>(
                                     <>
-                                    <Grid item xs = {5} align = 'right' >
+                                    <Grid className={props.isAdmin?'':classes.inactive} item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid item xs={7} onClick={()=>handleMenuClick(index)}>
+                                    <Grid className={props.isAdmin?'':classes.inactive} item xs={7} onClick={props.isAdmin?()=>handleMenuClick(index):undefined}>
                                         {item.icon}
                                     </Grid>
                                     </>

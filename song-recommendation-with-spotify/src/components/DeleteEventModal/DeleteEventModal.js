@@ -123,7 +123,7 @@ export default withRouter(function DeleteEventModal(props) {
                         </Grid>
                         <Grid item xs={9}>
                             <Typography color="textPrimary">
-                                Czy chcesz usunąć wydarzenie? Usuwając wydarzenie rezygnujesz z uczestnictwa w nim. Możesz ponownie do niego dołączyć zostając zaproszoną/ym przez inną Użytkowniczkę/ innego Użytkownika aplikacji z funkcją Aministratorki/a. Wydarzenie zostanie trwale usunięte w momecie kiedy każdy uczestnik o fukcji Administratorki/a również je usunie.
+                                Czy chcesz usunąć wydarzenie? Usuwając wydarzenie rezygnujesz z uczestnictwa w nim. Możesz ponownie do niego dołączyć zostając zaproszoną/ym przez inną Użytkowniczkę/ innego Użytkownika aplikacji z funkcją Aministratorki/a. Wydarzenie zostanie trwale usunięte w momencie kiedy każdy uczestnik o funkcji Administratorki/a również je usunie.
                             </Typography>
                         </Grid>
                         

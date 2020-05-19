@@ -146,6 +146,9 @@ export default withRouter(function EventsView(props) {
         }
         
     };
+    const [user, setUser] = React.useState({
+        username: ''
+    })
     React.useEffect(() => {
         async function getEventInfo(){
         let token = localStorage.getItem('token');
@@ -158,10 +161,36 @@ export default withRouter(function EventsView(props) {
             setEvents(data.events);
         })
         console.log("test")
-        
+        getUser()
+        }
+        async function getUser() {
+            let token = localStorage.getItem('token');
+            console.log(token)
+            await axios.get('/user/current', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(({
+                data
+            }) => {
+                console.log(data);
+                setUser(data.user);
+                
+            })
+
         }
         getEventInfo();
     }, [openEdit, openInvite, openDelete, openCreate]);
+
+    const checkAdmin = (event,user) => {
+        let ret = false;
+        event.participants.forEach((participant, index) => {
+            if (participant.user.username === user.username && participant.role === 'admin') {
+                ret=true
+            }
+        })
+        return ret
+    }
 
     return(
             <main className={classes.content}>
@@ -171,12 +200,12 @@ export default withRouter(function EventsView(props) {
                            Wydarzenia
                 </Typography>
                 {   events.length >= 1 && events[0].name?
-                    events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=3; return(<>
+                    events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=3; let isAdmin=checkAdmin(event,user); return(<>
                     <Box className={classes.flexRow} onClick={()=>openEvent(event.id, isActive)}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} />
                         <Box>
                             <Typography variant="h5" color="textPrimary">
-                            {event.name}
+                            {event.name}{}
                             </Typography>
                             <Grid container spacing={2}>
                                 <Grid item xs = {gridLeftColumnInfo} align = 'right' >
@@ -210,7 +239,7 @@ export default withRouter(function EventsView(props) {
                                     if (participant.role === "admin")
                                         if(!firstAdmin){
                                             
-                                            return <span><span style={{color:COLOR.orange}}> |</span>{participant.user.username}</span>;  
+                                            return <span><span style={{color:COLOR.orange}}> |</span> {participant.user.username}</span>;  
                                         }
                                         else
                                         {
@@ -229,7 +258,7 @@ export default withRouter(function EventsView(props) {
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
                                     <Typography color="textPrimary">
-                                                od {event.start_date.split(' ')[0]} do {event.end_date.split(' ')[0]}
+                                                {event.end_date.split(' ')[0] === '4000-01-01'?'Bezterminowo':`od ${event.start_date.split(' ')[0]} do ${event.end_date.split(' ')[0]}`}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridLeftColumnInfo} align='right'>
@@ -249,12 +278,11 @@ export default withRouter(function EventsView(props) {
                             <Grid container spacing={2} style={{opacity: 0.5,}}>
                                 {menuItems.map((item,index) =>(
                                     <>
-                                    <Grid className = { !isActive && index===2?classes.inactive:''} item xs = {5} align = 'right' >
+                                    <Grid className = { !isActive && index===2 || !isAdmin?classes.inactive:''} item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid className = {!isActive && index === 2 ? classes.inactive : ''} item xs = {7} 
-                                        onClick = {(e) => { e.stopPropagation(); handleMenuClick(index, event)}
-                                    } >
+                                    <Grid className = { !isActive && index === 2 || !isAdmin ? classes.inactive : ''} item xs = {7}
+                                        onClick = {!isActive && index === 2 || !isAdmin?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}>
                                         {item.icon}
                                     </Grid>
                                     </>

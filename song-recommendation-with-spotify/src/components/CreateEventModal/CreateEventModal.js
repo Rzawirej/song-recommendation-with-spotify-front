@@ -189,6 +189,8 @@ export default function CreateEventModal(props) {
     const [availability, setAvailability] = React.useState('1');
     const [description, setDescription] = React.useState('');
     const [name, setName] = React.useState('');
+    const nowDate = new Date().toJSON().split("T")[0];
+    const [endDate, setEndDate] = React.useState(nowDate);
     const [photo, setPhoto] = React.useState(image1);
     
     React.useEffect(() => {
@@ -202,10 +204,11 @@ export default function CreateEventModal(props) {
             })
             const event = result.data.event;
             setDuration(event.duration_time+'');
-            setAvailability('1');
+            event.end_date.split(' ')[0] === '4000-01-01'?setAvailability('1'):(()=>{setAvailability('2'); setEndDate(event.end_date.split(' ')[0])})();
             setDescription(event.description);
             setName(event.name);
             setPhoto(event.image_url);
+            
             console.log(event);
         }
         getEventInfo();
@@ -229,17 +232,19 @@ export default function CreateEventModal(props) {
     const changePhoto = (event) => {
         setPhoto(event.target.src);
     };
+    const handleEndDateChange = (event) => {
+        setEndDate(event.target.value);
+    };
     const handleSubmit = async () => {
         let token = localStorage.getItem('token');
-        let date = new Date().toJSON().split("T")[0];
         if(props.isEdit){
             
             let res = await axios.put('/event/'+props.eventId, {
                 name: name,
                 description: description,
                 image_url: photo,
-                start_date: date,
-                end_date: date,
+                start_date: nowDate,
+                end_date: availability==='2'?endDate:'4000-01-01',
                 duration_time: parseInt(duration)
             }, {
                 headers: {
@@ -251,8 +256,8 @@ export default function CreateEventModal(props) {
                 name: name,
                 description: description,
                 image_url: photo,
-                start_date: date,
-                end_date: date,
+                start_date: nowDate,
+                end_date: availability==='2'?endDate:'4000-01-01',
                 duration_time: parseInt(duration)
             },{
                 headers: {
@@ -342,6 +347,7 @@ export default function CreateEventModal(props) {
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline},} }
                                 placeholder = "Dodaj czytelną i krótką nazwę"
+                                inputProps={{'maxlength': 50}}
                                 className={classes.field}
                                 onChange={handleNameChange}
                                 value={name}
@@ -358,7 +364,9 @@ export default function CreateEventModal(props) {
                         <Grid item xs={9}>
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused},} }
+                                inputProps={{'maxlength': 150}}
                                 placeholder = "Poinformuj znajomych o szczegółach wydarzenia..."
+                                helperText={`${description.length}/150`}
                                 className={classes.multilineField}
                                 value={description}
                                 onChange={handleDescriptionChange}
@@ -449,8 +457,9 @@ export default function CreateEventModal(props) {
                                 variant='outlined'
                                 labelPlacement='top'
                                 margin='dense'
-                                defaultValue={new Date().toJSON().split("T")[0]}
-                                inputProps={{'min': new Date().toJSON().split("T")[0], 'max': new Date().toJSON().split("T")[0]}}
+
+                                inputProps={{'min': nowDate, 'max': nowDate}}
+                                defaultValue={nowDate}
                                 className={classes.field}
                                 InputLabelProps={{
                                 shrink: true,
@@ -459,13 +468,15 @@ export default function CreateEventModal(props) {
                             <ArrowForwardIcon style={{color: COLOR.white}}/>
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused}} }
-                                inputProps={{'min': new Date().toJSON().split("T")[0]}}
+                                inputProps={{'min': nowDate}}
                                 id="date"
                                 label="Zakończ"
                                 type="date"
                                 variant='outlined'
                                 margin='dense'
-                                defaultValue={new Date().toJSON().split("T")[0]}
+                                value={endDate}
+                                defaultValue={nowDate}
+                                onChange={handleEndDateChange}
                                 className={classes.field}
                                 InputLabelProps={{
                                     shrink: true,

@@ -23,6 +23,9 @@ function Event(props){
         const [openEdit, setOpenEdit] = React.useState(false);
         const [openDelete, setOpenDelete] = React.useState(false);
         const [a, setA] = React.useState(false);
+        const [user, setUser] = React.useState({
+            username: ''
+        })
         const [event, setEvent] = React.useState({
             name: '',
             participants: [],
@@ -31,6 +34,7 @@ function Event(props){
             end_date: '',
             playlist: [],
         });
+        const [isAdmin, setIsAdmin] = React.useState(false);
         React.useEffect(() => {
             async function getEventInfo() {
                 let token = localStorage.getItem('token');
@@ -40,19 +44,43 @@ function Event(props){
                         'Authorization': `Bearer ${token}`
                     }
                 })
-
-                console.log(result.data);
                 setEvent(result.data.event);
-                console.log(event.playlist)
+                getUser(result.data.event);
+            }
+            async function getUser(event) {
+                let token = localStorage.getItem('token');
+                console.log(token)
+                await axios.get('/user/current', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(({
+                    data
+                }) => {
+                    console.log(data);
+                    setUser(data.user);
+                    checkAdmin(event, data.user);
+                })
+                
             }
             getEventInfo();
+            
+            
         }, [openInvite, openEdit, openDelete]);
+        const checkAdmin = (event,user) => {
+            event.participants.forEach((participant, index) => {
+                if (participant.user.username === user.username && participant.role === 'admin') {
+                    setIsAdmin(true);
+                }
+            })            
+
+        }
         return(
             <div className={classes.root}>
                 <TopBar/>
                 <SideMenu/>
-                <PlaylistView event={event} setOpenInvite={setOpenInvite} setOpenEdit={setOpenEdit} setOpenDelete={setOpenDelete} a={a} setA={setA}/>
-                <ParticipantsMenu event={event}/>
+                <PlaylistView isAdmin={isAdmin} event={event} setOpenInvite={setOpenInvite} setOpenEdit={setOpenEdit} setOpenDelete={setOpenDelete} a={a} setA={setA}/>
+                <ParticipantsMenu isAdmin={isAdmin} event={event}/>
                 <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={event.invitation_link} eventId={event.id} eventPage={true} a={a} setA={setA}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={event.invitation_link} eventId={event.id} isEdit={true}/>
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={event.id}/>
