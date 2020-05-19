@@ -18,7 +18,7 @@ import image3 from '../../assets/ikona3.png'
 import image4 from '../../assets/ikona4.png'
 import image5 from '../../assets/ikona5.png'
 import image6 from '../../assets/ikona6.png'
-import backgroundPopup from '../../assets/popup_954.png'
+import background from '../../assets/popup_954.png'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Grid from '@material-ui/core/Grid';
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
         position: 'fixed',
         width: 600,
         backgroundColor: theme.palette.background.paper,
-        
+        backgroundImage: `url(${background})`,
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
         top: `50%`,
@@ -390,6 +390,9 @@ export default function CreateEventModal(props) {
                         <Grid item xs={12} align='right'>
 
                         </Grid>
+                        <Grid item xs={12} align='right'>
+
+                        </Grid>
                         <Grid item xs={3} align='right'>
                             <Typography color="textSecondary">
                                         Czas trwania
@@ -417,25 +420,36 @@ export default function CreateEventModal(props) {
                         </Grid>
                         <Grid item xs={9}>
                             <Grid container spacing = {2}>
-                                <Grid item xs = {11}>
+                                <Grid style = {{display: 'flex', alignItems: 'center'}} item xs = {11} >
                                     <Typography color="textPrimary">
                                                 BEZTERMINOWO
                                     </Typography>
-                                    <Typography color="textPrimary">
+      
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <FormControl component="fieldset">
+                                        <RadioGroup value={availability} aria-label="Dostępność" name="customized-radios" onChange={handleAvailabilityChange}>
+                                            <FormControlLabel value="1" control={<StyledRadio />} />
+                                            
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Grid>
+                                <Grid style = {{display: 'flex', alignItems: 'center'}} item xs = { 11 } >
+                                    <Typography  color = "textPrimary" >
                                                 OKREŚLONA CZASEM
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={1}>
                                     <FormControl component="fieldset">
                                         <RadioGroup value={availability} aria-label="Dostępność" name="customized-radios" onChange={handleAvailabilityChange}>
-                                            <FormControlLabel value="1" control={<StyledRadio />} />
+                                            
                                             <FormControlLabel value="2" control={<StyledRadio />} />
                                         </RadioGroup>
                                     </FormControl>
                                 </Grid>
                             </Grid>
                         </Grid>
-                        {availability==2?<><Grid item xs={3} align='right'>
+                        {availability==='2'?<><Grid item xs={3} align='right'>
                             
                         </Grid>
                         <Grid item xs={9} align='center'>
@@ -452,7 +466,7 @@ export default function CreateEventModal(props) {
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused, disabled: classes.disabled}} }
                                 id="date"
-                                label="Rozpocznij"
+                                
                                 type="date"
                                 variant='outlined'
                                 labelPlacement='top'
@@ -470,7 +484,7 @@ export default function CreateEventModal(props) {
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused}} }
                                 inputProps={{'min': nowDate}}
                                 id="date"
-                                label="Zakończ"
+                              
                                 type="date"
                                 variant='outlined'
                                 margin='dense'

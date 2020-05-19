@@ -79,8 +79,10 @@ function Event(props){
             <div className={classes.root}>
                 <TopBar/>
                 <SideMenu/>
+                
                 <PlaylistView isAdmin={isAdmin} event={event} setOpenInvite={setOpenInvite} setOpenEdit={setOpenEdit} setOpenDelete={setOpenDelete} a={a} setA={setA}/>
                 <ParticipantsMenu isAdmin={isAdmin} event={event}/>
+                
                 <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={event.invitation_link} eventId={event.id} eventPage={true} a={a} setA={setA}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={event.invitation_link} eventId={event.id} isEdit={true}/>
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={event.id}/>

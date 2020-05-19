@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
-        
     },
     drawerPaper: {
         width: drawerWidth,  
@@ -136,7 +135,7 @@ export default function ParticipantsMenu(props) {
                     </Typography>
  
                         
-
+                    <>
                     {state.map((participant, index) => (
                             <div className={classes.participant}>
 
@@ -163,11 +162,11 @@ export default function ParticipantsMenu(props) {
                                 <AntSwitch checked={participant.role==='admin'?true:false} onChange={handleChange} name={index}/>
                                 :''}
                                 </div>
-                                {props.isAdmin?
                                 <span span style = {
                                     {
                                         alignSelf: 'flex-end',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        visibility: props.isAdmin?'':'hidden',
                                     }
                                 }
                                 onClick = {
@@ -178,10 +177,10 @@ export default function ParticipantsMenu(props) {
                                 } >
                                     X
                                 </span>
-                                :''}
                             </div>
                     ))}
-
+                    </>
+                    
                     
                 
                 

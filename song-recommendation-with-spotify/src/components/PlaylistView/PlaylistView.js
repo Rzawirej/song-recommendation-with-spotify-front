@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '56.25%', // 16:9
     },
     eventPhoto: {
-        marginLeft: theme.spacing(10),
+        marginLeft: theme.spacing(9),
         marginRight: theme.spacing(3),
         height: theme.spacing(20),
         width: theme.spacing(20),
@@ -143,7 +143,7 @@ export default withRouter(function PlaylistView(props) {
                             <Typography variant="h5" color="textPrimary">
                             {event.name}
                             </Typography>
-                            <Grid container spacing={2}>
+                            <Grid style={{paddingRight: '10px'}}container spacing={2}>
                                 <Grid item xs = {gridLeftColumnInfo} align = 'right' >
                                     <Typography color="textSecondary">
                                                 Opis wydarzenia 
@@ -170,7 +170,7 @@ export default withRouter(function PlaylistView(props) {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
-                                    <Typography color="textPrimary">
+                                    <Typography style = {{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} color = "textPrimary">
                                                 {event.participants.map((participant, index ) => {
                                     if (participant.role === "admin")
                                         if(!firstAdmin){
@@ -215,10 +215,10 @@ export default withRouter(function PlaylistView(props) {
                             <Grid container spacing={2}>
                                 {menuItems.map((item,index) =>(
                                     <>
-                                    <Grid className={props.isAdmin?'':classes.inactive} item xs = {5} align = 'right' >
+                                    <Grid className={props.isAdmin?'':classes.inactive} item xs = {8} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid className={props.isAdmin?'':classes.inactive} item xs={7} onClick={props.isAdmin?()=>handleMenuClick(index):undefined}>
+                                    <Grid className={props.isAdmin?'':classes.inactive} item xs={4} onClick={props.isAdmin?()=>handleMenuClick(index):undefined}>
                                         {item.icon}
                                     </Grid>
                                     </>

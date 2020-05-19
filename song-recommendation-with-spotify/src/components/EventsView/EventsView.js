@@ -151,8 +151,15 @@ export default withRouter(function EventsView(props) {
     })
     React.useEffect(() => {
         async function getEventInfo(){
-        let token = localStorage.getItem('token');
-        console.log(token)
+        let spotifyToken = (window.location.href + '').split("&spotify_access_token=");
+        let token = spotifyToken[0].split("access_token=")[1];
+        spotifyToken = spotifyToken[1]
+        if(spotifyToken){
+            localStorage.setItem('token', token);
+            localStorage.setItem('spotifyToken', spotifyToken);
+        }
+        token = localStorage.getItem('token');
+
         await axios.get('/events', {headers:{
             'Authorization': `Bearer ${token}`
         }
@@ -203,7 +210,7 @@ export default withRouter(function EventsView(props) {
                     events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=3; let isAdmin=checkAdmin(event,user); return(<>
                     <Box className={classes.flexRow} onClick={()=>openEvent(event.id, isActive)}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} />
-                        <Box>
+                        <Box style={{width: '90%'}}>
                             <Typography variant="h5" color="textPrimary">
                             {event.name}{}
                             </Typography>
@@ -275,7 +282,7 @@ export default withRouter(function EventsView(props) {
                         </Box>
 
                         <Box >
-                            <Grid container spacing={2} style={{opacity: 0.5,}}>
+                            <Grid container spacing={2} style={{opacity: 0.5}}>
                                 {menuItems.map((item,index) =>(
                                     <>
                                     <Grid className = { !isActive && index===2 || !isAdmin?classes.inactive:''} item xs = {5} align = 'right' >

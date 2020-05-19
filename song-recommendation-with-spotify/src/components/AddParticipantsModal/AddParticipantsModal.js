@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Grid from '@material-ui/core/Grid';
 
+import background from './../../assets/popup_954.png'
 import COLOR from './../../assets/colors'
 
 
@@ -24,8 +25,9 @@ const useStyles = makeStyles(theme => ({
     paper: {
         position: 'fixed',
         width: 600,
-        Color: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
+        
         padding: theme.spacing(2, 4, 3),
         top: `50%`,
         left: `50%`,
