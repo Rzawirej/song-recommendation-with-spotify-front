@@ -47,13 +47,18 @@ export default withRouter(function SideMenu(props) {
     const handleClick1 = () => {
         props.history.push('/event/')
     }
+    const handleClick2 = (event) => {
+        event.preventDefault()
+        props.history.push('/settings')
+    }
+    
     return(
             
             <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}>
                 <div className={classes.toolbar} />
                 
                 <List>
-                    <ListItem button key={"USTAWIENIA"}>
+                    <ListItem button key={"USTAWIENIA"} onClick={handleClick2}>
                         <ListItemIcon className={classes.listItem}>
                             <SettingsOutlinedIcon/>
                         </ListItemIcon>

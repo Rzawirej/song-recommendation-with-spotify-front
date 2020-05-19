@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TopBar from '../components/TopBar/TopBar';
 import SideMenu from '../components/SideMenu/SideMenu';
 import SettingsView from '../components/SettingsView/SettingsView';
+import { withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,8 +17,9 @@ class Settings extends React.Component{
     }
 
     render(){
+        const { classes } = this.props;
         return(
-            <div >
+            <div className={classes.root}>
                 <TopBar/>
                 <SideMenu/>
                 <SettingsView/>
@@ -26,4 +28,4 @@ class Settings extends React.Component{
     }
 }
 
-export default Settings;
+export default withStyles(useStyles)(Settings);

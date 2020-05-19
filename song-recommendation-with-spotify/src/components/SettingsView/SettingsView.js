@@ -1,253 +1,307 @@
 import React from 'react';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom'
-
+import _PField from './_PField';
+import _Field from './_Field';
+import _Button from './_Button';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
-
-import AddIcon from '@material-ui/icons/Add';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
-
-import image from '../../assets/panda.jpg'
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import COLOR from './../../assets/colors'
-import CreateEventModal from '.././CreateEventModal/CreateEventModal';
-import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = theme => ({
     content: {
             flexGrow: 1,
-            padding: theme.spacing(3),
-            background: COLOR.darkBlue,
+            marginLeft: theme.spacing(40),
+            padding: theme.spacing(1),
+            background: COLOR.lightBlue
         },
     title: {
-        marginLeft: theme.spacing(25),
         marginBottom: theme.spacing(10)
     },
-    fab: {
-        position: 'fixed',
-        bottom: theme.spacing(10),
-        right: theme.spacing(10),
-        height: theme.spacing(10),
-        width: theme.spacing(10)
+    listItem:{
+        color: COLOR.white
     },
-    fabIcon: {
-        height: theme.spacing(8),
-        width: theme.spacing(8)
+    heading: {
+        fontSize: theme.typography.pxToRem(15),
+        flexBasis: theme.spacing(20),
+        flexShrink: 0,
+        color: COLOR.pink,
+        textAlign: 'right',
+        marginRight: theme.spacing(1),
     },
-    media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
-    },
-    eventPhoto: {
-        marginLeft: theme.spacing(10),
-        marginRight: theme.spacing(3),
-        height: theme.spacing(20),
-        width: theme.spacing(20),      
+    secondaryHeading: {
+        fontSize: theme.typography.pxToRem(15),
+        color: 'white',
+        size: 20
     },
     flexRow: {
         display: 'flex',
         flexDirection: 'row',
-        
+        flexBasis: theme.spacing(40)
     },
     flexColumn: {
+        marginLeft: theme.spacing(20),
+        flexBasis: theme.spacing(10),
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        padding: theme.spacing(1),
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+    },  
+    expansionPanel: {
+        backgroundColor: COLOR.lightBlue,
+        width: "100vh",
+        flexGrow: 10
     },  
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
-}));
+});
 
 
-
-export default withRouter(function SettingsView(props) {
-    const menuItems = [{
-        label: <Typography color="textSecondary"> USUŃ WYDARZENIE </Typography>,
-        icon: <HighlightOffIcon color='primary'/>
-    },{
-        label: <Typography color="textPrimary"> ZAPROŚ </Typography>,
-        icon: <AddCircleOutlineIcon style={{color: COLOR.white}}/>
-    },{
-        label: <Typography color="textPrimary"> ODŚWIEŻ PLAYLISTĘ </Typography>,
-        icon: <RefreshOutlinedIcon style={{color: COLOR.white}}/>
-    },{
-        label: <Typography color="textPrimary"> EDYTUJ WYDARZENIE </Typography>,
-        icon: <SettingsOutlinedIcon style={{color: COLOR.white}}/>
-    },];
-    const classes = useStyles();
-    const gridLeftColumnInfo = 3;
-    const gridRightColumnInfo = 9;
-
-    const getDurationString = (duration) =>{
-        console.log(duration)
-        if(duration===5){
-            return "5 godzin, 100 utworów"
-        }
-        if(duration===10){
-            return "10 godzin, 200 utworów"
-        }
-        if(duration === 15) {
-            return "15 godzin, 300 utworów"
-        }
-        if(duration === 24) {
-            return "24 godziny, 500 utworów"
-        }
-        return ""
-
+class SettingsView extends React.Component{
+    constructor(props){
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleRadioChange = this.handleRadioChange.bind(this);
+        this.getUser = this.getUser.bind(this);
+        this.state = {
+            expanded: null,
+            language: "polish",
+            user: {
+                username: '',
+            }
+        };
     }
 
-    const [events, setEvents] = React.useState([{
-        name: '',
-        participants: [],
-        start_date: '',
-        end_date: '',
-    }]);
-    
-    const [openCreate, setOpenCreate] = React.useState(false);
-    const [openInvite, setOpenInvite] = React.useState(false);
-    const [eventId, setEventId] = React.useState('');
-    const [invLink, setInvLink] = React.useState('');
-    const handleOpen = () => {
-        setOpenCreate(true);
+    componentWillMount(){
+        this.getUser();
+    }
+
+    componentDidMount(){
+        this.getUser();
+    }
+
+    handleChange = panel => (event, expanded) => {
+        this.setState({
+          expanded: expanded ? panel : false
+        });
     };
-    const openEvent = (id) => {
-        props.history.push('/event/'+id)
-    };
-    React.useEffect(() => {
-        async function getEventInfo(){
+
+    handleRadioChange(event) {
+        this.setState({
+            language: event.target.value
+          });
+      };
+
+    async getUser() {
         let token = localStorage.getItem('token');
         console.log(token)
-        await axios.get('/events', {headers:{
-            'Authorization': `Bearer ${token}`
-        }
-        }).then(({data}) => {
-            console.log(data.events);
-            setEvents(data.events);
+        await axios.get('/user/current', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(({data }) => {
+            console.log(data);
+            this.setState({
+                user: data.user
+            })
+            console.log(this.state.user)
         })
-        
-        
-        }
-        getEventInfo();
-    }, []);
+    }
 
-    return(
+    render(){
+        const { classes } = this.props;
+        const gridLeftColumnInfo = 12
+        const gridRightColumnInfo = 12
+        const expandMoreInfo = 12
+        console.log("RENDER");
+        console.log(this.state.user)
+        
+        return(
             <main className={classes.content}>
-                
                 <div className={classes.toolbar} />
                 <Typography className={`${classes.title} ${classes.list}`} variant="h3" color="textPrimary">
-                           Wydarzenia
+                           Ustawienia
                 </Typography>
-                {   events.length >= 1 && events[0].name?
-                    events.map((event, index) => {let firstAdmin = true; return(<>
-                    <Box className={classes.flexRow} onClick={()=>openEvent(event.id)}>
-                        <Avatar alt="Remy Sharp" variant = "circle" src={image} className={classes.eventPhoto} />
-                        <Box >
-                            <Typography variant="h5" color="textPrimary">
-                            {event.name}
-                            </Typography>
-                            <Grid container spacing={2}>
-                                <Grid item xs = {gridLeftColumnInfo} align = 'right' >
-                                    <Typography color="textSecondary">
-                                                Opis wydarzenia 
+                <Box>
+                    <Grid container alignItems="flex-end" >
+                        <Grid item >
+                            <ExpansionPanel
+                                expanded={this.state.expanded === "username"}
+                                onChange={this.handleChange("username")}
+                                className = {classes.expansionPanel }
+                                >
+                                <ExpansionPanelSummary 
+                                    expandIcon={<ExpandMoreIcon style = {{color: 'white', align:'left'}}/>}>
+                                    <Typography className={classes.heading}>
+                                        Nazwa użytkownika 
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridRightColumnInfo}>
-                                    <Typography color="textPrimary">
-                                                {event.description}
+                                    <Typography className={classes.secondaryHeading}>
+                                        {this.state.user.username}
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridLeftColumnInfo} align='right'>
-                                    <Typography color="textSecondary">
-                                                Liczba uczestników
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails className={classes.flexColumn}>
+                                    <_Field label="Podaj nową nazwę użytkownika" onChange={this.handleEmailChange}/>
+                                    <br></br>
+                                    <_Button label='Zmień' />
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </Grid>
+                    </Grid>
+                </Box>
+                <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
+                <Box>
+                    <Grid container alignItems="flex-end" direction="row">
+                        <Grid item >
+                            <ExpansionPanel
+                                expanded={this.state.expanded === "email"}
+                                onChange={this.handleChange("email")}
+                                className = {classes.expansionPanel }
+                                >
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon style = {{color: 'white' }}/>}>
+                                    <Typography className={classes.heading}>
+                                        Adres e-mail
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridRightColumnInfo}>
-                                    <Typography color="textPrimary">
-                                                <span style={{color:COLOR.orange}}>{event.participants.length}</span>/30
+                                    <Typography className={classes.secondaryHeading}>
+                                        {this.state.user.email}
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridLeftColumnInfo} align='right'>
-                                    <Typography color="textSecondary">
-                                                Administratorzy
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails  className={classes.flexColumn}>
+                                    <_Field label="Podaj nowy adres mailowy" onChange={this.handleEmailChange}/>
+                                    <br></br>
+                                    <_Button label='Zmień' />
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </Grid>
+                    </Grid>
+                </Box>
+                <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
+                <Box>
+                    <Grid alignItems="flex-end" direction="row">
+                        <Grid item >
+                            <ExpansionPanel
+                                expanded={this.state.expanded === "password"}
+                                onChange={this.handleChange("password")}
+                                className = {classes.expansionPanel }
+                                >
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon style = {{color: 'white' }}/>}>
+                                    <Typography className={classes.heading}>
+                                        Hasło
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridRightColumnInfo}>
-                                    <Typography color="textPrimary">
-                                                {event.participants.map((participant, index ) => {
-                                    if (participant.role === "admin")
-                                        if(!firstAdmin){
-                                            
-                                            return <span><span style={{color:COLOR.orange}}> |</span>{participant.user.username}</span>;  
-                                        }
-                                        else
-                                        {
-                                            firstAdmin = false;
-                                            return <span>{participant.user.username}</span>;
-                                        }
-                                            
-                                    return ""
-                                })}
+                                    <Typography className={classes.secondaryHeading}>
+                                        ********
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridLeftColumnInfo} align='right'>
-                                    <Typography color="textSecondary">
-                                                Dostępność
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails className={classes.flexColumn}>
+                                    <_PField label="Podaj nowe hasło" onChange={this.handleEmailChange}/>
+                                    <br></br>
+                                    <_PField label="Podaj stare hasło" onChange={this.handleEmailChange}/>
+                                    <br></br>
+                                    <_Button label='Zmień' />
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </Grid>
+                    </Grid>
+                </Box>
+                <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
+                <Box>
+                    <Grid container  direction="row">
+                        <Grid item>
+                            <ExpansionPanel
+                                expanded={this.state.expanded === "language"}
+                                onChange={this.handleChange("language")}
+                                className = {classes.expansionPanel }
+                                >
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon style = {{color: 'white' }}/>}>
+                                    <Typography className={classes.heading}>
+                                        Język 
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridRightColumnInfo}>
-                                    <Typography color="textPrimary">
-                                                od {event.start_date.split(' ')[0]} do {event.end_date.split(' ')[0]}
+                                    <Typography className={classes.secondaryHeading}>
+                                        Polski
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridLeftColumnInfo} align='right'>
-                                    <Typography color="textSecondary">
-                                                Czas trwania
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails className = {classes.flexColumn}>
+                                    <Typography>
+                                        <FormControl component="fieldset">
+                                            <FormLabel component="legend">Wybierz język</FormLabel>
+                                            <RadioGroup aria-label="gender" name="gender1" value={this.state.language} onChange={this.handleRadioChange}>
+                                                <FormControlLabel value="polish" control={<Radio />} label="polski" />
+                                                <FormControlLabel value="english" control={<Radio />} label="angielski" />
+                                            </RadioGroup>
+                                        </FormControl>
                                     </Typography>
-                                </Grid>
-                                <Grid item xs={gridRightColumnInfo}>
-                                    <Typography color="textPrimary">
-                                                {getDurationString(event.duration_time)}
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </Grid>
+                    </Grid>
+                </Box>
+                <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
+                <Box>
+                    <Grid container alignItems="flex-end" direction="row">
+                        <Grid item>
+                            <ExpansionPanel
+                                expanded={this.state.expanded === "spotify"}
+                                onChange={this.handleChange("spotify")}
+                                className = {classes.expansionPanel }
+                                >
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon style = {{color: 'white' }}/>}>
+                                    <Typography className={classes.heading}>
+                                        Spotify
                                     </Typography>
-                                </Grid>
-                            </Grid>
-                        </Box>
-
-                        <Box >
-                            <Grid container spacing={2} style={{opacity: 0.5,}}>
-                                {menuItems.map((item,index) =>(
-                                    <>
-                                    <Grid item xs = {5} align = 'right' >
-                                        {item.label}
-                                    </Grid>
-                                    <Grid item xs={7}>
-                                        {item.icon}
-                                    </Grid>
-                                    </>
-                                ))}
-                                
-                                
-                                
-                            </Grid>
-
-                        </Box>
-                    </Box>
-                     <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
-                    </>
-                    )}):null
-                }
-                             
-                <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId}/>
-                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent}/>
-                <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
-                    <AddIcon className = {classes.fabIcon} color = {COLOR.white}/>
-                </Fab>    
+                                    <Typography className={classes.secondaryHeading}>
+                                        niepołączono
+                                    </Typography>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails className = {classes.flexColumn}>
+                                    <_Button label='Zmień konto' />
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </Grid>
+                    </Grid>
+                </Box>
+                <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
+                <Box>
+                    <Grid container alignItems="flex-end" direction="row">
+                        <Grid item >
+                            <ExpansionPanel
+                                expanded={this.state.expanded === "preferences"}
+                                onChange={this.handleChange("preferences")}
+                                className = {classes.expansionPanel }
+                                >
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon style = {{color: 'white' }}/>}>
+                                    <Typography className={classes.heading}>
+                                        Preferencje muzyczne
+                                    </Typography>
+                                    <Typography className={classes.secondaryHeading}>
+                                        gatunek1 <br></br>
+                                        gatunek2 <br></br>
+                                        gatunek3 <br></br>
+                                        gatunek4 <br></br>
+                                    </Typography>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails className = {classes.flexColumn}>
+                                    <_Button label='Zmień' />
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </Grid>
+                    </Grid>
+                </Box> 
             </main>
-    )
-})
+        )
+    }
+}
+export default withStyles(useStyles)(SettingsView);

@@ -4,7 +4,8 @@ const COLORS = {
     darkBlue: '#0B1830',
     spotifyGreen: '#1ED760',
     orange: '#FF8000',
-    pink: '#FF0080'
+    pink: '#FF0080',
+    lightBlue: '#0B1830'
 }
 
 export default COLORS;
