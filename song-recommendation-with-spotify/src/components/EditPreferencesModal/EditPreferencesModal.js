@@ -118,30 +118,80 @@ export default withRouter(function EditPreferencesModal(props) {
                 <div className = { classes.paper} >
                     <HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>
                     <Typography variant="h5" className = {classes.title}>PREFERENCJE MUZYCZNE </Typography>
-                        
-
-
-                            <Typography color="textPrimary">
-                                Utwory w playliście Wydarzenia są dobierane na podstawie wskazanych preferencji muzycznych oraz playlist importowanych ze <span style={{color: COLOR.spotifyGreen}}>Spotify</span>. Preferencje Muzyczne określane są z pomocą czterech różnych wybranych gatunków muzycznych.
-                            </Typography>
+                        <Typography color="textPrimary">
+                            Utwory w playliście Wydarzenia są dobierane na podstawie wskazanych preferencji muzycznych oraz playlist importowanych ze <span style={{color: COLOR.spotifyGreen}}>Spotify</span>. Preferencje Muzyczne określane są z pomocą czterech różnych wybranych gatunków muzycznych.
+                        </Typography>
+                        <Grid container justify="center" direction="column" align="center">
+                            <Grid item >
+                                <TextField
+                                    id="outlined-select-currency"
+                                    select
+                                    label="Select"
+                                    value='gatunek 1'
+                                    variant="outlined"
+                                    style = {{color: 'white'}}
+                                    >
+                                        <MenuItem key={'gatunek 1'} value={'gatunek 1'}>
+                                            gatunek 1
+                                        </MenuItem>
+                                        <MenuItem key={'gatunek 2'} value={'gatunek 2'}>
+                                            gatunek 2
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                            <Grid item>
                             <TextField
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
-                                    value='opcja 1'
+                                    value='gatunek 2'
                                     variant="outlined"
                                     >
-                                        <MenuItem key={'opcja 1'} value={'opcja 1'}>
-                                            opcja1
+                                        <MenuItem key={'gatunek 2'} value={'gatunek 2'}>
+                                            gatunek 2
                                         </MenuItem>
-                                        <MenuItem key={'opcja 2'} value={'opcja 2'}>
-                                            opcja2
+                                        <MenuItem key={'gatunek 3'} value={'gatunek 3'}>
+                                            gatunek 3
                                         </MenuItem>
                                     ))}
                             </TextField>
-
-
-
+                            </Grid>
+                            <Grid item>
+                            <TextField
+                                    id="outlined-select-currency"
+                                    select
+                                    label="Select"
+                                    value='gatunek 3'
+                                    variant="outlined"
+                                    >
+                                        <MenuItem key={'gatunek 3'} value={'gatunek 3'}>
+                                            gatunek 3
+                                        </MenuItem>
+                                        <MenuItem key={'gatunek 4'} value={'gatunek 4'}>
+                                            gatunek 4
+                                        </MenuItem>
+                                    ))}
+                            </TextField>
+                            </Grid>
+                            <Grid item>
+                            <TextField
+                                    id="outlined-select-currency"
+                                    select
+                                    label="Select"
+                                    value='gatunek 4'
+                                    variant="outlined"
+                                    >
+                                        <MenuItem key={'gatunek 4'} value={'gatunek 4'}>
+                                            gatunek 4
+                                        </MenuItem>
+                                        <MenuItem key={'gatunek 5'} value={'gatunek 5'}>
+                                            gatunek 5
+                                        </MenuItem>
+                                    ))}
+                            </TextField>
+                            </Grid>
+                        </Grid>
                     <div style={{textAlign: 'center'}}>
                     <Button
                         inputProps={{ className: classes.fieldInput }}
