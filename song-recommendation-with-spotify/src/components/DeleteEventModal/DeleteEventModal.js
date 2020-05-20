@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 
-import TextField from '@material-ui/core/TextField';
+
 
 import Button from '@material-ui/core/Button';
 
@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: '20px',
         borderRadius: 50,
         border: 0,
-        color: 'white',
+        color: 'black',
         height: 48,
         padding: '0 30px',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
@@ -90,18 +90,19 @@ export default withRouter(function DeleteEventModal(props) {
 
     const handleSubmit = async () => {
         let token = localStorage.getItem('token');
-        let res = await axios.delete('/event/'+props.eventId,{
+        await axios.delete('/event/'+props.eventId,{
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
         handleClose();
+        props.history.push('/event/');
     }
     
 
     const handleClose = () => {
         props.setOpen(false);
-        props.history.push('/event/');
+        
     };
 
     return (

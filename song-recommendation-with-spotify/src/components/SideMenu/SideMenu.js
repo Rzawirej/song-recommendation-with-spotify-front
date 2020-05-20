@@ -9,9 +9,13 @@ import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import { withRouter } from 'react-router-dom'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import COLOR from '../../assets/colors'
-import { ListItemIcon, Divider } from '@material-ui/core';
+import { ListItemIcon} from '@material-ui/core';
+
+import CreateEventModal from '.././CreateEventModal/CreateEventModal';
+import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
+
 const drawerWidth = '15%';
 const useStyles = makeStyles((theme) => ({
     drawer: {
@@ -43,7 +47,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default withRouter(function SideMenu(props) {
     const classes = useStyles();
+    const [openCreate, setOpenCreate] = React.useState(false);
+    const [openInvite, setOpenInvite] = React.useState(false);
+    const [eventId, setEventId] = React.useState('');
+    const [invLink, setInvLink] = React.useState('');
+    const openEvent = (id, isActive) => {
+        if (isActive) {
+            props.history.push('/event/' + id)
+        }
 
+    };
+    const [a, setA] = React.useState(false);
     const handleClick1 = () => {
         props.history.push('/event/')
     }
@@ -52,11 +66,16 @@ export default withRouter(function SideMenu(props) {
         props.history.push('/settings')
     }
     
+    const handleOpen = () => {
+        setOpenCreate(true);
+    };
     return(
             
             <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}>
                 <div className={classes.toolbar} />
-                
+                <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} isEdit={false}/>
+                <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent} a={a} setA={setA}/>
+
                 <List>
                     <ListItem button key={"USTAWIENIA"} onClick={handleClick2}>
                         <ListItemIcon className={classes.listItem}>
@@ -65,7 +84,7 @@ export default withRouter(function SideMenu(props) {
                         
                         <ListItemText className={classes.listItem} primary={"USTAWIENIA"} />
                     </ListItem>
-                    <ListItem button key={"DODAJ WYDARZENIE"}>
+                    <ListItem button key = {"DODAJ WYDARZENIE"} onClick = {handleOpen} >
                         <ListItemIcon className={classes.listItem}>
                             <AddCircleOutlineOutlinedIcon/>
                         </ListItemIcon>
@@ -74,7 +93,7 @@ export default withRouter(function SideMenu(props) {
                     </ListItem>
                     <ListItem button onClick={handleClick1}>
                         <ListItemIcon className={classes.listItem} >
-                           <ExpandMore />
+                           <MusicNoteIcon />
                         </ListItemIcon>
                         <ListItemText primary="WYDARZENIA" />
                     </ListItem>

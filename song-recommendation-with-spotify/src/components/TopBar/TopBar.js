@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, withStyles} from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
 import axios from 'axios'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -39,7 +39,14 @@ export default function TopBar() {
     }
     React.useEffect(() => {
         async function getUser(){
-        let token = localStorage.getItem('token');
+            let spotifyToken = (window.location.href + '').split("&spotify_access_token=");
+            let token = spotifyToken[0].split("access_token=")[1];
+            spotifyToken = spotifyToken[1]
+            if (spotifyToken) {
+                localStorage.setItem('token', token);
+                localStorage.setItem('spotifyToken', spotifyToken);
+            }
+         token = localStorage.getItem('token');
         console.log(token)
         await axios.get('/user/current', {headers:{
             'Authorization': `Bearer ${token}`

@@ -5,10 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 
 import TextField from '@material-ui/core/TextField';
-
 import Button from '@material-ui/core/Button';
-
-
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Grid from '@material-ui/core/Grid';
 
@@ -24,8 +21,9 @@ const useStyles = makeStyles(theme => ({
     paper: {
         position: 'fixed',
         width: 600,
-        Color: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
+        
         padding: theme.spacing(2, 4, 3),
         top: `50%`,
         left: `50%`,
@@ -76,7 +74,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: '20px',
         borderRadius: 50,
         border: 0,
-        color: 'white',
+        color: 'black',
         height: 48,
         padding: '0 30px',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',

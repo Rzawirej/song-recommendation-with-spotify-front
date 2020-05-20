@@ -5,10 +5,11 @@ import Login from "../../views/Login";
 import Event from "../../views/Event";
 import Events from "../../views/Events";
 import Settings from "../../views/Settings";
+import NotFound from "../../views/NotFound";
 import './App.css';
 import axios from 'axios';
 
-export const PrivateRoute = ({ component: Component, roles, user, ...rest }) => (
+const LoggedRoute = ({ component: Component, roles, user, ...rest }) => (
     <Route {...rest} render={(props) => {
         console.log(user);
             if (!user.username) {
@@ -17,6 +18,19 @@ export const PrivateRoute = ({ component: Component, roles, user, ...rest }) => 
             return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
         }
         // authorised so return component
+        return <Component {...props} />
+        
+    }}
+     />
+)
+const NotLoggedRoute = ({ component: Component, roles, user, ...rest }) => (
+    <Route {...rest} render={(props) => {
+        console.log(user);
+            if (user.username) {
+            // logged in so redirect to event page with the return url
+
+            return <Redirect to={{ pathname: '/event'}} />
+        }
         return <Component {...props} />
         
     }}
@@ -32,7 +46,8 @@ export default class App extends React.Component {
     }
     async componentDidMount (){
         axios.defaults.baseURL = 'http://156.17.130.143/api';
-       /* let token = localStorage.getItem('token');
+        //axios.defaults.baseURL = 'https://song-recommendation.herokuapp.com/api';
+        let token = localStorage.getItem('token');
         axios.get('/user/current', {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -44,7 +59,8 @@ export default class App extends React.Component {
                 this.setState({
                     user: data.user
                 });
-        }).catch(()=>this.setState({user:{username:''}}))*/
+        }).catch(()=>this.setState({user:{username:''}}))
+        
     }
     requireAuth(nextState, replace){
         console.log("typ musi byc zalogowany")
@@ -57,11 +73,12 @@ export default class App extends React.Component {
                 <Route path="/" exact>
                     <Redirect to="/login" />
                 </Route>
-                <Route path="/login" component={Login}/>
-                <Route path="/register" component={Register}/>
-                <Route path="/settings" component={Settings} onEnter={this.requireAuth}/>
-                <Route path="/event/:id" component={Event}/>
-                <Route path="/event" component={Events} onEnter={this.requireAuth}/>
+                <Route path="/login" component={Login} user={this.state.user}/>
+                <Route path="/register" component={Register} user={this.state.user}/>
+                <Route path="/settings" component={Settings} user={this.state.user}/>
+                <Route path="/event/:id" component={Event} user={this.state.user}/>
+                <Route path="/event" component={Events} onEnter={this.requireAuth} user={this.state.user}/>
+                {/*<Route path="*" component={NotFound}/>*/}
                 
             </Switch>
         </Router>

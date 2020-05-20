@@ -19,6 +19,7 @@ import COLOR from './../../assets/colors'
 import CreateEventModal from '.././CreateEventModal/CreateEventModal';
 import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
 import DeleteEventModal from '../DeleteEventModal/DeleteEventModal';
+import RefreshPlaylistModal from '../RefreshPlaylistModal/RefreshPlaylistModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -117,9 +118,12 @@ export default withRouter(function EventsView(props) {
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openInvite, setOpenInvite] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [openRefresh, setOpenRefresh] = React.useState(false);
     const [a, setA] = React.useState(false);
     const [eventId, setEventId] = React.useState('');
     const [invLink, setInvLink] = React.useState('');
+    const [duration, setDuration] = React.useState('5');
+
     const handleOpen = () => {
         setOpenCreate(true);
     };
@@ -127,6 +131,7 @@ export default withRouter(function EventsView(props) {
         console.log(event);
         setEventId(event.id);
         setInvLink(event.invitation_link);
+        setDuration(event.duration_time+'');
         if(index === 0){
             setOpenDelete(true);
         }
@@ -134,7 +139,7 @@ export default withRouter(function EventsView(props) {
             setOpenInvite(true);
         }
         if (index === 2) {
-            
+            setOpenRefresh(true);
         }
         if (index === 3) {
             setOpenEdit(true);
@@ -151,8 +156,15 @@ export default withRouter(function EventsView(props) {
     })
     React.useEffect(() => {
         async function getEventInfo(){
-        let token = localStorage.getItem('token');
-        console.log(token)
+        let spotifyToken = (window.location.href + '').split("&spotify_access_token=");
+        let token = spotifyToken[0].split("access_token=")[1];
+        spotifyToken = spotifyToken[1]
+        if(spotifyToken){
+            localStorage.setItem('token', token);
+            localStorage.setItem('spotifyToken', spotifyToken);
+        }
+        token = localStorage.getItem('token');
+
         await axios.get('/events', {headers:{
             'Authorization': `Bearer ${token}`
         }
@@ -180,7 +192,7 @@ export default withRouter(function EventsView(props) {
 
         }
         getEventInfo();
-    }, [openEdit, openInvite, openDelete, openCreate]);
+    }, [openEdit, openInvite, openDelete, openCreate, openRefresh]);
 
     const checkAdmin = (event,user) => {
         let ret = false;
@@ -203,7 +215,7 @@ export default withRouter(function EventsView(props) {
                     events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=3; let isAdmin=checkAdmin(event,user); return(<>
                     <Box className={classes.flexRow} onClick={()=>openEvent(event.id, isActive)}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} />
-                        <Box>
+                        <Box style={{width: '90%'}}>
                             <Typography variant="h5" color="textPrimary">
                             {event.name}{}
                             </Typography>
@@ -234,7 +246,7 @@ export default withRouter(function EventsView(props) {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
-                                    <Typography color="textPrimary">
+                                    <Typography  style = {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} color = "textPrimary" >
                                                 {event.participants.map((participant, index ) => {
                                     if (participant.role === "admin")
                                         if(!firstAdmin){
@@ -275,14 +287,14 @@ export default withRouter(function EventsView(props) {
                         </Box>
 
                         <Box >
-                            <Grid container spacing={2} style={{opacity: 0.5,}}>
+                            <Grid container spacing={2} style={{opacity: 0.5}}>
                                 {menuItems.map((item,index) =>(
                                     <>
-                                    <Grid className = { !isActive && index===2 || !isAdmin?classes.inactive:''} item xs = {5} align = 'right' >
+                                    <Grid className = { (!isActive && index===2) || !isAdmin?classes.inactive:''} item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid className = { !isActive && index === 2 || !isAdmin ? classes.inactive : ''} item xs = {7}
-                                        onClick = {!isActive && index === 2 || !isAdmin?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}>
+                                    <Grid className = { (!isActive && index === 2) || !isAdmin ? classes.inactive : ''} item xs = {7}
+                                        onClick = {(!isActive && index === 2) || !isAdmin?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}>
                                         {item.icon}
                                     </Grid>
                                     </>
@@ -302,6 +314,7 @@ export default withRouter(function EventsView(props) {
                 <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} isEdit={false}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} eventId={eventId} isEdit={true}/>
                 <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent} a={a} setA={setA}/>
+                <RefreshPlaylistModal open={openRefresh} setOpen={setOpenRefresh} eventId={eventId} eventDuration={duration}/>
 
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={eventId}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>
