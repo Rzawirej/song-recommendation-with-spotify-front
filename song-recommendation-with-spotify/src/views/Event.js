@@ -25,7 +25,7 @@ function Event(props){
         const [openDelete, setOpenDelete] = React.useState(false);
         const [openRefresh, setOpenRefresh] = React.useState(false);
         const [a, setA] = React.useState(false);
-        const [user, setUser] = React.useState({
+        const [, setUser] = React.useState({
             username: ''
         })
         

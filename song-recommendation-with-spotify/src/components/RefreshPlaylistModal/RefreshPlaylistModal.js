@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: '20px',
         borderRadius: 50,
         border: 0,
-        color: 'white',
+        color: 'black',
         height: 48,
         padding: '0 30px',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
@@ -160,12 +160,11 @@ export default withRouter(function RefreshPlaylistModal(props) {
                 'Authorization': `Bearer ${token}`
             }
         })
-        let res = await axios.get('/event/'+props.eventId+'/create-playlist',{
+        await axios.post('/event/'+props.eventId+'/create-playlist',{},{
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        })
-        console.log(res.data)
+        }).then(() => handleClose()).catch(() => handleClose())
         handleClose();
     }
     React.useEffect(() => {
@@ -198,7 +197,7 @@ export default withRouter(function RefreshPlaylistModal(props) {
                         </Grid>
                         <Grid item xs={9}>
                             <Typography color="textPrimary">
-                                {'Czy chcesz odświeżyć playlistę? Odświeżając playlistę powodujesz, ze zostanie ona ponownie skomponowana na podstawie playlist aktualnych Uczestników. Możesz pozostać przy wcześniej wybranym czasie trwania (co przekłada się na liczbę singli w playliście) lub wybrać nowe ustawnia.'}
+                                {'Czy chcesz odświeżyć playlistę? Odświeżając playlistę powodujesz, ze zostanie ona ponownie skomponowana na podstawie playlist aktualnych Uczestników. Możesz pozostać przy wcześniej wybranym czasie trwania (co przekłada się na liczbę singli w playliście) lub wybrać nowe ustawienia.'}
                             </Typography>
                         </Grid>
                         <Grid item xs={3} align='right'>

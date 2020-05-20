@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
         width: 600,
         backgroundColor: theme.palette.background.paper,
         backgroundImage: `url(${background})`,
+        backgroundAttachment: 'local',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
         top: `50%`,
@@ -149,11 +150,12 @@ const useStyles = makeStyles(theme => ({
         background: COLOR.pink,
         borderRadius: 50,
         border: 0,
-        color: 'white',
+        color: 'black',
         height: 48,
         padding: '0 30px',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(4),
     },
     radioContainer: {
             overflow: 'visible', 
@@ -347,7 +349,7 @@ export default function CreateEventModal(props) {
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline},} }
                                 placeholder = "Dodaj czytelną i krótką nazwę"
-                                inputProps={{'maxlength': 50}}
+                                inputProps={{'maxLength': 50}}
                                 className={classes.field}
                                 onChange={handleNameChange}
                                 value={name}
@@ -364,7 +366,7 @@ export default function CreateEventModal(props) {
                         <Grid item xs={9}>
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused},} }
-                                inputProps={{'maxlength': 150}}
+                                inputProps={{'maxLength': 150}}
                                 placeholder = "Poinformuj znajomych o szczegółach wydarzenia..."
                                 helperText={`${description.length}/150`}
                                 className={classes.multilineField}
@@ -455,14 +457,20 @@ export default function CreateEventModal(props) {
                         <Grid item xs={9} align='center'>
                             
 
-                            <div styles = {
-                                {
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }
-                            } >
-
-                            
+                            <Grid container spacing = {0}>
+                                <Grid item xs = {5} align = 'bottom' >
+                                    <Typography  color = "textPrimary" >
+                                                Rozpocznij
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs = {1} align = 'center' >
+                                </Grid>
+                                <Grid item xs = {5} align = 'bottom' >
+                                    <Typography  color = "textPrimary" >
+                                                Zakończ
+                                    </Typography>
+                                </Grid>
+                            <Grid item xs = {5} align = 'center' >
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused, disabled: classes.disabled}} }
                                 id="date"
@@ -479,7 +487,11 @@ export default function CreateEventModal(props) {
                                 shrink: true,
                                 }}
                             />
+                            </Grid>
+                            <Grid item xs = {1} alignItems = 'flex-end' >
                             <ArrowForwardIcon style={{color: COLOR.white}}/>
+                            </Grid>
+                            <Grid item xs = {5} align = 'center' >
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused}} }
                                 inputProps={{'min': nowDate}}
@@ -497,7 +509,8 @@ export default function CreateEventModal(props) {
 
                                 }}
                             />
-                            </div>
+                            </Grid>
+                            </Grid>
                         </Grid></>:<></>}
                         
                     </Grid>

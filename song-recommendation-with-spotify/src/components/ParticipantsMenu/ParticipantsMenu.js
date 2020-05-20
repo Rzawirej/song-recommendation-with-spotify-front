@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
     },
     columnFlex: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        width: '40%'
     },
     participant: {
         display: 'flex',
@@ -32,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
-        '&::last-child': {
-            paddingBottom: '200px'
+        '&:last-child': {
+            paddingBottom: '100px'
         }
     },
     toolbar: theme.mixins.toolbar,
@@ -142,17 +143,17 @@ export default function ParticipantsMenu(props) {
                     {state.map((participant, index) => (
                             <div className={classes.participant}>
 
-                            
+                                
                                 <Avatar
                                     style={{height:'56px', width:'56px'}}
                                     alt={`Avatar`}
-                                    src={participant.avatar_url || image}
+                                    src={participant.user.avatar_url || image}
                                 />
                                 <div className={classes.columnFlex}>    
                                 <Typography color = 'textPrimary' >
                                     {participant.user.username}
                                 </Typography>
-                                <Typography color = 'textSecondary'
+                                <Typography color = {participant.role === 'admin' ? 'textSecondary' : 'textPrimary'}
                                 style = {
                                     {
                                         fontSize: '12px',

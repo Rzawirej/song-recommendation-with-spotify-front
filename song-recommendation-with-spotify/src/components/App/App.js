@@ -32,7 +32,8 @@ export default class App extends React.Component {
     }
     async componentDidMount (){
         axios.defaults.baseURL = 'http://156.17.130.143/api';
-       /* let token = localStorage.getItem('token');
+        //axios.defaults.baseURL = 'https://song-recommendation.herokuapp.com/api';
+        /*let token = localStorage.getItem('token');
         axios.get('/user/current', {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -45,6 +46,7 @@ export default class App extends React.Component {
                     user: data.user
                 });
         }).catch(()=>this.setState({user:{username:''}}))*/
+        
     }
     requireAuth(nextState, replace){
         console.log("typ musi byc zalogowany")
@@ -61,7 +63,7 @@ export default class App extends React.Component {
                 <Route path="/register" component={Register}/>
                 <Route path="/settings" component={Settings}/>
                 <Route path="/event/:id" component={Event}/>
-                <Route path="/event" component={Events} onEnter={this.requireAuth}/>
+                <PrivateRoute path="/event" component={Events} onEnter={this.requireAuth} user={this.state.user}/>
                 
             </Switch>
         </Router>

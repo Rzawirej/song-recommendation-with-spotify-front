@@ -19,6 +19,7 @@ import COLOR from './../../assets/colors'
 import CreateEventModal from '.././CreateEventModal/CreateEventModal';
 import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
 import DeleteEventModal from '../DeleteEventModal/DeleteEventModal';
+import RefreshPlaylistModal from '../RefreshPlaylistModal/RefreshPlaylistModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -117,9 +118,12 @@ export default withRouter(function EventsView(props) {
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openInvite, setOpenInvite] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [openRefresh, setOpenRefresh] = React.useState(false);
     const [a, setA] = React.useState(false);
     const [eventId, setEventId] = React.useState('');
     const [invLink, setInvLink] = React.useState('');
+    const [duration, setDuration] = React.useState('5');
+
     const handleOpen = () => {
         setOpenCreate(true);
     };
@@ -127,6 +131,7 @@ export default withRouter(function EventsView(props) {
         console.log(event);
         setEventId(event.id);
         setInvLink(event.invitation_link);
+        setDuration(event.duration_time+'');
         if(index === 0){
             setOpenDelete(true);
         }
@@ -134,7 +139,7 @@ export default withRouter(function EventsView(props) {
             setOpenInvite(true);
         }
         if (index === 2) {
-            
+            setOpenRefresh(true);
         }
         if (index === 3) {
             setOpenEdit(true);
@@ -187,7 +192,7 @@ export default withRouter(function EventsView(props) {
 
         }
         getEventInfo();
-    }, [openEdit, openInvite, openDelete, openCreate]);
+    }, [openEdit, openInvite, openDelete, openCreate, openRefresh]);
 
     const checkAdmin = (event,user) => {
         let ret = false;
@@ -241,7 +246,7 @@ export default withRouter(function EventsView(props) {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={gridRightColumnInfo}>
-                                    <Typography color="textPrimary">
+                                    <Typography  style = {{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} color = "textPrimary" >
                                                 {event.participants.map((participant, index ) => {
                                     if (participant.role === "admin")
                                         if(!firstAdmin){
@@ -309,6 +314,7 @@ export default withRouter(function EventsView(props) {
                 <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} isEdit={false}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} eventId={eventId} isEdit={true}/>
                 <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent} a={a} setA={setA}/>
+                <RefreshPlaylistModal open={openRefresh} setOpen={setOpenRefresh} eventId={eventId} eventDuration={duration}/>
 
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={eventId}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>

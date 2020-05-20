@@ -6,9 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from '@material-ui/icons/ExpandLess';
 import Collapse from '@material-ui/core/Collapse'
 import Box from '@material-ui/core/Box'
 
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '56.25%', // 16:9
     },
     eventPhoto: {
-        marginLeft: theme.spacing(9),
+        marginLeft: theme.spacing(5),
         marginRight: theme.spacing(3),
         height: theme.spacing(20),
         width: theme.spacing(20),
@@ -71,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 export default withRouter(function PlaylistView(props) {
 
     const classes = useStyles();
-    const [expand1, setExpand1] = React.useState(false);
+    const [selectedIndex, setSelectedIndex] = React.useState(-1)
     
     const event = props.event
     
@@ -111,10 +112,13 @@ export default withRouter(function PlaylistView(props) {
         }
         return ""
     }
-    const handleClick1 = () => {
-        console.log(event.playlist)
-        
-        setExpand1(!expand1);
+    const handleClick = (index) => {
+        if (selectedIndex === index) {
+            setSelectedIndex(-1)
+        } else {
+            setSelectedIndex(index)
+        }
+        console.log(selectedIndex);
     }
     const handleMenuClick = (index) => {
         if(index === 0){
@@ -229,33 +233,45 @@ export default withRouter(function PlaylistView(props) {
                         </Box>
                     </Box>
                 <List className={classes.list}>
-                    {event.playlist.length>0?[event.playlist].map((playlist, index) => (
-                        <>
-                    <ListItem  onClick={handleClick1}>
+                    {event.playlist.length>0?event.playlist.map((song, index) =>{ return (<>
+                    <ListItem  onClick={()=>handleClick(index)}>
                         <span style={{marginRight: '40px'}}>
-                            1.
+                            {index+1}.
                         </span>
                         <ListItemIcon className={classes.listItem} >
-                        <ExpandMore />
+                        {index === selectedIndex?<ExpandLess color='secondary'/>:<ExpandMore />}
                         </ListItemIcon>
-                        <ListItemText primary='tytul' />
-                        <ListItemText primary="4:23" />
-                        <ListItemText style={{textAlign:"right", margin:0}} primary="X" />
+                        <span style={{width: '40%'}}>
+                            {song.artist[0]}
+                        </span>
+                        <span style={{marginRight: '40px'}}>
+                            {song.name}
+                        </span>
+
+                        {/*<ListItemText style={{textAlign:"right", margin:0}} primary="X" />*/}
                     </ListItem>
-                    <Collapse in={expand1} timeout="auto" unmountOnExit>
-                        <List >
-                                {['Wydarzenie 1', 'Wydarzenie 2', 'Wydarzenie 3'].map((text, index) => (
-                                    <ListItem button key={text}>
-                                        <ListItemText primary={text} />
-                                        
-                                    </ListItem>
-                                    
-                                ))}
-                        </List>
+                    <Collapse in={index === selectedIndex} timeout="auto" unmountOnExit>
+                        <div className={classes.flexRow}>
+                            <Avatar style={{marginLeft: '120px', marginRight: '40px', width:'80px', height:'80px'}}variant="square" src={song.image_url}/>
+                            <div>
+                                {song.album}
+                                <div></div>
+
+                                {Math.floor(song.duration/60000)>10?Math.floor(song.duration/60000):'0'+Math.floor(song.duration/60000)}:{Math.floor(song.duration/10000)>=10?Math.floor(song.duration/10000):'0'+Math.floor(song.duration/10000)}
+                            </div>
+                            <Typography variant="h5" color="textPrimary">
+                                 
+                            </Typography>
+                            <Typography variant="h5" color="textPrimary">
+                                 
+                            </Typography>
+                            
+                        </div>
+                        
                     </Collapse>
                     <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none"}}></hr>
                     </>
-                    ))
+                    )})
                     :
                     <Typography color="textPrimary">
                             To wydarzenie nie ma jeszcze playlisty
