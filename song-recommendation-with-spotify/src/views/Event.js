@@ -95,4 +95,4 @@ function Event(props){
     }   
 
 
-export default withStyles(useStyles)(Event);
+export default Event;
