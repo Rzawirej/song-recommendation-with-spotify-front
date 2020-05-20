@@ -5,6 +5,7 @@ import Login from "../../views/Login";
 import Event from "../../views/Event";
 import Events from "../../views/Events";
 import Settings from "../../views/Settings";
+import NotFound from "../../views/NotFound";
 import './App.css';
 import axios from 'axios';
 
@@ -72,11 +73,12 @@ export default class App extends React.Component {
                 <Route path="/" exact>
                     <Redirect to="/login" />
                 </Route>
-                <NotLoggedRoute path="/login" component={Login} user={this.state.user}/>
-                <NotLoggedRoute path="/register" component={Register} user={this.state.user}/>
-                <LoggedRoute path="/settings" component={Settings} user={this.state.user}/>
-                <LoggedRoute path="/event/:id" component={Event} user={this.state.user}/>
-                <LoggedRoute path="/event" component={Events} onEnter={this.requireAuth} user={this.state.user}/>
+                <Route path="/login" component={Login} user={this.state.user}/>
+                <Route path="/register" component={Register} user={this.state.user}/>
+                <Route path="/settings" component={Settings} user={this.state.user}/>
+                <Route path="/event/:id" component={Event} user={this.state.user}/>
+                <Route path="/event" component={Events} onEnter={this.requireAuth} user={this.state.user}/>
+                {/*<Route path="*" component={NotFound}/>*/}
                 
             </Switch>
         </Router>
