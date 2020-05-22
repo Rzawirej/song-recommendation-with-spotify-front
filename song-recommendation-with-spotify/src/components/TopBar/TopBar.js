@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Link from '@material-ui/core/Link'
 import COLOR from './../../assets/colors'
+import {getToken, setToken} from '../../utils/UserFunctions'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -43,11 +44,10 @@ export default function TopBar() {
             let token = spotifyToken[0].split("access_token=")[1];
             spotifyToken = spotifyToken[1]
             if (spotifyToken) {
-                localStorage.setItem('token', token);
+                setToken(token);
                 localStorage.setItem('spotifyToken', spotifyToken);
             }
-         token = localStorage.getItem('token');
-        console.log(token)
+         token = getToken();
         await axios.get('/user/current', {headers:{
             'Authorization': `Bearer ${token}`
         }

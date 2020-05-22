@@ -6,6 +6,7 @@ import Event from "../../views/Event";
 import Events from "../../views/Events";
 import Settings from "../../views/Settings";
 import NotFound from "../../views/NotFound";
+import {getToken} from "../../utils/UserFunctions"
 import './App.css';
 import axios from 'axios';
 
@@ -47,7 +48,7 @@ export default class App extends React.Component {
     async componentDidMount (){
         axios.defaults.baseURL = 'http://156.17.130.143/api';
         //axios.defaults.baseURL = 'https://song-recommendation.herokuapp.com/api';
-        let token = localStorage.getItem('token');
+        let token = getToken();
         axios.get('/user/current', {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -62,9 +63,7 @@ export default class App extends React.Component {
         }).catch(()=>this.setState({user:{username:''}}))
         
     }
-    requireAuth(nextState, replace){
-        console.log("typ musi byc zalogowany")
-    }
+
     render(){
         return (
         <Router basename={process.env.REACT_APP_BASENAME || ""}>
@@ -73,12 +72,12 @@ export default class App extends React.Component {
                 <Route path="/" exact>
                     <Redirect to="/login" />
                 </Route>
-                <Route path="/login" component={Login} user={this.state.user}/>
-                <Route path="/register" component={Register} user={this.state.user}/>
-                <Route path="/settings" component={Settings} user={this.state.user}/>
-                <Route path="/event/:id" component={Event} user={this.state.user}/>
-                <Route path="/event" component={Events} onEnter={this.requireAuth} user={this.state.user}/>
-                {/*<Route path="*" component={NotFound}/>*/}
+                <NotLoggedRoute path="/login" component={Login} user={this.state.user}/>
+                <NotLoggedRoute path="/register" component={Register} user={this.state.user}/>
+                <LoggedRoute path="/settings" component={Settings} user={this.state.user}/>
+                <LoggedRoute path="/event/:id" component={Event} user={this.state.user}/>
+                <LoggedRoute path="/event" component={Events} user={this.state.user}/>
+                <Route path="*" component={NotFound}/>
                 
             </Switch>
         </Router>

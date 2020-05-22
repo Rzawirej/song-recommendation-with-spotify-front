@@ -44,3 +44,28 @@ export const getProfile = user => {
       console.log(err)
     })
 }
+
+export const setToken = (token) => {
+  const now = new Date()
+  const minutes = 15;  
+
+  const item = {
+    value: token,
+    expiry: now.getTime() + minutes*60*1000
+  }
+  localStorage.setItem("token", JSON.stringify(item))
+}
+
+export const getToken = () => {
+	const tokenStr = localStorage.getItem("token")
+	if (!tokenStr) {
+		return null
+	}
+	const token = JSON.parse(tokenStr)
+	const now = new Date()
+	if (now.getTime() > token.expiry) {
+		localStorage.removeItem("token")
+		return null
+	}
+	return token.value
+}

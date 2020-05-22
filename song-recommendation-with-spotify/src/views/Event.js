@@ -1,7 +1,6 @@
 import React from "react";
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import { withStyles } from '@material-ui/core';
 import TopBar from '../components/TopBar/TopBar';
 import SideMenu from '../components/SideMenu/SideMenu';
 import PlaylistView from '../components/PlaylistView/PlaylistView';
@@ -10,6 +9,7 @@ import AddParticipantsModal from '../components/AddParticipantsModal/AddParticip
 import CreateEventModal from '../components/CreateEventModal/CreateEventModal';
 import DeleteEventModal from '../components/DeleteEventModal/DeleteEventModal';
 import RefreshPlaylistModal from '../components/RefreshPlaylistModal/RefreshPlaylistModal';
+import {getToken} from '../utils/UserFunctions'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,7 +40,7 @@ function Event(props){
         const [isAdmin, setIsAdmin] = React.useState(false);
         React.useEffect(() => {
             async function getEventInfo() {
-                let token = localStorage.getItem('token');
+                let token = getToken()
                 console.log(token)
                 const result = await axios.get('/event/' + props.match.params.id, {
                     headers: {
@@ -51,7 +51,7 @@ function Event(props){
                 getUser(result.data.event);
             }
             async function getUser(event) {
-                let token = localStorage.getItem('token');
+                let token = getToken();
                 console.log(token)
                 await axios.get('/user/current', {
                     headers: {

@@ -5,7 +5,7 @@ import _Button from '../components/Register/_Button'
 import axios from 'axios'
 import Link from '@material-ui/core/Link'
 import TopBar from '../components/TopBar/TopBar';
-import { login } from '../utils/UserFunctions'
+import { setToken } from '../utils/UserFunctions'
 import background from '../assets/background.png'; // Import using relative path
 
 class Login extends React.Component{
@@ -34,7 +34,7 @@ class Login extends React.Component{
         })
         .then(res => {
             if (res.data.access_token) {
-                localStorage.setItem('token', res.data.access_token)
+                setToken(res.data.access_token)
                 this.props.history.push(`/event`)
             }
         })

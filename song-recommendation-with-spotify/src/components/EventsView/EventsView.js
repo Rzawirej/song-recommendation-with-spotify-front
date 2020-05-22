@@ -20,6 +20,7 @@ import CreateEventModal from '.././CreateEventModal/CreateEventModal';
 import AddParticipantsModal from '.././AddParticipantsModal/AddParticipantsModal';
 import DeleteEventModal from '../DeleteEventModal/DeleteEventModal';
 import RefreshPlaylistModal from '../RefreshPlaylistModal/RefreshPlaylistModal';
+import {getToken} from '../../utils/UserFunctions'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -163,7 +164,7 @@ export default withRouter(function EventsView(props) {
             localStorage.setItem('token', token);
             localStorage.setItem('spotifyToken', spotifyToken);
         }
-        token = localStorage.getItem('token');
+        token = getToken();
 
         await axios.get('/events', {headers:{
             'Authorization': `Bearer ${token}`
@@ -172,11 +173,10 @@ export default withRouter(function EventsView(props) {
             console.log(data.events);
             setEvents(data.events);
         })
-        console.log("test")
         getUser()
         }
         async function getUser() {
-            let token = localStorage.getItem('token');
+            let token = getToken()
             console.log(token)
             await axios.get('/user/current', {
                 headers: {
