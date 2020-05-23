@@ -10,10 +10,9 @@ import {getToken} from "../../utils/UserFunctions"
 import './App.css';
 import axios from 'axios';
 
-const LoggedRoute = ({ component: Component, roles, user, ...rest }) => (
+const LoggedRoute = ({ component: Component, roles, ...rest }) => (
     <Route {...rest} render={(props) => {
-        console.log(user);
-            if (!user.username) {
+            if (!getToken()) {
             // not logged in so redirect to login page with the return url
 
             return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
@@ -24,10 +23,9 @@ const LoggedRoute = ({ component: Component, roles, user, ...rest }) => (
     }}
      />
 )
-const NotLoggedRoute = ({ component: Component, roles, user, ...rest }) => (
+const NotLoggedRoute = ({ component: Component, roles, ...rest }) => (
     <Route {...rest} render={(props) => {
-        console.log(user);
-            if (user.username) {
+            if (getToken()) {
             // logged in so redirect to event page with the return url
 
             return <Redirect to={{ pathname: '/event'}} />
@@ -39,28 +37,10 @@ const NotLoggedRoute = ({ component: Component, roles, user, ...rest }) => (
 )
 
 export default class App extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            user: {username: 'a'}
-        };
-    }
+
     async componentDidMount (){
         axios.defaults.baseURL = 'http://156.17.130.143/api';
         //axios.defaults.baseURL = 'https://song-recommendation.herokuapp.com/api';
-        let token = getToken();
-        axios.get('/user/current', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }).then(({
-            data
-        }) => {
-            console.log(data);
-                this.setState({
-                    user: data.user
-                });
-        }).catch(()=>this.setState({user:{username:''}}))
         
     }
 
@@ -72,11 +52,11 @@ export default class App extends React.Component {
                 <Route path="/" exact>
                     <Redirect to="/login" />
                 </Route>
-                <NotLoggedRoute path="/login" component={Login} user={this.state.user}/>
-                <NotLoggedRoute path="/register" component={Register} user={this.state.user}/>
-                <LoggedRoute path="/settings" component={Settings} user={this.state.user}/>
-                <LoggedRoute path="/event/:id" component={Event} user={this.state.user}/>
-                <LoggedRoute path="/event" component={Events} user={this.state.user}/>
+                <NotLoggedRoute path="/login" component={Login}/>
+                <NotLoggedRoute path="/register" component={Register}/>
+                <LoggedRoute path="/settings" component={Settings}/>
+                <LoggedRoute path="/event/:id" component={Event}/>
+                <LoggedRoute path="/event" component={Events}/>
                 <Route path="*" component={NotFound}/>
                 
             </Switch>

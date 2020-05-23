@@ -163,6 +163,7 @@ export default withRouter(function EventsView(props) {
         if(spotifyToken){
             localStorage.setItem('token', token);
             localStorage.setItem('spotifyToken', spotifyToken);
+            props.history.replace('/event/')
         }
         token = getToken();
 

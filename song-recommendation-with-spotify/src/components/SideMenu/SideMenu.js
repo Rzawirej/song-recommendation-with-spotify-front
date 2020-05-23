@@ -63,7 +63,10 @@ export default withRouter(function SideMenu(props) {
     }
     const handleClick2 = (event) => {
         event.preventDefault()
-        props.history.push('/settings')
+        if (!window.location.href.includes('settings')){
+            props.history.push('/settings')
+        }
+        
     }
     
     const handleOpen = () => {

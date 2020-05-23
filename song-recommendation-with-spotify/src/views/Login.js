@@ -35,7 +35,7 @@ class Login extends React.Component{
         .then(res => {
             if (res.data.access_token) {
                 setToken(res.data.access_token)
-                this.props.history.push(`/event`)
+                this.props.history.push(this.props.history.location.state.from||`/event`)
             }
         })
         .catch(err => {
