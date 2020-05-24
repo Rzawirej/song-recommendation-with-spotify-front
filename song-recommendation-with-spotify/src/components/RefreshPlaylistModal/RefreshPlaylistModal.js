@@ -16,6 +16,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Grid from '@material-ui/core/Grid';
 
 import COLOR from './../../assets/colors'
+import {getToken} from '../../utils/UserFunctions'
 
 
 const useStyles = makeStyles(theme => ({
@@ -154,7 +155,7 @@ export default withRouter(function RefreshPlaylistModal(props) {
     };
 
     const handleSubmit = async () => {
-        let token = localStorage.getItem('token');
+        let token = getToken();
         await axios.put('/event/'+props.eventId,{duration_time: duration},{
             headers: {
                 'Authorization': `Bearer ${token}`

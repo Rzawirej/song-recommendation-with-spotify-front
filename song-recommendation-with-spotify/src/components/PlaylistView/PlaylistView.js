@@ -235,7 +235,7 @@ export default withRouter(function PlaylistView(props) {
                 <List className={classes.list}>
                     {event.playlist.length>0?event.playlist.map((song, index) =>{ return (<>
                     <ListItem  onClick={()=>handleClick(index)}>
-                        <span style={{marginRight: '40px'}}>
+                        <span style={{marginRight: '40px', width: '1%'}}>
                             {index+1}.
                         </span>
                         <ListItemIcon className={classes.listItem} >
@@ -244,7 +244,7 @@ export default withRouter(function PlaylistView(props) {
                         <span style={{width: '40%'}}>
                             {song.artist[0]}
                         </span>
-                        <span style={{marginRight: '40px'}}>
+                        <span style={{width: '40%'}}>
                             {song.name}
                         </span>
 

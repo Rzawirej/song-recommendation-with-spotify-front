@@ -45,9 +45,8 @@ export const getProfile = user => {
     })
 }
 
-export const setToken = (token) => {
+export const setToken = (token, minutes) => {
   const now = new Date()
-  const minutes = 15;  
 
   const item = {
     value: token,
@@ -64,7 +63,8 @@ export const getToken = () => {
 	const token = JSON.parse(tokenStr)
 	const now = new Date()
 	if (now.getTime() > token.expiry) {
-		localStorage.removeItem("token")
+    localStorage.removeItem("token")
+    localStorage.removeItem("spotifyToken")
 		return null
 	}
 	return token.value

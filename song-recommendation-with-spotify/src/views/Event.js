@@ -1,6 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom'
 import TopBar from '../components/TopBar/TopBar';
 import SideMenu from '../components/SideMenu/SideMenu';
 import PlaylistView from '../components/PlaylistView/PlaylistView';
@@ -42,13 +43,18 @@ function Event(props){
             async function getEventInfo() {
                 let token = getToken()
                 console.log(token)
-                const result = await axios.get('/event/' + props.match.params.id, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                setEvent(result.data.event);
-                getUser(result.data.event);
+                try{
+                    const result = await axios.get('/event/' + props.match.params.id, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                    setEvent(result.data.event);
+                    getUser(result.data.event);
+                }catch{
+                    props.history.push('/no-event')
+                }
+                
             }
             async function getUser(event) {
                 let token = getToken();
@@ -95,4 +101,4 @@ function Event(props){
     }   
 
 
-export default Event;
+export default withRouter(Event);

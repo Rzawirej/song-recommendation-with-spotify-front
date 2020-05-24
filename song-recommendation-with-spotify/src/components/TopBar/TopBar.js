@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Link from '@material-ui/core/Link'
 import COLOR from './../../assets/colors'
 import {getToken, setToken} from '../../utils/UserFunctions'
+import logo from '../../assets/logo.png'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: COLOR.black,
     },
     rightDivider: {
-        marginLeft: '70%',
+        marginLeft: '65%',
         borderRight: '0.01em solid '+COLOR.white,
         padding: theme.spacing(1),    
         textDecoration: "none",
@@ -24,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         fontSize: '14px',
+    },
+    logo: {
+        marginLeft: '8%',
+        height: '5vh',
     },
     offset: theme.mixins.toolbar,
 }));
@@ -37,6 +42,7 @@ export default function TopBar() {
     })
     const logOut = (event) => {
        localStorage.removeItem('token')
+       localStorage.removeItem('spotifyToken')
     }
     React.useEffect(() => {
         async function getUser(){
@@ -44,7 +50,7 @@ export default function TopBar() {
             let token = spotifyToken[0].split("access_token=")[1];
             spotifyToken = spotifyToken[1]
             if (spotifyToken) {
-                setToken(token);
+                setToken(token, 55);
                 localStorage.setItem('spotifyToken', spotifyToken);
             }
          token = getToken();
@@ -62,6 +68,7 @@ export default function TopBar() {
         <>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
+                    <img className={classes.logo} src={logo} alt="Logo" />
                     {!user.username ?<>
                     <Link href="#" onClick={preventDefault} color="inherit" className={classes.rightDivider}>
                         ENGLISH VERSION

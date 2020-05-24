@@ -10,6 +10,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Grid from '@material-ui/core/Grid';
 
 import COLOR from './../../assets/colors'
+import {getToken} from '../../utils/UserFunctions'
 
 
 const useStyles = makeStyles(theme => ({
@@ -91,7 +92,7 @@ export default function AddPaticipantsModal(props) {
     };
     const handleSubmit = async () => {
         if(username!==''){
-            let token = localStorage.getItem('token');
+            let token = getToken()
             console.log(props.eventId);
             let res = await axios.post('/event/' + props.eventId + '/invite', {
                 username: username,
@@ -165,7 +166,7 @@ export default function AddPaticipantsModal(props) {
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, disabled: classes.field},} }
                                 className={classes.field}
-                                value={'http://156.17.130.143/join-event/'+props.invLink}
+                                value={'https://joyina.live/join-event/'+props.invLink}
                                 margin="dense"
                                 variant="outlined"
                                 fullWidth

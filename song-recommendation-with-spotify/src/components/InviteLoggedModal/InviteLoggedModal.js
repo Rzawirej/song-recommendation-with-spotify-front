@@ -4,11 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
-
-
-
 import Button from '@material-ui/core/Button';
-
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Grid from '@material-ui/core/Grid';
@@ -86,7 +82,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default withRouter(function DeleteEventModal(props) {
+export default withRouter(function InviteLoggedModal(props) {
     const classes = useStyles();
 
     const handleSubmit = async () => {
@@ -102,7 +98,7 @@ export default withRouter(function DeleteEventModal(props) {
     
 
     const handleClose = () => {
-        props.setOpen(false);
+
         
     };
 
@@ -117,15 +113,15 @@ export default withRouter(function DeleteEventModal(props) {
             >
                 
                 <div className = { classes.paper} >
-                    <HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>
-                    <Typography variant="h5" className = {classes.title}>USUŃ WYDARZENIE </Typography>
+                    {/*<HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>*/}
+                    <Typography variant="h5" className = {classes.title}>ZAPROSZENIE DO UCZESTNICTWA </Typography>
                     <Grid container spacing={2} className={classes.grid}>
                         
                         <Grid item xs={3} align='right'>
                         </Grid>
                         <Grid item xs={9}>
                             <Typography color="textPrimary">
-                                Czy chcesz usunąć wydarzenie? Usuwając wydarzenie rezygnujesz z uczestnictwa w nim. Możesz ponownie do niego dołączyć zostając zaproszoną/ym przez inną Użytkowniczkę/ innego Użytkownika aplikacji z funkcją Aministratorki/a. Wydarzenie zostanie trwale usunięte w momencie kiedy każdy uczestnik o funkcji Administratorki/a również je usunie.
+                                Dołączyłeś do wydarzenia
                             </Typography>
                         </Grid>
                         
@@ -139,7 +135,7 @@ export default withRouter(function DeleteEventModal(props) {
                         variant="outlined"
                         onClick={handleSubmit}
                         >
-                        USUŃ
+                        ROZUMIEM
                 
                     </Button>
                                             

@@ -6,6 +6,8 @@ import Event from "../../views/Event";
 import Events from "../../views/Events";
 import Settings from "../../views/Settings";
 import NotFound from "../../views/NotFound";
+import Invite from "../../views/Invite";
+import MainPage from "../../views/MainPage";
 import {getToken} from "../../utils/UserFunctions"
 import './App.css';
 import axios from 'axios';
@@ -39,8 +41,9 @@ const NotLoggedRoute = ({ component: Component, roles, ...rest }) => (
 export default class App extends React.Component {
 
     async componentDidMount (){
-        axios.defaults.baseURL = 'http://156.17.130.143/api';
+        //axios.defaults.baseURL = 'http://156.17.130.143/api';
         //axios.defaults.baseURL = 'https://song-recommendation.herokuapp.com/api';
+        axios.defaults.baseURL = 'https://joyina.live/api';
         
     }
 
@@ -49,14 +52,13 @@ export default class App extends React.Component {
         <Router basename={process.env.REACT_APP_BASENAME || ""}>
         
             <Switch>
-                <Route path="/" exact>
-                    <Redirect to="/login" />
-                </Route>
+                <Route path="/" exact component={MainPage}/>
                 <NotLoggedRoute path="/login" component={Login}/>
                 <NotLoggedRoute path="/register" component={Register}/>
                 <LoggedRoute path="/settings" component={Settings}/>
                 <LoggedRoute path="/event/:id" component={Event}/>
                 <LoggedRoute path="/event" component={Events}/>
+                <Route path="/join-event/:link" component={Invite}/>
                 <Route path="*" component={NotFound}/>
                 
             </Switch>

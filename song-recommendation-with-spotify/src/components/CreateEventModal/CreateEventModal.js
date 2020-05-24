@@ -25,6 +25,7 @@ import Grid from '@material-ui/core/Grid';
 
 
 import COLOR from './../../assets/colors'
+import {getToken} from '../../utils/UserFunctions'
 
 
 const useStyles = makeStyles(theme => ({
@@ -197,8 +198,7 @@ export default function CreateEventModal(props) {
     
     React.useEffect(() => {
         async function getEventInfo() {
-            let token = localStorage.getItem('token');
-            console.log(token)
+            let token = getToken();
             const result = await axios.get('/event/' + props.eventId, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -238,7 +238,7 @@ export default function CreateEventModal(props) {
         setEndDate(event.target.value);
     };
     const handleSubmit = async () => {
-        let token = localStorage.getItem('token');
+        let token = getToken();
         if(props.isEdit){
             
             await axios.put('/event/'+props.eventId, {

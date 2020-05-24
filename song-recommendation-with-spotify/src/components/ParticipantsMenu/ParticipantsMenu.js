@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Switch from '@material-ui/core/Switch';
 import COLOR from '../../assets/colors'
 import image from '../../assets/no_spotify_icon.png';
+import {getToken} from '../../utils/UserFunctions'
 
 const drawerWidth = '15%';
 const useStyles = makeStyles((theme) => ({
@@ -105,7 +106,7 @@ export default function ParticipantsMenu(props) {
         state[index].role = 'member'
     }
     const removeUser = async(event) =>{
-        let token = localStorage.getItem('token');
+        let token = getToken()
         const index = event.target.className;
         console.log(token);
         console.log('/event/'+props.event.id+'/remove-user?username='+state[index].user.username)
@@ -117,7 +118,7 @@ export default function ParticipantsMenu(props) {
         setA(!a);
     }
     const handleChange = async (event) => {
-        let token = localStorage.getItem('token');
+        let token = getToken()
         console.log(state[event.target.name])
         console.log(event.target.checked)
         await (event.target.checked? grantAdmin(event.target.name,token): revokeAdmin(event.target.name,token));

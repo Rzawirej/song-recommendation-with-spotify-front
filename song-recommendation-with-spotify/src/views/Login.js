@@ -34,15 +34,22 @@ class Login extends React.Component{
         })
         .then(res => {
             if (res.data.access_token) {
-                setToken(res.data.access_token)
-                this.props.history.push(this.props.history.location.state.from||`/event`)
+                setToken(res.data.access_token, 10080)
+                let back;
+                if(this.props.history.location.state){
+                    back = this.props.history.location.state.from
+                }
+                this.props.history.push(back||`/event`)
             }
         })
         .catch(err => {
             console.log(err)
-            this.setState({
-                loginErrorMessage: err.response.data.message
-            });
+            if(err.response){
+                this.setState({
+                    loginErrorMessage: err.response.data.message
+                });
+            }
+            
         })
     }
 

@@ -213,7 +213,7 @@ export default withRouter(function EventsView(props) {
                            Wydarzenia
                 </Typography>
                 {   events.length >= 1 && events[0].name?
-                    events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=3; let isAdmin=checkAdmin(event,user); return(<>
+                    events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=1; let isAdmin=checkAdmin(event,user); return(<>
                     <Box className={classes.flexRow} onClick={()=>openEvent(event.id, isActive)}>
                         <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} />
                         <Box style={{width: '90%'}}>
