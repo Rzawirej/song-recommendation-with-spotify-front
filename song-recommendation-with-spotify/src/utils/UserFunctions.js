@@ -59,10 +59,16 @@ export const getToken = () => {
 	const tokenStr = localStorage.getItem("token")
 	if (!tokenStr) {
 		return null
-	}
-	const token = JSON.parse(tokenStr)
+  }
+  let token = undefined;
+  try{
+    token = JSON.parse(tokenStr)
+  }catch{
+
+  }
+	
 	const now = new Date()
-	if (now.getTime() > token.expiry) {
+	if (token === undefined || now.getTime() > token.expiry) {
     localStorage.removeItem("token")
     localStorage.removeItem("spotifyToken")
 		return null
