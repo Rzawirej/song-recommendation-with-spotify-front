@@ -8,6 +8,7 @@ import Settings from "../../views/Settings";
 import NotFound from "../../views/NotFound";
 import Invite from "../../views/Invite";
 import MainPage from "../../views/MainPage";
+import SpotiRedirect from "../../views/SpotiRedirect";
 import {getToken} from "../../utils/UserFunctions"
 import './App.css';
 import axios from 'axios';
@@ -52,12 +53,13 @@ export default class App extends React.Component {
         <Router basename={process.env.REACT_APP_BASENAME || ""}>            
             <Switch>
                 <Route path="/" exact component={MainPage}/>
+                <Route path="/login/spotify" component={SpotiRedirect}/>
                 <NotLoggedRoute path="/login" component={Login}/>
                 <NotLoggedRoute path="/register" component={Register}/>
                 <LoggedRoute path="/settings" component={Settings}/>
                 <LoggedRoute path="/event/:id" component={Event}/>
                 <LoggedRoute path="/event" component={Events}/>
-                <Route path="/join-event/:link" component={Invite}/>
+                <Route path="/join-event/:link" component={Invite}/> 
                 <Route path="*" component={NotFound}/>
                 
             </Switch>
