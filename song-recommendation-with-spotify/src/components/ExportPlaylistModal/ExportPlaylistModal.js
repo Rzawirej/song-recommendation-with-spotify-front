@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Grid from '@material-ui/core/Grid';
@@ -37,6 +38,7 @@ const useStyles = makeStyles(theme => ({
         top: theme.spacing(2),
         right: theme.spacing(2),      
         color: COLOR.pink,
+        cursor: 'pointer',
     },
     grid:{
         marginTop: theme.spacing(1)
@@ -55,6 +57,15 @@ const useStyles = makeStyles(theme => ({
         borderColor: 'yellow',
         [`& fieldset`]: {
             borderRadius: 50,
+        },
+    },
+    multilineField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+
+        borderColor: 'yellow',
+        [`& fieldset`]: {
+            borderRadius: 20,
         },
     },
     notchedOutline: {
@@ -84,14 +95,30 @@ const useStyles = makeStyles(theme => ({
 
 export default withRouter(function InviteLoggedModal(props) {
     const classes = useStyles();
+    const [description, setDescription] = React.useState('');
+    const [name, setName] = React.useState('');
 
     const handleSubmit = async () => {
+        let token = getToken();
+        let spotifyToken = localStorage.getItem('spotifyToken');
+        await axios.post('/event/' + props.eventId +'/export-playlist?playlist_name='+name+'&description='+description,{},{
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'spotify_access_token': spotifyToken,
+            }
+        })
+        handleClose();
         props.history.push('/event/');
     }
-    
+    const handleNameChange = (event) => {
+        setName(event.target.value);
+    };
+    const handleDescriptionChange = (event) => {
+        setDescription(event.target.value);
+    };
 
     const handleClose = () => {
-
+        props.setOpen(false);
         
     };
 
@@ -106,18 +133,50 @@ export default withRouter(function InviteLoggedModal(props) {
             >
                 
                 <div className = { classes.paper} >
-                    {/*<HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>*/}
-                    <Typography variant="h5" className = {classes.title}>ZAPROSZENIE DO UCZESTNICTWA </Typography>
+                    <HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>
+                    <Typography variant="h5" className = {classes.title}>EKSPORT PLAYLISTY DO <span style={{color: COLOR.spotifyGreen}}>SPOTIFY</span></Typography>
                     <Grid container spacing={2} className={classes.grid}>
                         
-                        <Grid item xs={3} align='right'>
-                        </Grid>
-                        <Grid item xs={9}>
-                            <Typography color="textPrimary">
-                                Dołączyłeś do wydarzenia
+                       <Grid item xs={3} align='right'>
+                            <Typography color="textSecondary">
+                                        Nazwa wydarzenia 
                             </Typography>
                         </Grid>
-                        
+                        <Grid item xs={9}>
+                            <TextField
+                                InputProps={{ classes: {notchedOutline: classes.notchedOutline},} }
+                                placeholder = "Dodaj czytelną i krótką nazwę"
+                                inputProps={{'maxLength': 50}}
+                                className={classes.field}
+                                onChange={handleNameChange}
+                                value={name}
+                                margin="dense"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={3} align='right'>
+                            <Typography color="textSecondary">
+                                        Opis 
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={9}>
+                            <TextField
+                                InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused},} }
+                                inputProps={{'maxLength': 150}}
+                                placeholder = "Poinformuj znajomych o szczegółach wydarzenia..."
+                                helperText={`${description.length}/150`}
+                                className={classes.multilineField}
+                                value={description}
+                                onChange={handleDescriptionChange}
+                                margin="dense"
+                                variant="outlined"
+                                multiline
+                                rows={4}
+                                rowsMax={4}
+                                fullWidth
+                            />
+                        </Grid> 
 
 
                     </Grid>
@@ -128,7 +187,7 @@ export default withRouter(function InviteLoggedModal(props) {
                         variant="outlined"
                         onClick={handleSubmit}
                         >
-                        ROZUMIEM
+                        EKSPORTUJ
                 
                     </Button>
                                             

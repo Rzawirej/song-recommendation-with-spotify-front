@@ -3,7 +3,8 @@ import { makeStyles} from '@material-ui/core/styles';
 import axios from 'axios'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Link from '@material-ui/core/Link'
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
 import COLOR from './../../assets/colors'
 import {getToken, setToken} from '../../utils/UserFunctions'
 import logo from '../../assets/logo.png'
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: COLOR.black,
     },
     rightDivider: {
-        marginLeft: '65%',
+        marginLeft: '60%',
         borderRight: '0.01em solid '+COLOR.white,
         padding: theme.spacing(1),    
         textDecoration: "none",
@@ -69,23 +70,71 @@ export default function TopBar() {
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
                     <img className={classes.logo} src={logo} alt="Logo" />
-                    {!user.username ?<>
-                    <Link href="#" onClick={preventDefault} color="inherit" className={classes.rightDivider}>
-                        ENGLISH VERSION
-                     </Link>
-                     <Link href="/register" color="inherit" className={classes.toolbarItem}>
-                        Zarejestruj się
-                     </Link>
-                     <Link href="/login" color="inherit" className={classes.toolbarItem}>
-                        Zaloguj się
-                     </Link></>
-                     :<>
-                     <Link href = "#" onClick = {preventDefault} color = "inherit" className = {classes.rightDivider}>
-                        {user.username}
-                     </Link>
-                     <Link href="/login" onClick={logOut} color="inherit" className={classes.toolbarItem}>
-                        Wyloguj się
-                    </Link></>}
+                    
+                        {!user.username ?<>
+                        <Typography style = {
+                            {
+                                display: 'inline'
+                            }
+                        }
+                        className = {
+                            classes.rightDivider
+                        } >
+                        <Link href="#" onClick={preventDefault} color="inherit">
+                            ENGLISH VERSION
+                        </Link>
+                        </Typography>
+                        <Typography style = {
+                            {
+                                display: 'inline'
+                            }
+                        } className={classes.toolbarItem}>
+                        <Link href="/register" color="inherit">
+                            Zarejestruj się
+                        </Link>
+                        </Typography>
+                        <Typography style = {
+                            {
+                                display: 'inline'
+                            }
+                        } className={classes.toolbarItem}>
+                        <Link href="/login" color="inherit">
+                            Zaloguj się
+                        </Link></Typography></>
+                        :<>
+                        <Typography style = {
+                            {
+                                display: 'inline'
+                            }
+                        }
+                        className = {
+                            classes.rightDivider
+                        } >
+                        <Link href="#" onClick={preventDefault} color="inherit">
+                            ENGLISH VERSION
+                        </Link>
+                        </Typography>
+                        <Typography style = {
+                            {
+                                display: 'inline'
+                            }
+                        }
+                        className = {
+                            classes.toolbarItem
+                        } 
+                        color="textSecondary">
+                        <Link href = "#" onClick = {preventDefault} color = "inherit">
+                            {user.username}
+                        </Link>
+                        </Typography>
+                        <Typography style = {
+                            {
+                                display: 'inline'
+                            }
+                        } className={classes.toolbarItem}>
+                        <Link href="/login" onClick={logOut} color="inherit" >
+                            Wyloguj się
+                        </Link></Typography></>}
                 </Toolbar>
             </AppBar>
             <div className={classes.offset} />

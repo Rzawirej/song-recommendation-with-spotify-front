@@ -43,6 +43,7 @@ const useStyles = makeStyles(theme => ({
         top: theme.spacing(2),
         right: theme.spacing(2),      
         color: COLOR.pink,
+        cursor: 'pointer',
     },
     grid:{
         marginTop: theme.spacing(1)
@@ -128,7 +129,7 @@ const useStyles = makeStyles(theme => ({
             content: "''",
             borderTop: '2px solid white',
             top: '28%', 
-            left: '10%', 
+            left: '12%', 
             right: '12%', 
         }
     }
@@ -149,7 +150,7 @@ function StyledRadio(props) {
 
 export default withRouter(function RefreshPlaylistModal(props) {
     const classes = useStyles();
-    const [duration, setDuration] = React.useState('5');
+    const [duration, setDuration] = React.useState('1');
     const handleDurationChange = (event) => {
         setDuration(event.target.value);
     };
@@ -210,13 +211,13 @@ export default withRouter(function RefreshPlaylistModal(props) {
                             <FormControl component="fieldset">
                             <RadioGroup row value={duration} aria-label="czas trwania" name="customized-radios" onChange={handleDurationChange}>
                                 <div className={classes.radioContainer}>
+                                <FormControlLabel classes={{label: classes.radioLabel}} value="1" control={<StyledRadio />} label="1 godzina" labelPlacement="bottom"/>
+                                
+                                <FormControlLabel classes={{label: classes.radioLabel}} value="2" control={<StyledRadio />} label="2 godziny" labelPlacement="bottom"/>
+                                
                                 <FormControlLabel classes={{label: classes.radioLabel}} value="5" control={<StyledRadio />} label="5 godzin" labelPlacement="bottom"/>
                                 
                                 <FormControlLabel classes={{label: classes.radioLabel}} value="10" control={<StyledRadio />} label="10 godzin" labelPlacement="bottom"/>
-                                
-                                <FormControlLabel classes={{label: classes.radioLabel}} value="15" control={<StyledRadio />} label="15 godzin" labelPlacement="bottom"/>
-                                
-                                <FormControlLabel classes={{label: classes.radioLabel}} value="24" control={<StyledRadio />} label="24 godzin" labelPlacement="bottom"/>
                                 </div>
                             </RadioGroup>
                             </FormControl>

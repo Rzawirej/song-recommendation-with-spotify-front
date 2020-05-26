@@ -16,7 +16,8 @@ import Box from '@material-ui/core/Box'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
+import ImportExportIcon from '@material-ui/icons/ImportExport';
 
 import COLOR from './../../assets/colors'
 
@@ -90,6 +91,9 @@ export default withRouter(function PlaylistView(props) {
         label: <Typography color="textPrimary"> ODŚWIEŻ PLAYLISTĘ </Typography>,
         icon: <RefreshOutlinedIcon style={{color: COLOR.white}}/>
     },{
+        label: <Typography color="textPrimary"> EKSPORTUJ PLAYLISTĘ </Typography>,
+        icon: <ImportExportIcon style={{color: COLOR.white}}/>
+    },{
         label: <Typography color="textPrimary"> EDYTUJ WYDARZENIE </Typography>,
         icon: <SettingsOutlinedIcon style={{color: COLOR.white}}/>
     },];
@@ -98,17 +102,17 @@ export default withRouter(function PlaylistView(props) {
     const getDurationString = (duration) =>{
         console.log(duration)
         
-        if(duration===5){
-            return "5 godzin, 100 utworów"
+        if(duration===1){
+            return "1 godzina"
         }
-        if(duration===10){
-            return "10 godzin, 200 utworów"
+        if(duration===2){
+            return "2 godziny"
         }
-        if(duration === 15) {
-            return "15 godzin, 300 utworów"
+        if(duration === 5) {
+            return "5 godzin"
         }
-        if(duration === 24) {
-            return "24 godziny, 500 utworów"
+        if(duration === 10) {
+            return "10 godzin"
         }
         return ""
     }
@@ -131,6 +135,9 @@ export default withRouter(function PlaylistView(props) {
             props.setOpenRefresh(true);
         }
         if (index === 3) {
+            props.setOpenExport(true);
+        }
+        if (index === 4) {
             props.setOpenEdit(true);
         }
         props.setA(!props.a);
@@ -215,16 +222,17 @@ export default withRouter(function PlaylistView(props) {
 
                         <Box >
                             <Grid container spacing={2}>
-                                {menuItems.map((item,index) =>(
-                                    <>
-                                    <Grid className={props.isAdmin?'':classes.inactive} item xs = {8} align = 'right' >
+                                {menuItems.map((item,index) =>{
+                                    const isActive = (props.isAdmin && index !== 3) || (index===3 && localStorage.getItem('spotifyToken') && event.playlist.length>0) ?  '': classes.inactive;
+                                    return(<>
+                                    <Grid className={isActive} item xs = {8} align = 'right'>
                                         {item.label}
                                     </Grid>
-                                    <Grid className={props.isAdmin?'':classes.inactive} item xs={4} onClick={props.isAdmin?()=>handleMenuClick(index):undefined}>
+                                    <Grid className = {isActive} style={!isActive?{cursor: 'pointer'}:{}} item xs = {4} onClick = { !isActive ? () => handleMenuClick(index) : undefined} >
                                         {item.icon}
                                     </Grid>
-                                    </>
-                                ))}
+                                    </>)
+                                    })}
                                 
                                 
                                 
@@ -234,19 +242,19 @@ export default withRouter(function PlaylistView(props) {
                     </Box>
                 <List className={classes.list}>
                     {event.playlist.length>0?event.playlist.map((song, index) =>{ return (<>
-                    <ListItem  onClick={()=>handleClick(index)}>
-                        <span style={{marginRight: '40px', width: '1%'}}>
+                    <ListItem  style={{cursor:'pointer'}} onClick={()=>handleClick(index)}>
+                        <Typography style={{width: '1%', marginRight: '40px'}} color="textPrimary">
                             {index+1}.
-                        </span>
+                        </Typography>
                         <ListItemIcon className={classes.listItem} >
                         {index === selectedIndex?<ExpandLess color='secondary'/>:<ExpandMore />}
                         </ListItemIcon>
-                        <span style={{width: '40%'}}>
+                        <Typography style={{width: '40%'}}  color="textPrimary">
                             {song.artist[0]}
-                        </span>
-                        <span style={{width: '40%'}}>
+                        </Typography>
+                        <Typography style={{width: '40%'}} color="textPrimary">
                             {song.name}
-                        </span>
+                        </Typography>
 
                         {/*<ListItemText style={{textAlign:"right", margin:0}} primary="X" />*/}
                     </ListItem>
@@ -254,14 +262,16 @@ export default withRouter(function PlaylistView(props) {
                         <div className={classes.flexRow}>
                             <Avatar style={{marginLeft: '120px', marginRight: '40px', width:'80px', height:'80px'}}variant="square" src={song.image_url}/>
                             <div>
-                                {song.album}
-                                <div></div>
-
-                                {Math.floor(song.duration/60000)>10?Math.floor(song.duration/60000):'0'+Math.floor(song.duration/60000)}:{Math.floor(song.duration/10000)>=10?Math.floor(song.duration/10000):'0'+Math.floor(song.duration/10000)}
+                                <Typography color="textPrimary">
+                                    {song.album}
+                                </Typography>
+                                <Typography color="textPrimary">
+                                    {Math.floor(song.duration/60000)>10?Math.floor(song.duration/60000):'0'+Math.floor(song.duration/60000)}:{Math.floor(song.duration/10000)>=10?Math.floor(song.duration/10000):'0'+Math.floor(song.duration/10000)}
+                                </Typography>
                             </div>
-                            <Typography variant="h5" color="textPrimary">
+                            
                                  
-                            </Typography>
+                            
                             <Typography variant="h5" color="textPrimary">
                                  
                             </Typography>
@@ -273,8 +283,8 @@ export default withRouter(function PlaylistView(props) {
                     </>
                     )})
                     :
-                    <Typography color="textPrimary">
-                            To wydarzenie nie ma jeszcze playlisty
+                    <Typography color="textPrimary" variant="h4" style={{textAlign:'center', marginTop:'50px'}}>
+                            To wydarzenie nie ma jeszcze stworzonej playlisty
                     </Typography>}
                 </List>
     

@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 import AddIcon from '@material-ui/icons/Add';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -65,6 +66,17 @@ const useStyles = makeStyles((theme) => ({
     },  
     inactive:{
         opacity: 0.1,
+    }, button: {
+        width: '100%',
+        background: COLOR.pink,
+        marginTop: '20px',
+        marginBottom: '20px',
+        borderRadius: 50,
+        border: 0,
+        color: 'black',
+        height: 48,
+        padding: '0 30px',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
@@ -92,17 +104,17 @@ export default withRouter(function EventsView(props) {
 
     const getDurationString = (duration) =>{
         console.log(duration)
-        if(duration===5){
-            return "5 godzin, 100 utworów"
+        if(duration===1){
+            return "1 godzina"
         }
-        if(duration===10){
-            return "10 godzin, 200 utworów"
+        if(duration===2){
+            return "2 godziny"
         }
-        if(duration === 15) {
-            return "15 godzin, 300 utworów"
+        if(duration === 5) {
+            return "5 godzin"
         }
-        if(duration === 24) {
-            return "24 godziny, 500 utworów"
+        if(duration === 10) {
+            return "10 godzin"
         }
         return ""
 
@@ -214,7 +226,7 @@ export default withRouter(function EventsView(props) {
                 </Typography>
                 {   events.length >= 1 && events[0].name?
                     events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=1; let isAdmin=checkAdmin(event,user); return(<>
-                    <Box className={classes.flexRow} onClick={()=>openEvent(event.id, isActive)}>
+                    <Box className={classes.flexRow} >
                         <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} />
                         <Box style={{width: '90%'}}>
                             <Typography variant="h5" color="textPrimary">
@@ -285,21 +297,33 @@ export default withRouter(function EventsView(props) {
                                     </Typography>
                                 </Grid>
                             </Grid>
+                            <Button
+                                inputProps={{ className: classes.fieldInput }}
+                                className={classes.button}
+                                variant="outlined"
+                                onClick={()=>openEvent(event.id, isActive)}
+                                >
+                                PRZEJDŹ DO WYDARZENIA
+                
+                            </Button>
                         </Box>
 
-                        <Box >
+                        <Box>
                             <Grid container spacing={2} style={{opacity: 0.5}}>
-                                {menuItems.map((item,index) =>(
+                                {menuItems.map((item,index) =>{
+                                    const isNotClickable = (!isActive && index === 2) || !isAdmin;
+                                    return(
                                     <>
-                                    <Grid className = { (!isActive && index===2) || !isAdmin?classes.inactive:''} item xs = {5} align = 'right' >
+                                    <Grid className = { isNotClickable ?classes.inactive:''} item xs = {5} align = 'right' >
                                         {item.label}
                                     </Grid>
-                                    <Grid className = { (!isActive && index === 2) || !isAdmin ? classes.inactive : ''} item xs = {7}
-                                        onClick = {(!isActive && index === 2) || !isAdmin?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}>
+                                    <Grid className = { isNotClickable ? classes.inactive : ''} item xs = {7}
+                                        style= {{cursor: isNotClickable?'':'pointer'}}
+                                        onClick = {isNotClickable?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}>
                                         {item.icon}
                                     </Grid>
                                     </>
-                                ))}
+                                )})}
                                 
                                 
                                 
@@ -307,6 +331,7 @@ export default withRouter(function EventsView(props) {
 
                         </Box>
                     </Box>
+
                      <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
                     </>
                     )}):null

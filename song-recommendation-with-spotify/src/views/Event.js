@@ -10,6 +10,7 @@ import AddParticipantsModal from '../components/AddParticipantsModal/AddParticip
 import CreateEventModal from '../components/CreateEventModal/CreateEventModal';
 import DeleteEventModal from '../components/DeleteEventModal/DeleteEventModal';
 import RefreshPlaylistModal from '../components/RefreshPlaylistModal/RefreshPlaylistModal';
+import ExportPlaylistModal from '../components/ExportPlaylistModal/ExportPlaylistModal';
 import {getToken} from '../utils/UserFunctions'
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +26,7 @@ function Event(props){
         const [openEdit, setOpenEdit] = React.useState(false);
         const [openDelete, setOpenDelete] = React.useState(false);
         const [openRefresh, setOpenRefresh] = React.useState(false);
+        const [openExport, setOpenExport] = React.useState(false);
         const [a, setA] = React.useState(false);
         const [, setUser] = React.useState({
             username: ''
@@ -89,12 +91,13 @@ function Event(props){
                 <TopBar/>
                 <SideMenu/>
                 
-                <PlaylistView isAdmin={isAdmin} event={event} setOpenInvite={setOpenInvite} setOpenEdit={setOpenEdit} setOpenDelete={setOpenDelete} setOpenRefresh={setOpenRefresh} a={a} setA={setA}/>
+                <PlaylistView isAdmin={isAdmin} event={event} setOpenInvite={setOpenInvite} setOpenEdit={setOpenEdit} setOpenDelete={setOpenDelete} setOpenRefresh={setOpenRefresh} setOpenExport={setOpenExport} a={a} setA={setA}/>
                 <ParticipantsMenu isAdmin={isAdmin} event={event}/>
                 
                 <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={event.invitation_link} eventId={event.id} eventPage={true} a={a} setA={setA}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={event.invitation_link} eventId={event.id} isEdit={true}/>
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={event.id}/>
+                <ExportPlaylistModal open={openExport} setOpen={setOpenExport} eventId={event.id}/>
                 <RefreshPlaylistModal open={openRefresh} setOpen={setOpenRefresh} eventId={event.id} eventDuration={event.duration_time}/>
             </div>
         )

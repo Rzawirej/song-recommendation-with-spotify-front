@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
         top: theme.spacing(2),
         right: theme.spacing(2),      
         color: COLOR.pink,
+        cursor: 'pointer',
     },
     grid:{
         marginTop: theme.spacing(1)

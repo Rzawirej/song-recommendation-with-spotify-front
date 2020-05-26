@@ -49,8 +49,7 @@ export default class App extends React.Component {
 
     render(){
         return (
-        <Router basename={process.env.REACT_APP_BASENAME || ""}>
-        
+        <Router basename={process.env.REACT_APP_BASENAME || ""}>            
             <Switch>
                 <Route path="/" exact component={MainPage}/>
                 <NotLoggedRoute path="/login" component={Login}/>
