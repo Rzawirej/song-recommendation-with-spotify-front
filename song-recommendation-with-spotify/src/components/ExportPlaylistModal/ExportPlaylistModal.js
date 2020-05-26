@@ -139,7 +139,7 @@ export default withRouter(function InviteLoggedModal(props) {
                         
                        <Grid item xs={3} align='right'>
                             <Typography color="textSecondary">
-                                        Nazwa wydarzenia 
+                                        Nazwa playlisty 
                             </Typography>
                         </Grid>
                         <Grid item xs={9}>
@@ -164,7 +164,7 @@ export default withRouter(function InviteLoggedModal(props) {
                             <TextField
                                 InputProps={{ classes: {notchedOutline: classes.notchedOutline, focused: classes.focused},} }
                                 inputProps={{'maxLength': 150}}
-                                placeholder = "Poinformuj znajomych o szczegółach wydarzenia..."
+                                placeholder = "Dodaj opis..."
                                 helperText={`${description.length}/150`}
                                 className={classes.multilineField}
                                 value={description}
