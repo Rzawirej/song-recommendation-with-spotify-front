@@ -121,7 +121,7 @@ class Register extends React.Component{
                             fontFamily: 'NunitoSans'
                         }}>
                         Zarejestruj się przy użyciu swojego adresu e-mail.
-                        </div>     
+                        </div>
                     </Grid>
                     <Grid item>
                         <_Field label="Nazwa Użytkownika" onChange={this.handleUsernameChange}/>

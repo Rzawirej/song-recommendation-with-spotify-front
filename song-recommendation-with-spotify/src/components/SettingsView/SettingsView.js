@@ -77,14 +77,20 @@ class SettingsView extends React.Component{
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleEmailChangeValue = this.handleEmailChangeValue.bind(this);
+        this.handleUsernameChangeValue = this.handleUsernameChangeValue.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.getUser = this.getUser.bind(this);
         this.changePreferences = this.changePreferences.bind(this);
         this.state = {
             expanded: null,
+            emailChangeValue: '',
             language: "polish",
             user: {
                 username: '',
+                pref_genres: []
             },
             openPreferences: false,
         };
@@ -115,6 +121,24 @@ class SettingsView extends React.Component{
           });
       };
 
+    handleEmailChangeValue(event) {
+        this.setState({
+            emailChangeValue: event.target.value
+            });
+    };
+
+    handleUsernameChangeValue(event) {
+        this.setState({
+            usernameChangeValue: event.target.value
+            });
+    };
+
+    handlePasswordChange(event) {
+        this.setState({
+            passwordChangeValue: event.target.value
+            });
+    };
+
     async getUser() {
         let token = localStorage.getItem('token');
         console.log(token)
@@ -131,13 +155,76 @@ class SettingsView extends React.Component{
         })
     }
 
+    async handleEmailChange() {
+        let token = localStorage.getItem('token');
+        await axios.put('/user/current',
+            {
+                'email': this.state.emailChangeValue
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        ).then(({data }) => {
+            console.log(data)
+            this.setState({
+                user: data.user
+            })
+        })
+    }
+
+    async handlePasswordChange() {
+        let token = localStorage.getItem('token');
+        await axios.put('/user/current',
+            {
+                'password': this.state.usernameChangeValue
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        ).then(({data }) => {
+            console.log(data)
+            this.setState({
+                user: data.user
+            })
+        })
+    }
+
+    async handleUsernameChange() {
+        let token = localStorage.getItem('token');
+        await axios.put('/user/current',
+            {
+                'username': this.state.usernameChangeValue
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        ).then(({data }) => {
+            console.log(data)
+            this.setState({
+                user: data.user
+            })
+        })
+    }
+
+    async handlePreferencesChange(){
+        this.getUser();
+    }
+
     render(){
         const { classes } = this.props;
         const gridLeftColumnInfo = 12
         const gridRightColumnInfo = 12
         const expandMoreInfo = 12
-        console.log("RENDER");
-        console.log(this.state.user)
+        console.log(this.state.user.pref_genres);
+        if(this.state.user.pref_genres.length < 1){
+            this.state.user.pref_genres = ['gatunek 1', 'gatunek 2', 'gatunek 3', 'gatunek 4']
+        }
         
         return(
             <main className={classes.content}>
@@ -163,9 +250,11 @@ class SettingsView extends React.Component{
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails className={classes.flexColumn}>
-                                    <_Field label="Podaj nową nazwę użytkownika" onChange={this.handleEmailChange}/>
+                                    <_Field label="Podaj nową nazwę użytkownika" onChange={this.handleUsernameChangeValue}/>
                                     <br></br>
-                                    <_Button label='Zmień' />
+                                    <span onClick={this.handleUsernameChange}>
+                                        <_Button label='Zmień' />
+                                    </span>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         </Grid>
@@ -189,9 +278,11 @@ class SettingsView extends React.Component{
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails  className={classes.flexColumn}>
-                                    <_Field label="Podaj nowy adres mailowy" onChange={this.handleEmailChange}/>
+                                    <_Field label="Podaj nowy adres mailowy" onChange={this.handleEmailChangeValue}/>
                                     <br></br>
-                                    <_Button label='Zmień' />
+                                    <span onClick={this.handleEmailChange}>
+                                        <_Button label='Zmień' />
+                                    </span>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         </Grid>
@@ -215,11 +306,9 @@ class SettingsView extends React.Component{
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails className={classes.flexColumn}>
-                                    <_PField label="Podaj nowe hasło" onChange={this.handleEmailChange}/>
+                                    <_PField label="Podaj nowe hasło" onChange={this.handlePasswordChangeValue}/>
                                     <br></br>
-                                    <_PField label="Podaj stare hasło" onChange={this.handleEmailChange}/>
-                                    <br></br>
-                                    <_Button label='Zmień' />
+                                    <_Button label='Zmień' onChange={this.handlePasswordChange}/>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         </Grid>
@@ -295,14 +384,11 @@ class SettingsView extends React.Component{
                                         Preferencje muzyczne
                                     </Typography>
                                     <Typography className={classes.secondaryHeading}>
-                                        gatunek1 <br></br>
-                                        gatunek2 <br></br>
-                                        gatunek3 <br></br>
-                                        gatunek4 <br></br>
+                                        {this.state.user.pref_genres.map(item => item + " ")}
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails className = {classes.flexColumn} onClick={this.changePreferences}>
-                                    <_Button label='Zmień' />
+                                    <_Button label='Zmień' onChange={this.handlePreferencesChange}/>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         </Grid>
