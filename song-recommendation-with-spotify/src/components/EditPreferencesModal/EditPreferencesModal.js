@@ -85,24 +85,96 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const genres = [
+    {
+      value: "chamber pop"
+    },
+    {
+      value: "indie folk"
+    },
+    {
+      value: "indie rock"
+    },
+    {
+      value: "indie pop"
+    },
+    {
+      value: "alternative rock"
+    },
+    {
+      value: "art pop"
+    },
+    {
+      value: "stomp and holler"
+    },
+    {
+        value: "freak folk"
+    },
+    {
+      value: "modern rock"
+    },
+    {
+      value: "neo mellow"
+    },
+    {
+      value: "folk rock"
+    },
+    {
+        value: "soft rock"
+    },
+    {
+        value: "adult standards"
+    },
+    {
+        value: "mellow gold"
+    }
+];
+
 
 export default withRouter(function EditPreferencesModal(props) {
     const classes = useStyles();
-    const [openDelete, setOpenDelete] = React.useState(false);
+    const [openDelete, setOpenDelete] = React.useState(false);    
+    const [gatunek1, setGatunek1] = React.useState("chamber pop");
+    const [gatunek2, setGatunek2] = React.useState("indie folk");
+    const [gatunek3, setGatunek3] = React.useState("chamber pop");
+    const [gatunek4, setGatunek4] = React.useState("indie rock");
+
     const handleSubmit = async () => {
         let token = localStorage.getItem('token');
+        console.log({'pref_genres': [gatunek1, gatunek2, gatunek3, gatunek4]});
         //tutaj do puta rzuć te preferencje, które pozyskasz z selectów
-        let res = await axios.put('/user/current', {}, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+        let res = await axios.put('/user/current', 
+            {
+                'pref_genres': [gatunek1, gatunek2, gatunek3, gatunek4]
+            }, 
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             }
-        })
+        )
         handleClose();
     }
     
 
     const handleClose = () => {
         props.setOpen();
+    };
+
+    const handleChange1 = (event) => {
+        setGatunek1(event.target.value);
+    };
+
+    const handleChange2 = (event) => {
+        setGatunek2(event.target.value);
+    };
+    
+    const handleChange3 = (event) => {
+        setGatunek3(event.target.value);
+    };
+
+    const handleChange4 = (event) => {
+        setGatunek4(event.target.value);
     };
 
     return (
@@ -127,16 +199,16 @@ export default withRouter(function EditPreferencesModal(props) {
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
-                                    value='gatunek 1'
+                                    value={gatunek1}
+                                    onChange={handleChange1}
                                     variant="outlined"
                                     style = {{color: 'white'}}
                                     >
-                                        <MenuItem key={'gatunek 1'} value={'gatunek 1'}>
-                                            gatunek 1
-                                        </MenuItem>
-                                        <MenuItem key={'gatunek 2'} value={'gatunek 2'}>
-                                            gatunek 2
-                                        </MenuItem>
+                                        {genres.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                            {option.value}
+                                            </MenuItem>
+                                        ))}
                                     ))}
                                 </TextField>
                             </Grid>
@@ -145,15 +217,15 @@ export default withRouter(function EditPreferencesModal(props) {
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
-                                    value='gatunek 2'
+                                    value={gatunek2}
+                                    onChange={handleChange2}
                                     variant="outlined"
                                     >
-                                        <MenuItem key={'gatunek 2'} value={'gatunek 2'}>
-                                            gatunek 2
-                                        </MenuItem>
-                                        <MenuItem key={'gatunek 3'} value={'gatunek 3'}>
-                                            gatunek 3
-                                        </MenuItem>
+                                        {genres.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                            {option.value}
+                                            </MenuItem>
+                                        ))}
                                     ))}
                             </TextField>
                             </Grid>
@@ -162,15 +234,15 @@ export default withRouter(function EditPreferencesModal(props) {
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
-                                    value='gatunek 3'
+                                    value={gatunek3}
+                                    onChange={handleChange3}
                                     variant="outlined"
                                     >
-                                        <MenuItem key={'gatunek 3'} value={'gatunek 3'}>
-                                            gatunek 3
-                                        </MenuItem>
-                                        <MenuItem key={'gatunek 4'} value={'gatunek 4'}>
-                                            gatunek 4
-                                        </MenuItem>
+                                        {genres.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                            {option.value}
+                                            </MenuItem>
+                                        ))}
                                     ))}
                             </TextField>
                             </Grid>
@@ -179,15 +251,15 @@ export default withRouter(function EditPreferencesModal(props) {
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
-                                    value='gatunek 4'
+                                    value={gatunek4}
+                                    onChange={handleChange4}
                                     variant="outlined"
                                     >
-                                        <MenuItem key={'gatunek 4'} value={'gatunek 4'}>
-                                            gatunek 4
-                                        </MenuItem>
-                                        <MenuItem key={'gatunek 5'} value={'gatunek 5'}>
-                                            gatunek 5
-                                        </MenuItem>
+                                        {genres.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                            {option.value}
+                                            </MenuItem>
+                                        ))}
                                     ))}
                             </TextField>
                             </Grid>

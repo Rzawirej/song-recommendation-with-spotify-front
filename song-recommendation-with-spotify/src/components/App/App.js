@@ -31,7 +31,7 @@ export default class App extends React.Component {
         };
     }
     async componentDidMount (){
-        axios.defaults.baseURL = 'http://156.17.130.143/api';
+        axios.defaults.baseURL = 'https://joyina.live/api';
        /* let token = localStorage.getItem('token');
         axios.get('/user/current', {
             headers: {
