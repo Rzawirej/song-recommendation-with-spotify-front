@@ -314,7 +314,10 @@ export default withRouter(function EventsView(props) {
                                     const isNotClickable = (!isActive && index === 2) || !isAdmin;
                                     return(
                                     <>
-                                    <Grid className = { isNotClickable ?classes.inactive:''} item xs = {5} align = 'right' >
+                                    <Grid className = { isNotClickable ?classes.inactive:''} item xs = {5} align = 'right' 
+                                        style= {{cursor: isNotClickable?'':'pointer'}}
+                                        onClick = {isNotClickable?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}
+                                       >
                                         {item.label}
                                     </Grid>
                                     <Grid className = { isNotClickable ? classes.inactive : ''} item xs = {7}
