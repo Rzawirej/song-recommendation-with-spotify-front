@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import Button from '@material-ui/core/Button';
+import {getToken} from '../../utils/UserFunctions';
 
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -140,7 +141,7 @@ export default withRouter(function EditPreferencesModal(props) {
     const [gatunek4, setGatunek4] = React.useState("indie rock");
 
     const handleSubmit = async () => {
-        let token = localStorage.getItem('token');
+        let token = getToken();
         console.log({'pref_genres': [gatunek1, gatunek2, gatunek3, gatunek4]});
         //tutaj do puta rzuć te preferencje, które pozyskasz z selectów
         let res = await axios.put('/user/current', 

@@ -21,6 +21,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import EditPreferencesModal from '../EditPreferencesModal/EditPreferencesModal';
+import {getToken} from '../../utils/UserFunctions';
 
 
 const useStyles = theme => ({
@@ -140,7 +141,7 @@ class SettingsView extends React.Component{
     };
 
     async getUser() {
-        let token = localStorage.getItem('token');
+        let token = getToken();
         console.log(token)
         await axios.get('/user/current', {
             headers: {
@@ -156,7 +157,7 @@ class SettingsView extends React.Component{
     }
 
     async handleEmailChange() {
-        let token = localStorage.getItem('token');
+        let token = getToken();
         await axios.put('/user/current',
             {
                 'email': this.state.emailChangeValue
@@ -175,7 +176,7 @@ class SettingsView extends React.Component{
     }
 
     async handlePasswordChange() {
-        let token = localStorage.getItem('token');
+        let token = getToken();
         await axios.put('/user/current',
             {
                 'password': this.state.usernameChangeValue
@@ -194,7 +195,7 @@ class SettingsView extends React.Component{
     }
 
     async handleUsernameChange() {
-        let token = localStorage.getItem('token');
+        let token = getToken();
         await axios.put('/user/current',
             {
                 'username': this.state.usernameChangeValue
