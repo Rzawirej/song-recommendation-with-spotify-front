@@ -247,7 +247,7 @@ export default function CreateEventModal(props) {
                 description: description,
                 image_url: photo,
                 start_date: nowDate,
-                end_date: availability==='2'?endDate:'4000-01-01',
+                end_date: availability==='2'?endDate?endDate:'4000-01-01':'4000-01-01',
                 duration_time: parseInt(duration)
             }, {
                 headers: {
@@ -423,7 +423,7 @@ export default function CreateEventModal(props) {
                         </Grid>
                         <Grid item xs={9}>
                             <Grid container spacing = {2}>
-                                <Grid style = {{display: 'flex', alignItems: 'center'}} item xs = {11} >
+                                <Grid style = {{display: 'flex', alignItems: 'center', cursor:'pointer'}} item xs = {11} onClick={()=>{setAvailability("1")}}>
                                     <Typography color="textPrimary">
                                                 BEZTERMINOWO
                                     </Typography>
@@ -437,7 +437,7 @@ export default function CreateEventModal(props) {
                                         </RadioGroup>
                                     </FormControl>
                                 </Grid>
-                                <Grid style = {{display: 'flex', alignItems: 'center'}} item xs = { 11 } >
+                                <Grid style = {{display: 'flex', alignItems: 'center', cursor:'pointer'}} item xs = { 11 } onClick={()=>{setAvailability("2")}}>
                                     <Typography  color = "textPrimary" >
                                                 OKREŚLONA CZASEM
                                     </Typography>

@@ -225,10 +225,18 @@ export default withRouter(function PlaylistView(props) {
                                 {menuItems.map((item,index) =>{
                                     const isActive = (props.isAdmin && index !== 3) || (index===3 && localStorage.getItem('spotifyToken') && event.playlist.length>0) ?  '': classes.inactive;
                                     return(<>
-                                    <Grid className={isActive} item xs = {8} align = 'right'>
+                                    <Grid className={isActive} 
+                                        item xs = {8} 
+                                        align = 'right'
+                                        style={!isActive?{cursor: 'pointer'}:{}} 
+                                        onClick = { !isActive ? () => handleMenuClick(index) : undefined}
+                                        >
                                         {item.label}
                                     </Grid>
-                                    <Grid className = {isActive} style={!isActive?{cursor: 'pointer'}:{}} item xs = {4} onClick = { !isActive ? () => handleMenuClick(index) : undefined} >
+                                    <Grid className = {isActive} 
+                                        style={!isActive?{cursor: 'pointer'}:{}} 
+                                        item xs = {4} 
+                                        onClick = { !isActive ? () => handleMenuClick(index) : undefined} >
                                         {item.icon}
                                     </Grid>
                                     </>)
