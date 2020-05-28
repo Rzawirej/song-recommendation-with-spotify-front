@@ -8,6 +8,7 @@ import Link from '@material-ui/core/Link'
 import axios from 'axios'
 import { register } from '../utils/UserFunctions'
 import background from '../assets/background.png';
+import EditPreferencesModal from '../components/EditPreferencesModal/EditPreferencesModal';
 
 class Register extends React.Component{
     constructor(props){
@@ -85,6 +86,12 @@ class Register extends React.Component{
         })
     }
 
+    changePreferences = () => {
+        this.setState({
+            openPreferences: !this.state.openPreferences
+        });
+    };
+
     render() {
         return(
             <div style = {{
@@ -137,6 +144,10 @@ class Register extends React.Component{
                     </Grid>
                     <Grid item>
                         <p style={{color:"red"}} >{this.state.registerErrorMessage}</p>
+                    </Grid>
+                    <Grid>
+                        <EditPreferencesModal open={this.state.openPreferences}
+                         setOpen={this.changePreferences} preferences={this.state.user.pref_genres}/>
                     </Grid>
                     <Grid item>
                         <span onClick={this.registerAction}>

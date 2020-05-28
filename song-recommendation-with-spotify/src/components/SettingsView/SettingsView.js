@@ -224,7 +224,7 @@ class SettingsView extends React.Component{
         const expandMoreInfo = 12
         console.log(this.state.user.pref_genres);
         if(this.state.user.pref_genres.length < 1){
-            this.state.user.pref_genres = ['gatunek 1', 'gatunek 2', 'gatunek 3', 'gatunek 4']
+            this.state.user.pref_genres = ["Ustaw preferencje w celu lepszej rekomendacji."]
         }
         
         return(
