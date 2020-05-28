@@ -85,10 +85,14 @@ class SettingsView extends React.Component{
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.getUser = this.getUser.bind(this);
         this.changePreferences = this.changePreferences.bind(this);
+        this.handleOldPasswordChangeValue = this.handleOldPasswordChangeValue.bind(this);
+        this.handleNewPasswordChangeValue = this.handleNewPasswordChangeValue.bind(this);
         this.state = {
             expanded: null,
             emailChangeValue: '',
             language: "polish",
+            oldPasswordChangeValue: '',
+            newPasswordChangeValue: '',
             user: {
                 username: '',
                 pref_genres: []
@@ -131,14 +135,20 @@ class SettingsView extends React.Component{
     handleUsernameChangeValue(event) {
         this.setState({
             usernameChangeValue: event.target.value
-            });
+        });
     };
 
-    handlePasswordChange(event) {
+    handleOldPasswordChangeValue(event) {
         this.setState({
-            passwordChangeValue: event.target.value
-            });
+            oldPasswordChangeValue: event.target.value
+        });
     };
+
+    handleNewPasswordChangeValue(event){
+        this.setState({
+            newPasswordChangeValue: event.target.value
+        })
+    }
 
     async getUser() {
         let token = getToken();
@@ -179,7 +189,8 @@ class SettingsView extends React.Component{
         let token = getToken();
         await axios.put('/user/current',
             {
-                'password': this.state.usernameChangeValue
+                'old_password': this.state.oldPasswordChangeValue,
+                'password': this.state.newPasswordChangeValue
             },
             {
                 headers: {
@@ -211,10 +222,6 @@ class SettingsView extends React.Component{
                 user: data.user
             })
         })
-    }
-
-    async handlePreferencesChange(){
-        this.getUser();
     }
 
     render(){
@@ -307,7 +314,9 @@ class SettingsView extends React.Component{
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails className={classes.flexColumn}>
-                                    <_PField label="Podaj nowe hasło" onChange={this.handlePasswordChangeValue}/>
+                                    <_PField label="Podaj stare hasło" onChange={this.handleOldPasswordChangeValue}/>
+                                    <br></br>
+                                    <_PField label="Podaj nowe hasło" onChange={this.handleNewPasswordChangeValue}/>
                                     <br></br>
                                     <_Button label='Zmień' onChange={this.handlePasswordChange}/>
                                 </ExpansionPanelDetails>
@@ -350,30 +359,6 @@ class SettingsView extends React.Component{
                 <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
                 <Box>
                     <Grid container alignItems="flex-end" direction="row">
-                        <Grid item>
-                            <ExpansionPanel
-                                expanded={this.state.expanded === "spotify"}
-                                onChange={this.handleChange("spotify")}
-                                className = {classes.expansionPanel }
-                                >
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon style = {{color: 'white' }}/>}>
-                                    <Typography className={classes.heading}>
-                                        Spotify
-                                    </Typography>
-                                    <Typography className={classes.secondaryHeading}>
-                                        niepołączono
-                                    </Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails className = {classes.flexColumn}>
-                                    <_Button label='Zmień konto' />
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                        </Grid>
-                    </Grid>
-                </Box>
-                <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
-                <Box>
-                    <Grid container alignItems="flex-end" direction="row">
                         <Grid item >
                             <ExpansionPanel
                                 expanded={this.state.expanded === "preferences"}
@@ -394,7 +379,9 @@ class SettingsView extends React.Component{
                             </ExpansionPanel>
                         </Grid>
                     </Grid>
-                    <EditPreferencesModal open={this.state.openPreferences} setOpen={this.changePreferences} preferences={this.state.user.pref_genres}/>
+                    <EditPreferencesModal open={this.state.openPreferences} 
+                    setOpen={this.changePreferences} preferences={this.state.user.pref_genres}
+                    register={false}/>
                 </Box> 
             </main>
         )

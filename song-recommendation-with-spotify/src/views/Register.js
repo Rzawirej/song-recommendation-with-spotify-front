@@ -9,6 +9,8 @@ import axios from 'axios'
 import { register } from '../utils/UserFunctions'
 import background from '../assets/background.png';
 import EditPreferencesModal from '../components/EditPreferencesModal/EditPreferencesModal';
+import {getToken} from '../utils/UserFunctions';
+import { setToken } from '../utils/UserFunctions'
 
 class Register extends React.Component{
     constructor(props){
@@ -18,19 +20,24 @@ class Register extends React.Component{
             password:'',
             username:'',
             passwordRepeat:'',
-            registerErrorMessage: ''
+            registerErrorMessage: '',
+            pref_genres: [],
+            openPreferences: false
         }
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleRepeatPasswordChange = this.handleRepeatPasswordChange.bind(this);
         this.registerAction = this.registerAction.bind(this);
+        this.changePreferences = this.changePreferences.bind(this);
+        this.onSubmitPreferences = this.onSubmitPreferences.bind(this);
     }
-
     
     registerAction(e) {
         e.preventDefault()
-        console.log(this.state);
+        this.setState({
+            openPreferences: !this.state.openPreferences
+        });
         
         if(this.state.password != this.state.passwordRepeat){
             this.setState({registerErrorMessage:'Hasła nie są takie same!'});
@@ -47,7 +54,13 @@ class Register extends React.Component{
                 password: newUser.password,
                 username: newUser.username
             }).then(res => {
-                this.props.history.push(`/login`)
+                axios.post('/login', {
+                    email: newUser.email,
+                    password: newUser.password
+                })
+                .then(res => {
+                    setToken(res.data.access_token, 10080)
+                })
             }).catch(err => {
                 if (err.response.data.message.email){
                     this.setState({
@@ -92,6 +105,27 @@ class Register extends React.Component{
         });
     };
 
+    onSubmitPreferences = () => {
+        let token = getToken();
+        axios.put('/user/current',
+            {
+                'pref_genres': this.state.pref_genres
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        ).then(({data }) => {
+            let back;
+            if(this.props.history.location.state){
+                back = this.props.history.location.state.from
+            }
+            this.props.history.push(back||`/event`)
+        })
+    }
+
+
     render() {
         return(
             <div style = {{
@@ -115,8 +149,7 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'
-                        }}>
+                            fontFamily: 'NunitoSans'}}>
                             lub
                         </div>
                     </Grid>
@@ -145,10 +178,6 @@ class Register extends React.Component{
                     <Grid item>
                         <p style={{color:"red"}} >{this.state.registerErrorMessage}</p>
                     </Grid>
-                    <Grid>
-                        <EditPreferencesModal open={this.state.openPreferences}
-                         setOpen={this.changePreferences} preferences={this.state.user.pref_genres}/>
-                    </Grid>
                     <Grid item>
                         <span onClick={this.registerAction}>
                             <_Button useClassGreen={false} label='ZAREJESTRUJ SIĘ'  />
@@ -176,6 +205,11 @@ class Register extends React.Component{
                         </div>     
                     </Grid>
                 </Grid>
+                <EditPreferencesModal open={this.state.openPreferences}
+                 setOpen={this.changePreferences}
+                preferences={this.state.pref_genres}
+                onSubmitPreferences={this.onSubmitPreferences}
+                register={true}/>
             </div>
         )
     }

@@ -15,7 +15,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Grid from '@material-ui/core/Grid';
 
 import COLOR from './../../assets/colors'
-
+import {getToken} from '../../utils/UserFunctions';
 
 const useStyles = makeStyles(theme => ({
     modal: {
@@ -140,7 +140,7 @@ export default withRouter(function EditPreferencesModal(props) {
     const [gatunek4, setGatunek4] = React.useState("indie rock");
 
     const handleSubmit = async () => {
-        let token = localStorage.getItem('token');
+        let token = getToken();
         console.log({'pref_genres': [gatunek1, gatunek2, gatunek3, gatunek4]});
         //tutaj do puta rzuć te preferencje, które pozyskasz z selectów
         let res = await axios.put('/user/current', 
@@ -153,10 +153,16 @@ export default withRouter(function EditPreferencesModal(props) {
                 }
             }
         )
+        
+        if(props.register == true){
+            props.history.push(`/event`)
+        }
         handleClose();
     }
     
-
+    const onSubmitPreferences = () => {
+        props.onSubmitPreferences();
+    }
     const handleClose = () => {
         props.setOpen();
     };
