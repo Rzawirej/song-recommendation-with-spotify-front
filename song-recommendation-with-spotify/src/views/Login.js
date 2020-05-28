@@ -46,7 +46,7 @@ class Login extends React.Component{
             console.log(err)
             if(err.response){
                 this.setState({
-                    loginErrorMessage: err.response.data.message
+                    loginErrorMessage: "Niepoprawny email lub hasło."
                 });
             }
             

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
             background: COLOR.darkBlue,
         },
     title: {
-        marginLeft: theme.spacing(25),
+        marginLeft: theme.spacing(10),
         marginBottom: theme.spacing(10)
     },
     fab: {
@@ -120,12 +120,7 @@ export default withRouter(function EventsView(props) {
 
     }
 
-    const [events, setEvents] = React.useState([{
-        name: '',
-        participants: [],
-        start_date: '',
-        end_date: '',
-    }]);
+    const [events, setEvents] = React.useState([]);
     
     const [openCreate, setOpenCreate] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
@@ -136,6 +131,7 @@ export default withRouter(function EventsView(props) {
     const [eventId, setEventId] = React.useState('');
     const [invLink, setInvLink] = React.useState('');
     const [duration, setDuration] = React.useState('5');
+    const [hasPlaylist, setHasPlaylist] = React.useState(false);
 
     const handleOpen = () => {
         setOpenCreate(true);
@@ -145,6 +141,7 @@ export default withRouter(function EventsView(props) {
         setEventId(event.id);
         setInvLink(event.invitation_link);
         setDuration(event.duration_time+'');
+        setHasPlaylist(event.playlist.length>0);
         if(index === 0){
             setOpenDelete(true);
         }
@@ -222,12 +219,12 @@ export default withRouter(function EventsView(props) {
                 
                 <div className={classes.toolbar} />
                 <Typography className={`${classes.title} ${classes.list}`} variant="h3" color="textPrimary">
-                           Wydarzenia
+                Wydarzenia
                 </Typography>
-                {   events.length >= 1 && events[0].name?
+                {   events.length >= 1?
                     events.map((event, index) => {let firstAdmin = true; let isActive = event.participants.length>=1; let isAdmin=checkAdmin(event,user); return(<>
                     <Box className={classes.flexRow} >
-                        <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} />
+                        <Avatar alt="Remy Sharp" variant = "circle" src={event.image_url} className={`${classes.eventPhoto} ${!isActive?classes.inactive:''}`} onClick={()=>openEvent(event.id, isActive)} style={{cursor:'pointer'}} />
                         <Box style={{width: '90%'}}>
                             <Typography variant="h5" color="textPrimary">
                             {event.name}{}
@@ -318,7 +315,7 @@ export default withRouter(function EventsView(props) {
                                         style= {{cursor: isNotClickable?'':'pointer'}}
                                         onClick = {isNotClickable?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}
                                        >
-                                        {item.label}
+                                        {event.playlist.length===0&&index===2?<Typography color="textPrimary">GENERUJ PLAYLISTĘ</Typography>:item.label}
                                     </Grid>
                                     <Grid className = { isNotClickable ? classes.inactive : ''} item xs = {7}
                                         style= {{cursor: isNotClickable?'':'pointer'}}
@@ -337,13 +334,13 @@ export default withRouter(function EventsView(props) {
 
                      <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
                     </>
-                    )}):null
+                    )}):<Typography style={{marginLeft: '100px'}}variant="h4" color="textPrimary">Tu będą pojawiać się wydarzenia, w których uczestniczych.</Typography>
                 }
                              
                 <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} isEdit={false}/>
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} eventId={eventId} isEdit={true}/>
                 <AddParticipantsModal open={openInvite} setOpen={setOpenInvite} invLink={invLink} eventId={eventId} openEvent={openEvent} a={a} setA={setA}/>
-                <RefreshPlaylistModal open={openRefresh} setOpen={setOpenRefresh} eventId={eventId} eventDuration={duration}/>
+                <RefreshPlaylistModal open={openRefresh} setOpen={setOpenRefresh} eventId={eventId} eventDuration={duration} generate={!hasPlaylist}/>
 
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={eventId}/>
                 <Fab label = {'Add'} className = {classes.fab} color = {'primary'} onClick = {handleOpen}>

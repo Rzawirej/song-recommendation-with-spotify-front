@@ -9,9 +9,12 @@ import NotFound from "../../views/NotFound";
 import Invite from "../../views/Invite";
 import MainPage from "../../views/MainPage";
 import SpotiRedirect from "../../views/SpotiRedirect";
+import AddRedirect from "../../views/AddRedirect";
 import {getToken} from "../../utils/UserFunctions"
 import './App.css';
 import axios from 'axios';
+import Info from "../../views/Info";
+
 
 const LoggedRoute = ({ component: Component, roles, ...rest }) => (
     <Route {...rest} render={(props) => {
@@ -59,7 +62,9 @@ export default class App extends React.Component {
                 <LoggedRoute path="/settings" component={Settings}/>
                 <LoggedRoute path="/event/:id" component={Event}/>
                 <LoggedRoute path="/event" component={Events}/>
-                <Route path="/join-event/:link" component={Invite}/> 
+                <LoggedRoute path="/info" component={Info}/>
+                <Route path="/join-event/:link" component={Invite}/>
+                <Route path="/redirect/event/:id" component={AddRedirect}/>
                 <Route path="*" component={NotFound}/>
                 
             </Switch>

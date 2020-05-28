@@ -105,9 +105,7 @@ export default function AddPaticipantsModal(props) {
             console.log(res)
             props.setA(!props.a);
         }
-        if(!props.eventPage){
-           // props.openEvent(props.eventId)
-        }
+        
         
         handleClose();
     }
@@ -118,6 +116,10 @@ export default function AddPaticipantsModal(props) {
         props.setA(!props.a);
         console.log(props.a);
         props.setOpen(false);
+        if (!props.eventPage) {
+            
+            props.openEvent(props.eventId, true)
+        }
     };
 
     return (

@@ -98,7 +98,7 @@ function Event(props){
                 <CreateEventModal open={openEdit} setOpen={setOpenEdit} setOpenInvite={setOpenInvite} setInvLink={event.invitation_link} eventId={event.id} isEdit={true}/>
                 <DeleteEventModal open={openDelete} setOpen={setOpenDelete} eventId={event.id}/>
                 <ExportPlaylistModal open={openExport} setOpen={setOpenExport} eventId={event.id}/>
-                <RefreshPlaylistModal open={openRefresh} setOpen={setOpenRefresh} eventId={event.id} eventDuration={event.duration_time}/>
+                <RefreshPlaylistModal open={openRefresh} setOpen={setOpenRefresh} eventId={event.id} eventDuration={event.duration_time} generate={event.playlist.length===0}/>
             </div>
         )
     }   

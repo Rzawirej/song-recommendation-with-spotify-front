@@ -231,7 +231,7 @@ export default withRouter(function PlaylistView(props) {
                                         style={!isActive?{cursor: 'pointer'}:{}} 
                                         onClick = { !isActive ? () => handleMenuClick(index) : undefined}
                                         >
-                                        {item.label}
+                                        {event.playlist.length===0&&index===2?<Typography color="textPrimary">GENERUJ PLAYLISTĘ</Typography>:item.label}
                                     </Grid>
                                     <Grid className = {isActive} 
                                         style={!isActive?{cursor: 'pointer'}:{}} 

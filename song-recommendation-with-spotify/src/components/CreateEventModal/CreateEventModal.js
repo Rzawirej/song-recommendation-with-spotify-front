@@ -267,18 +267,7 @@ export default function CreateEventModal(props) {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            res = await axios.get('/events', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const events = res.data.events;
-            let eventAdded = events[events.length - 1];
-            events.forEach((event) => {
-                if (event.name === name) {
-                    eventAdded = event;
-                }
-            })
+            const eventAdded = res.data.event;
             props.setInvLink(eventAdded.invitation_link);
             props.setEventId(eventAdded.id);
             props.setOpen(false);

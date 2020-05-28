@@ -21,9 +21,9 @@ function SpotiRedirect(props) {
             if (spotifyToken) {
                 setToken(token, 55);
                 localStorage.setItem('spotifyToken', spotifyToken);
-                props.history.push('/event');
+                props.history.replace('/event');
             }else{
-                props.history.push('/login');
+                props.history.replace('/login');
             }
         }
         getUser();

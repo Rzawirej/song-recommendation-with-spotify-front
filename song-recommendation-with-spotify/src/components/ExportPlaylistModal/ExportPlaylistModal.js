@@ -101,10 +101,11 @@ export default withRouter(function InviteLoggedModal(props) {
     const handleSubmit = async () => {
         let token = getToken();
         let spotifyToken = localStorage.getItem('spotifyToken');
-        await axios.post('/event/' + props.eventId +'/export-playlist?playlist_name='+name+'&description='+description,{},{
+        await axios.post('/event/' + props.eventId +'/export-playlist?playlist_name='+name+'&description='+description,{
+            spotify_access_token: spotifyToken,
+        },{
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'spotify_access_token': spotifyToken,
             }
         })
         handleClose();

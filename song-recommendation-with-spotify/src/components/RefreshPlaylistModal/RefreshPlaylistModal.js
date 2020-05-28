@@ -192,14 +192,14 @@ export default withRouter(function RefreshPlaylistModal(props) {
                 
                 <div className = { classes.paper} >
                     <HighlightOffIcon className = {classes.closeButton} onClick={handleClose}/>
-                    <Typography variant="h5" className = {classes.title}>ODŚWIEŻ PLAYLISTĘ </Typography>
+                    <Typography variant="h5" className = {classes.title}>{props.generate?"GENERUJ PLAYLISTĘ":"ODŚWIEŻ PLAYLISTĘ"} </Typography>
                     <Grid container spacing={2} className={classes.grid}>
                         
                         <Grid item xs={3} align='right'>
                         </Grid>
                         <Grid item xs={9}>
                             <Typography color="textPrimary">
-                                {'Czy chcesz odświeżyć playlistę? Odświeżając playlistę powodujesz, ze zostanie ona ponownie skomponowana na podstawie playlist aktualnych Uczestników. Możesz pozostać przy wcześniej wybranym czasie trwania (co przekłada się na liczbę singli w playliście) lub wybrać nowe ustawienia.'}
+                                {props.generate?'Czy chcesz wygenerować playlistę? Generując playlistę powodujesz, ze zostanie ona skomponowana na podstawie playlist aktualnych Uczestników. Możesz pozostać przy wcześniej wybranym czasie trwania (co przekłada się na liczbę singli w playliście) lub wybrać nowe ustawienia.':'Czy chcesz odświeżyć playlistę? Odświeżając playlistę powodujesz, ze zostanie ona ponownie skomponowana na podstawie playlist aktualnych Uczestników. Możesz pozostać przy wcześniej wybranym czasie trwania (co przekłada się na liczbę singli w playliście) lub wybrać nowe ustawienia.'}
                             </Typography>
                         </Grid>
                         <Grid item xs={3} align='right'>
@@ -232,7 +232,7 @@ export default withRouter(function RefreshPlaylistModal(props) {
                         variant="outlined"
                         onClick={handleSubmit}
                         >
-                        ODŚWIEŻ PLAYLISTĘ
+                        {props.generate?"GENERUJ PLAYLISTĘ":"ODŚWIEŻ PLAYLISTĘ"}
                 
                     </Button>
                                             

@@ -53,22 +53,24 @@ export default withRouter(function SideMenu(props) {
     const [invLink, setInvLink] = React.useState('');
     const openEvent = (id, isActive) => {
         if (isActive) {
-            props.history.push('/event/' + id)
+            props.history.push('/redirect/event/' + id)
         }
 
     };
     const [a, setA] = React.useState(false);
     const handleClick1 = () => {
-        props.history.push('/event/')
+        props.history.push('/event')
     }
     const handleClick2 = (event) => {
         event.preventDefault()
         if (!window.location.href.includes('settings')){
             props.history.push('/settings')
-        }
-        
+        }      
     }
-    
+    const goInfo = ()=>{
+        props.history.push('/info')
+    }
+
     const handleOpen = () => {
         setOpenCreate(true);
     };
@@ -103,7 +105,7 @@ export default withRouter(function SideMenu(props) {
                 </List>
                 
                 <List className={classes.end}>
-                    <ListItem  button key={"INFO"}>
+                    <ListItem  button key={"INFO"} onClick={goInfo}>
                         <ListItemIcon className={classes.infoColor}>
                            <InfoOutlinedIcon/>
                         </ListItemIcon>
