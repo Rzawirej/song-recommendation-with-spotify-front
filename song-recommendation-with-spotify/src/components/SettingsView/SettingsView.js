@@ -27,11 +27,12 @@ import {getToken} from '../../utils/UserFunctions';
 const useStyles = theme => ({
     content: {
             flexGrow: 1,
-            marginLeft: theme.spacing(40),
+            marginLeft: theme.spacing(38),
             padding: theme.spacing(1),
             background: COLOR.lightBlue
         },
     title: {
+        marginTop: theme.spacing(2),
         marginBottom: theme.spacing(10)
     },
     listItem:{
@@ -248,7 +249,7 @@ class SettingsView extends React.Component{
         
         return(
             <main className={classes.content}>
-                <div className={classes.toolbar} />
+                
                 <Typography className={`${classes.title} ${classes.list}`} variant="h3" color="textPrimary">
                            Ustawienia
                 </Typography>

@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import AddIcon from '@material-ui/icons/Add';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
             background: COLOR.darkBlue,
         },
     title: {
-        marginLeft: theme.spacing(10),
+        marginLeft: theme.spacing(7),
         marginBottom: theme.spacing(10)
     },
     fab: {
@@ -132,6 +133,7 @@ export default withRouter(function EventsView(props) {
     const [invLink, setInvLink] = React.useState('');
     const [duration, setDuration] = React.useState('5');
     const [hasPlaylist, setHasPlaylist] = React.useState(false);
+    const [tooltip, setTooltip] = React.useState(false)
 
     const handleOpen = () => {
         setOpenCreate(true);
@@ -308,10 +310,11 @@ export default withRouter(function EventsView(props) {
                         <Box>
                             <Grid container spacing={2} style={{opacity: 0.5}}>
                                 {menuItems.map((item,index) =>{
-                                    const isNotClickable = (!isActive && index === 2) || !isAdmin;
+                                    const isNotClickable = (event.participants.length<3 && index === 2) || !isAdmin;
                                     return(
                                     <>
-                                    <Grid className = { isNotClickable ?classes.inactive:''} item xs = {5} align = 'right' 
+                                    
+                                    <Grid id = {index===2?'2':''} className = { isNotClickable ?classes.inactive:''} item xs = {5} align = 'right' 
                                         style= {{cursor: isNotClickable?'':'pointer'}}
                                         onClick = {isNotClickable?undefined:(e) => { e.stopPropagation(); handleMenuClick(index, event)}}
                                        >

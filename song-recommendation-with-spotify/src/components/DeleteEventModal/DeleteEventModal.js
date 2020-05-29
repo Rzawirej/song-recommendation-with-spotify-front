@@ -98,7 +98,7 @@ export default withRouter(function DeleteEventModal(props) {
             }
         })
         handleClose();
-        props.history.push('/event/');
+        props.history.push('/event');
     }
     
 

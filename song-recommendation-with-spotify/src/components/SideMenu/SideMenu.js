@@ -104,8 +104,8 @@ export default withRouter(function SideMenu(props) {
                     </ListItem>
                 </List>
                 
-                <List className={classes.end}>
-                    <ListItem  button key={"INFO"} onClick={goInfo}>
+                <List  style = {{width: '100%'}} className = {classes.end} >
+                    <ListItem   button key={"INFO"} onClick={goInfo}>
                         <ListItemIcon className={classes.infoColor}>
                            <InfoOutlinedIcon/>
                         </ListItemIcon>

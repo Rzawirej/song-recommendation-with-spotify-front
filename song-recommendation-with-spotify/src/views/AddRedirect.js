@@ -1,8 +1,4 @@
 import React from "react";
-import axios from 'axios';
-import {
-    makeStyles
-} from '@material-ui/core/styles';
 import {
     withRouter
 } from 'react-router-dom'

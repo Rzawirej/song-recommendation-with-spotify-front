@@ -11,6 +11,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import Collapse from '@material-ui/core/Collapse'
+import Tooltip from '@material-ui/core/Tooltip'
 import Box from '@material-ui/core/Box'
 
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -74,6 +75,7 @@ export default withRouter(function PlaylistView(props) {
 
     const classes = useStyles();
     const [selectedIndex, setSelectedIndex] = React.useState(-1)
+    const [tooltip, setTooltip] = React.useState(false)
     
     const event = props.event
     
@@ -89,7 +91,7 @@ export default withRouter(function PlaylistView(props) {
         icon: <AddCircleOutlineIcon style={{color: COLOR.white}}/>
     },{
         label: <Typography color="textPrimary"> ODŚWIEŻ PLAYLISTĘ </Typography>,
-        icon: <RefreshOutlinedIcon style={{color: COLOR.white}}/>
+        icon: <RefreshOutlinedIcon id="2" style={{color: COLOR.white}}/>
     },{
         label: <Typography color="textPrimary"> EKSPORTUJ PLAYLISTĘ </Typography>,
         icon: <ImportExportIcon style={{color: COLOR.white}}/>
@@ -223,22 +225,27 @@ export default withRouter(function PlaylistView(props) {
                         <Box >
                             <Grid container spacing={2}>
                                 {menuItems.map((item,index) =>{
-                                    const isActive = (props.isAdmin && index !== 3) || (index===3 && localStorage.getItem('spotifyToken') && event.playlist.length>0) ?  '': classes.inactive;
+                                    const isInactive = !props.isAdmin || (index === 3 && (!localStorage.getItem('spotifyToken') || event.playlist.length === 0)) || (index === 2 && event.participants.length < 3) ? classes.inactive:'';
                                     return(<>
-                                    <Grid className={isActive} 
-                                        item xs = {8} 
-                                        align = 'right'
-                                        style={!isActive?{cursor: 'pointer'}:{}} 
-                                        onClick = { !isActive ? () => handleMenuClick(index) : undefined}
-                                        >
-                                        {event.playlist.length===0&&index===2?<Typography color="textPrimary">GENERUJ PLAYLISTĘ</Typography>:item.label}
-                                    </Grid>
-                                    <Grid className = {isActive} 
-                                        style={!isActive?{cursor: 'pointer'}:{}} 
-                                        item xs = {4} 
-                                        onClick = { !isActive ? () => handleMenuClick(index) : undefined} >
-                                        {item.icon}
-                                    </Grid>
+                                        <Grid  id = {index===2?'2':''}
+                                        className = {
+                                            isInactive
+                                        }
+                                            item xs = {8} 
+                                            align = 'right'
+                                            style={!isInactive?{cursor: 'pointer'}:{}} 
+                                            onClick = { !isInactive ? () => handleMenuClick(index) : undefined}
+                                            >
+                                            {event.playlist.length===0&&index===2?<Typography id = {index===2?'2':''} color="textPrimary">GENERUJ PLAYLISTĘ</Typography>:item.label}
+                                        </Grid>
+                                        
+                                        <Grid id = {index===2?'2':''}className = {isInactive} 
+                                            style={!isInactive?{cursor: 'pointer'}:{}} 
+                                            item xs = {4} 
+                                            onClick = { !isInactive ? () => handleMenuClick(index) : undefined} >
+                                            {item.icon}
+                                        </Grid>
+                                    
                                     </>)
                                     })}
                                 
@@ -260,9 +267,11 @@ export default withRouter(function PlaylistView(props) {
                         <Typography style={{width: '40%'}}  color="textPrimary">
                             {song.artist[0]}
                         </Typography>
+                        
                         <Typography style={{width: '40%'}} color="textPrimary">
                             {song.name}
                         </Typography>
+                        
 
                         {/*<ListItemText style={{textAlign:"right", margin:0}} primary="X" />*/}
                     </ListItem>
@@ -292,7 +301,7 @@ export default withRouter(function PlaylistView(props) {
                     )})
                     :
                     <Typography color="textPrimary" variant="h4" style={{textAlign:'center', marginTop:'50px'}}>
-                            To wydarzenie nie ma jeszcze stworzonej playlisty
+                        {event.participants.length>=3?"To wydarzenie nie ma jeszcze stworzonej playlisty.": "Do utworzenia playlisty potrzeba co najmniej trzech uczestników."}
                     </Typography>}
                 </List>
     
