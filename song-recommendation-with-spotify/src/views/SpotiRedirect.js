@@ -1,12 +1,8 @@
 import React from "react";
-import axios from 'axios';
-import {
-    makeStyles
-} from '@material-ui/core/styles';
 import {
     withRouter
 } from 'react-router-dom'
-import { getToken, setToken} from '../utils/UserFunctions'
+import { setToken} from '../utils/UserFunctions'
 
 
 

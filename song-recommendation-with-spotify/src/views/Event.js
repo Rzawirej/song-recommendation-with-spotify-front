@@ -77,7 +77,7 @@ function Event(props){
             getEventInfo();
             
             
-        }, [openInvite, openEdit, openDelete, openRefresh]);
+        }, [openInvite, openEdit, openRefresh]);
         const checkAdmin = (event,user) => {
             event.participants.forEach((participant, index) => {
                 if (participant.user.username === user.username && participant.role === 'admin') {
