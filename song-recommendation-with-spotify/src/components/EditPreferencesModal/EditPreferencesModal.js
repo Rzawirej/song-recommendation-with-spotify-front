@@ -156,6 +156,9 @@ export default withRouter(function EditPreferencesModal(props) {
         
         if(props.register == true){
             props.history.push(`/event`)
+        }else{
+            console.log('editpreferencesModal')
+            onSubmitPreferences();
         }
         handleClose();
     }

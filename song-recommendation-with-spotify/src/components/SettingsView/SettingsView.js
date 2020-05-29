@@ -84,9 +84,12 @@ class SettingsView extends React.Component{
         this.handleUsernameChangeValue = this.handleUsernameChangeValue.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.getUser = this.getUser.bind(this);
+        this.onSubmitPreferences = this.onSubmitPreferences.bind(this);
         this.changePreferences = this.changePreferences.bind(this);
         this.handleOldPasswordChangeValue = this.handleOldPasswordChangeValue.bind(this);
         this.handleNewPasswordChangeValue = this.handleNewPasswordChangeValue.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handlePreferencesChange = this.handlePreferencesChange.bind(this);
         this.state = {
             expanded: null,
             emailChangeValue: '',
@@ -187,6 +190,7 @@ class SettingsView extends React.Component{
 
     async handlePasswordChange() {
         let token = getToken();
+        console.log(token)
         await axios.put('/user/current',
             {
                 'old_password': this.state.oldPasswordChangeValue,
@@ -202,7 +206,18 @@ class SettingsView extends React.Component{
             this.setState({
                 user: data.user
             })
+        }).catch(err => {
+            console.log(err)  
         })
+    }
+
+    handlePreferencesChange(){
+        this.getUser();
+    }
+
+    onSubmitPreferences(){
+        console.log('onSubmitPreferences');
+        this.getUser();
     }
 
     async handleUsernameChange() {
@@ -226,9 +241,6 @@ class SettingsView extends React.Component{
 
     render(){
         const { classes } = this.props;
-        const gridLeftColumnInfo = 12
-        const gridRightColumnInfo = 12
-        const expandMoreInfo = 12
         console.log(this.state.user.pref_genres);
         if(this.state.user.pref_genres.length < 1){
             this.state.user.pref_genres = ["Ustaw preferencje w celu lepszej rekomendacji."]
@@ -318,7 +330,9 @@ class SettingsView extends React.Component{
                                     <br></br>
                                     <_PField label="Podaj nowe hasło" onChange={this.handleNewPasswordChangeValue}/>
                                     <br></br>
-                                    <_Button label='Zmień' onChange={this.handlePasswordChange}/>
+                                    <span onClick={this.handlePasswordChange}>
+                                        <_Button label='Zmień'/>
+                                    </span>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         </Grid>
@@ -380,8 +394,8 @@ class SettingsView extends React.Component{
                         </Grid>
                     </Grid>
                     <EditPreferencesModal open={this.state.openPreferences} 
-                    setOpen={this.changePreferences} preferences={this.state.user.pref_genres}
-                    register={false}/>
+                        setOpen={this.changePreferences} preferences={this.state.user.pref_genres}
+                        register={false} onSubmitPreferences = {this.onSubmitPreferences} />
                 </Box> 
             </main>
         )
