@@ -225,7 +225,7 @@ export default withRouter(function PlaylistView(props) {
                         <Box >
                             <Grid container spacing={2}>
                                 {menuItems.map((item,index) =>{
-                                    const isInactive = !props.isAdmin || (index === 3 && (!localStorage.getItem('spotifyToken') || event.playlist.length === 0)) || (index === 2 && event.participants.length < 3) ? classes.inactive:'';
+                                    const isInactive = (!props.isAdmin && index !==3) || (index === 3 && (!localStorage.getItem('spotifyToken') || event.playlist.length === 0)) || (index === 2 && event.participants.length < 3) ? classes.inactive:'';
                                     return(<>
                                         <Grid  id = {index===2?'2':''}
                                         className = {

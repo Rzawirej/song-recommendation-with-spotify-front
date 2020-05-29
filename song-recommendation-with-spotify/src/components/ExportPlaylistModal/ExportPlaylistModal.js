@@ -101,7 +101,7 @@ export default withRouter(function InviteLoggedModal(props) {
     const handleSubmit = async () => {
         let token = getToken();
         let spotifyToken = localStorage.getItem('spotifyToken');
-        await axios.post('/event/' + props.eventId +'/export-playlist?playlist_name='+name+'&description='+description,{
+        await axios.post(`/event/${props.eventId}/export-playlist?playlist_name=${name?name:'Joyina Playlist'}&description=${description}`,{
             spotify_access_token: spotifyToken,
         },{
             headers: {
@@ -109,7 +109,6 @@ export default withRouter(function InviteLoggedModal(props) {
             }
         })
         handleClose();
-        props.history.push('/event/');
     }
     const handleNameChange = (event) => {
         setName(event.target.value);
