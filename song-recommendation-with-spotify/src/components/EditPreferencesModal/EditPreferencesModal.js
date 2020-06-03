@@ -16,6 +16,8 @@ import Grid from '@material-ui/core/Grid';
 
 import COLOR from './../../assets/colors'
 import {getToken} from '../../utils/UserFunctions';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles(theme => ({
     modal: {
@@ -85,48 +87,67 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+
 const genres = [
     {
-      value: "chamber pop"
+      value: "classical"
     },
     {
-      value: "indie folk"
+      value: "rock"
     },
     {
-      value: "indie rock"
+      value: "pop"
     },
     {
-      value: "indie pop"
+      value: "edm"
     },
     {
-      value: "alternative rock"
+      value: "hip hop"
     },
     {
       value: "art pop"
     },
     {
-      value: "stomp and holler"
+      value: "electronica"
     },
     {
-        value: "freak folk"
+        value: "blues"
     },
     {
-      value: "modern rock"
+      value: "r&b"
     },
     {
-      value: "neo mellow"
+      value: "jazz"
     },
     {
-      value: "folk rock"
+      value: "metal"
     },
     {
-        value: "soft rock"
+        value: "house"
     },
     {
-        value: "adult standards"
+        value: "disco"
     },
     {
-        value: "mellow gold"
+        value: "country"
+    },
+    {
+        value: "latin"
+    },
+    {
+        value: "christian music"
+    },
+    {
+        value: "indie rock"
+    },
+    {
+        value: "folk"
+    },
+    {
+        value: "eurodance"
+    },
+    {
+        value: "synthpop"
     }
 ];
 
@@ -134,10 +155,10 @@ const genres = [
 export default withRouter(function EditPreferencesModal(props) {
     const classes = useStyles();
     const [openDelete, setOpenDelete] = React.useState(false);    
-    const [gatunek1, setGatunek1] = React.useState("chamber pop");
-    const [gatunek2, setGatunek2] = React.useState("indie folk");
-    const [gatunek3, setGatunek3] = React.useState("chamber pop");
-    const [gatunek4, setGatunek4] = React.useState("indie rock");
+    const [gatunek1, setGatunek1] = React.useState("house");
+    const [gatunek2, setGatunek2] = React.useState("jazz");
+    const [gatunek3, setGatunek3] = React.useState("hip hop");
+    const [gatunek4, setGatunek4] = React.useState("electronica");
 
     const handleSubmit = async () => {
         let token = getToken();
@@ -211,7 +232,13 @@ export default withRouter(function EditPreferencesModal(props) {
                                     value={gatunek1}
                                     onChange={handleChange1}
                                     variant="outlined"
-                                    style = {{color: 'white'}}
+                                    style = {{  
+                                        [`& fieldset`]: {
+                                          borderRadius: 80,
+                                        },
+                                        width: 304,
+                                        borderColor: 'white'
+                                     }}
                                     >
                                         {genres.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -229,6 +256,7 @@ export default withRouter(function EditPreferencesModal(props) {
                                     value={gatunek2}
                                     onChange={handleChange2}
                                     variant="outlined"
+                                    style = {{width: 304}}
                                     >
                                         {genres.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -246,6 +274,7 @@ export default withRouter(function EditPreferencesModal(props) {
                                     value={gatunek3}
                                     onChange={handleChange3}
                                     variant="outlined"
+                                    style = {{width: 304, borderColor:'white', borderRadius:20}}
                                     >
                                         {genres.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -263,6 +292,7 @@ export default withRouter(function EditPreferencesModal(props) {
                                     value={gatunek4}
                                     onChange={handleChange4}
                                     variant="outlined"
+                                    style = {{width: 304}}
                                     >
                                         {genres.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>

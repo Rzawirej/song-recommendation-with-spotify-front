@@ -101,7 +101,7 @@ class SettingsView extends React.Component{
                 username: '',
                 pref_genres: []
             },
-            openPreferences: false,
+            openPreferences: true,
         };
     }
 

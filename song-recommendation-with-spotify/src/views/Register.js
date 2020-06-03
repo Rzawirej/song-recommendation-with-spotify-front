@@ -17,9 +17,9 @@ class Register extends React.Component{
         super(props);
         this.state = {
             email:'',
-            password:'',
+            password:'password',
             username:'',
-            passwordRepeat:'',
+            passwordRepeat:'passwordRepeat',
             registerErrorMessage: '',
             pref_genres: [],
             openPreferences: false
@@ -35,9 +35,6 @@ class Register extends React.Component{
     
     registerAction(e) {
         e.preventDefault()
-        this.setState({
-            openPreferences: !this.state.openPreferences
-        });
         
         if(this.state.password != this.state.passwordRepeat){
             this.setState({registerErrorMessage:'Hasła nie są takie same!'});
@@ -54,6 +51,9 @@ class Register extends React.Component{
                 password: newUser.password,
                 username: newUser.username
             }).then(res => {
+                this.setState({
+                    openPreferences: !this.state.openPreferences
+                });
                 axios.post('/login', {
                     email: newUser.email,
                     password: newUser.password
