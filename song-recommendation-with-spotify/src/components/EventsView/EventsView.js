@@ -104,7 +104,6 @@ export default withRouter(function EventsView(props) {
     const gridRightColumnInfo = 9;
 
     const getDurationString = (duration) =>{
-        console.log(duration)
         if(duration===1){
             return "1 godzina"
         }
@@ -139,7 +138,6 @@ export default withRouter(function EventsView(props) {
         setOpenCreate(true);
     };
     const handleMenuClick = (index, event) => {
-        console.log(event);
         setEventId(event.id);
         setInvLink(event.invitation_link);
         setDuration(event.duration_time+'');
@@ -182,14 +180,12 @@ export default withRouter(function EventsView(props) {
             'Authorization': `Bearer ${token}`
         }
         }).then(({data}) => {
-            console.log(data.events);
             setEvents(data.events);
         })
         getUser()
         }
         async function getUser() {
             let token = getToken()
-            console.log(token)
             await axios.get('/user/current', {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -197,7 +193,6 @@ export default withRouter(function EventsView(props) {
             }).then(({
                 data
             }) => {
-                console.log(data);
                 setUser(data.user);
                 
             })

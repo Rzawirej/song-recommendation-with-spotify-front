@@ -59,7 +59,6 @@ export default function TopBar() {
             'Authorization': `Bearer ${token}`
         }
         }).then(({data}) => {
-            console.log(data);
             setUser(data.user);
         })
         }

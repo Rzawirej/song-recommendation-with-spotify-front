@@ -22,7 +22,6 @@ export const login = user => {
       password: user.password
     })
     .then(response => {
-      console.log(response);
       localStorage.setItem('token', response.data.access_token)
       return response.data
     })
@@ -37,7 +36,6 @@ export const getProfile = user => {
       //headers: { Authorization: ` ${this.getToken()}` }
     })
     .then(response => {
-      console.log(response)
       return response.data
     })
     .catch(err => {

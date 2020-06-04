@@ -94,7 +94,6 @@ export default function AddPaticipantsModal(props) {
     const handleSubmit = async () => {
         if(username!==''){
             let token = getToken()
-            console.log(props.eventId);
             let res = await axios.post('/event/' + props.eventId + '/invite', {
                 username: username,
             }, {
@@ -102,7 +101,6 @@ export default function AddPaticipantsModal(props) {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            console.log(res)
             props.setA(!props.a);
         }
         
@@ -112,9 +110,7 @@ export default function AddPaticipantsModal(props) {
     
 
     const handleClose = () => {
-        console.log(props.a);
         props.setA(!props.a);
-        console.log(props.a);
         props.setOpen(false);
         if (!props.eventPage) {
             

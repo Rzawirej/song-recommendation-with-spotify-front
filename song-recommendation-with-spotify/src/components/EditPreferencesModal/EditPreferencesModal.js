@@ -162,7 +162,6 @@ export default withRouter(function EditPreferencesModal(props) {
 
     const handleSubmit = async () => {
         let token = getToken();
-        console.log({'pref_genres': [gatunek1, gatunek2, gatunek3, gatunek4]});
         //tutaj do puta rzuć te preferencje, które pozyskasz z selectów
         let res = await axios.put('/user/current', 
             {
@@ -178,7 +177,6 @@ export default withRouter(function EditPreferencesModal(props) {
         if(props.register == true){
             props.history.push(`/event`)
         }else{
-            console.log('editpreferencesModal')
             onSubmitPreferences();
         }
         handleClose();

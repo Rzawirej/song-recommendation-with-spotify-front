@@ -44,7 +44,6 @@ function Event(props){
         React.useEffect(() => {
             async function getEventInfo() {
                 let token = getToken()
-                console.log(token)
                 try{
                     const result = await axios.get('/event/' + props.match.params.id, {
                         headers: {
@@ -60,7 +59,6 @@ function Event(props){
             }
             async function getUser(event) {
                 let token = getToken();
-                console.log(token)
                 await axios.get('/user/current', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -68,7 +66,6 @@ function Event(props){
                 }).then(({
                     data
                 }) => {
-                    console.log(data);
                     setUser(data.user);
                     checkAdmin(event, data.user);
                 })

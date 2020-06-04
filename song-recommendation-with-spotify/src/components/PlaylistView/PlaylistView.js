@@ -102,7 +102,6 @@ export default withRouter(function PlaylistView(props) {
     
    
     const getDurationString = (duration) =>{
-        console.log(duration)
         
         if(duration===1){
             return "1 godzina"
@@ -124,7 +123,6 @@ export default withRouter(function PlaylistView(props) {
         } else {
             setSelectedIndex(index)
         }
-        console.log(selectedIndex);
     }
     const handleMenuClick = (index) => {
         if(index === 0){

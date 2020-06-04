@@ -212,7 +212,6 @@ export default function CreateEventModal(props) {
             setName(event.name);
             setPhoto(event.image_url);
             
-            console.log(event);
         }
         getEventInfo();
     }, [props]);

@@ -43,7 +43,6 @@ class Login extends React.Component{
             }
         })
         .catch(err => {
-            console.log(err)
             if(err.response){
                 this.setState({
                     loginErrorMessage: "Niepoprawny email lub hasło."
@@ -66,8 +65,6 @@ class Login extends React.Component{
     }
     
     saveSpotifyToken(){
-        console.log('spotifyfToken')
-        console.log(window.location.href);
     }
 
     render() {

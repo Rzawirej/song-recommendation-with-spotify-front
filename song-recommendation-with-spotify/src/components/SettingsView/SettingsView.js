@@ -101,7 +101,7 @@ class SettingsView extends React.Component{
                 username: '',
                 pref_genres: []
             },
-            openPreferences: true,
+            openPreferences: false,
         };
     }
 
@@ -156,17 +156,14 @@ class SettingsView extends React.Component{
 
     async getUser() {
         let token = getToken();
-        console.log(token)
         await axios.get('/user/current', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         }).then(({data }) => {
-            console.log(data);
             this.setState({
                 user: data.user
             })
-            console.log(this.state.user)
         })
     }
 
@@ -182,7 +179,6 @@ class SettingsView extends React.Component{
                 }
             }
         ).then(({data }) => {
-            console.log(data)
             this.setState({
                 user: data.user
             })
@@ -191,7 +187,6 @@ class SettingsView extends React.Component{
 
     async handlePasswordChange() {
         let token = getToken();
-        console.log(token)
         await axios.put('/user/current',
             {
                 'old_password': this.state.oldPasswordChangeValue,
@@ -203,7 +198,6 @@ class SettingsView extends React.Component{
                 }
             }
         ).then(({data }) => {
-            console.log(data)
             this.setState({
                 user: data.user
             })
@@ -217,7 +211,6 @@ class SettingsView extends React.Component{
     }
 
     onSubmitPreferences(){
-        console.log('onSubmitPreferences');
         this.getUser();
     }
 
@@ -233,7 +226,6 @@ class SettingsView extends React.Component{
                 }
             }
         ).then(({data }) => {
-            console.log(data)
             this.setState({
                 user: data.user
             })
@@ -242,7 +234,6 @@ class SettingsView extends React.Component{
 
     render(){
         const { classes } = this.props;
-        console.log(this.state.user.pref_genres);
         if(this.state.user.pref_genres.length < 1){
             this.state.user.pref_genres = ["Ustaw preferencje w celu lepszej rekomendacji."]
         }

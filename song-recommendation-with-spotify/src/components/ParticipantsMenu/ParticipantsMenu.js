@@ -85,7 +85,6 @@ export default function ParticipantsMenu(props) {
     React.useEffect(() => {
         async function getEventInfo() {
             setState(props.event.participants);
-            console.log(state)
         }
         getEventInfo();
     }, [state, props]);
@@ -102,28 +101,21 @@ export default function ParticipantsMenu(props) {
         let res = await axios.post('/event/'+props.event.id+'/revoke-admin?username='+state[index].user.username,{}, {headers:{
             'Authorization': `Bearer ${token}`
         }});
-        console.log(res)
         state[index].role = 'member'
     }
     const removeUser = async(event) =>{
         let token = getToken()
         const index = event.target.className;
-        console.log(token);
-        console.log('/event/'+props.event.id+'/remove-user?username='+state[index].user.username)
         let res = await axios.post('/event/'+props.event.id+'/remove-user?username='+state[index].user.username,{}, {headers:{
             'Authorization': `Bearer ${token}`
         }});
-        console.log(res);
         state.splice(index, 1);
         setA(!a);
     }
     const handleChange = async (event) => {
         let token = getToken()
-        console.log(state[event.target.name])
-        console.log(event.target.checked)
         await (event.target.checked? grantAdmin(event.target.name,token): revokeAdmin(event.target.name,token));
-        console.log(state)
-
+        
         setA(!a);  
     };
     
