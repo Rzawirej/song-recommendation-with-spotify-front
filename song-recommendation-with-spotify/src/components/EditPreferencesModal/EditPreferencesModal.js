@@ -16,8 +16,7 @@ import Grid from '@material-ui/core/Grid';
 
 import COLOR from './../../assets/colors'
 import {getToken} from '../../utils/UserFunctions';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import ExpandMoreIcon from "./../../assets/expand_icon.svg";
 
 const useStyles = makeStyles(theme => ({
     modal: {
@@ -57,7 +56,8 @@ const useStyles = makeStyles(theme => ({
     field: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        height: '30px !important',
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
         borderColor: 'yellow',
         [`& fieldset`]: {
             borderRadius: 50,
@@ -65,7 +65,15 @@ const useStyles = makeStyles(theme => ({
     },
     notchedOutline: {
         borderWidth: "2px",
-        borderColor: COLOR.white
+        borderColor: COLOR.white,
+    },
+    selectArrow: {
+        fill: `url()`,
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(2),
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        background: `url(${ExpandMoreIcon})`,
     },
     input: {
         borderWidth: "2px",
@@ -224,6 +232,15 @@ export default withRouter(function EditPreferencesModal(props) {
                         <Grid container justify="center" direction="column" align="center">
                             <Grid item >
                                 <TextField
+                                    InputProps={{ classes: {notchedOutline: classes.notchedOutline},} }
+                                    className={classes.field}
+                                    inputProps = {
+                                        {
+                                            classes: {
+                                                icon: classes.selectArrow,
+                                            },
+                                        }
+                                    }
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
@@ -248,6 +265,15 @@ export default withRouter(function EditPreferencesModal(props) {
                             </Grid>
                             <Grid item>
                             <TextField
+                                    InputProps={{ classes: {notchedOutline: classes.notchedOutline},} }
+                                    className={classes.field}
+                                    inputProps = {
+                                        {
+                                            classes: {
+                                                icon: classes.selectArrow,
+                                            },
+                                        }
+                                    }
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
@@ -266,6 +292,15 @@ export default withRouter(function EditPreferencesModal(props) {
                             </Grid>
                             <Grid item>
                             <TextField
+                                    InputProps={{ classes: {notchedOutline: classes.notchedOutline},} }
+                                    className={classes.field}
+                                    inputProps = {
+                                        {
+                                            classes: {
+                                                icon: classes.selectArrow,
+                                            },
+                                        }
+                                    }
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
@@ -284,6 +319,15 @@ export default withRouter(function EditPreferencesModal(props) {
                             </Grid>
                             <Grid item>
                             <TextField
+                                    InputProps={{ classes: {notchedOutline: classes.notchedOutline},} }
+                                    className={classes.field}
+                                    inputProps = {
+                                        {
+                                            classes: {
+                                                icon: classes.selectArrow,
+                                            },
+                                        }
+                                    }
                                     id="outlined-select-currency"
                                     select
                                     label="Select"
