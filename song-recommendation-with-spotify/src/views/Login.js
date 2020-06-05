@@ -92,7 +92,7 @@ class Login extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'
+                            
                         }}>
                             lub
                         </div>
@@ -102,7 +102,7 @@ class Login extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'
+                            
                         }}>
                         Zaloguj się przy użyciu swojego adresu e-mail.
                         </div>     
@@ -128,7 +128,7 @@ class Login extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'
+                            
                         }}>
                             Nie masz jeszcze konta? {" "}
                         </div>
@@ -136,7 +136,7 @@ class Login extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FF0080',
-                            fontFamily: 'NunitoSans',
+                            
                             fontWeight: 'Bold'
                         }}> 
                         <Link href="/register">

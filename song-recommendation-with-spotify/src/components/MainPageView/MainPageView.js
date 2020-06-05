@@ -38,7 +38,7 @@ export default withRouter(function MainPageView(props) {
                 Łączymy odmienne światy.
             </Typography>
             <Typography color="textPrimary">
-                Wraz z przyjaciółmi stwórz unikalny muzyczny ekosystem z pomocą playlist <span style={{color: COLOR.spotifyGreen}}>Spotify</span>.
+                Wraz z przyjaciółmi stwórz unikalny muzyczny ekosystem z pomocą playlist <a href = "https://joyina.live/api/login/spotify" style={{color: COLOR.spotifyGreen, textDecoration: 'none'}}>Spotify</a>.
             </Typography>
 
             <img src={button} alt={"dołącz"} className={classes.button} onClick={goNext}/>

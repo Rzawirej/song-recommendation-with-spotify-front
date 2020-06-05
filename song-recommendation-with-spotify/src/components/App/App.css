@@ -1,6 +1,9 @@
 body {
   background-color: #0B1830;
 }
+* {
+  font-family: 'Nunito Sans';
+}
 /* 
 body {
   background-image: url(../../assets/background.png);

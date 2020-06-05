@@ -332,7 +332,7 @@ export default withRouter(function EventsView(props) {
 
                      <hr style = {{background: "linear-gradient(90deg, #FF8000 0%, #FF0080 100%)", height: '1px', border: "none",marginBottom: '24px'}}></hr>
                     </>
-                    )}):<Typography style={{marginLeft: '100px'}}variant="h4" color="textPrimary">Tu będą pojawiać się wydarzenia, w których uczestniczych.</Typography>
+                    )}):<Typography style={{marginLeft: '100px'}}variant="h4" color="textPrimary">Tu będą pojawiać się wydarzenia, w których uczestniczysz.</Typography>
                 }
                              
                 <CreateEventModal open={openCreate} setOpen={setOpenCreate} setOpenInvite={setOpenInvite} setInvLink={setInvLink} setEventId={setEventId} isEdit={false}/>

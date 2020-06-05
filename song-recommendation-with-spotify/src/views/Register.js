@@ -140,7 +140,7 @@ class Register extends React.Component{
                     <Grid item>
                     </Grid>
                     <Grid item>
-                        <Link href="http://156.17.130.143/api/login/spotify" style={{ textDecoration: 'none' }}>
+                        <Link href = "https://joyina.live/api/login/spotify" style = {{textDecoration: 'none'}} >
                             <_Button useClassGreen={true} label='ZAREJESTRUJ SIĘ PRZEZ SPOTIFY' />
                         </Link>
                     </Grid>
@@ -149,7 +149,7 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'}}>
+                            }}>
                             lub
                         </div>
                     </Grid>
@@ -158,7 +158,7 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'
+                            
                         }}>
                         Zarejestruj się przy użyciu swojego adresu e-mail.
                         </div>
@@ -188,7 +188,7 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'
+                            
                         }}>
                             Masz już konto?{" "}
                         </div>
@@ -196,7 +196,6 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FF0080',
-                            fontFamily: 'NunitoSans',
                             fontWeight: 'Bold'
                         }}> 
                         <Link href="/login">
