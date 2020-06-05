@@ -62,10 +62,12 @@ const useStyles = makeStyles(theme => ({
         [`& fieldset`]: {
             borderRadius: 50,
         },
+        cursor: 'pointer',
     },
     notchedOutline: {
         borderWidth: "2px",
         borderColor: COLOR.white,
+        cursor: 'pointer',
     },
     selectArrow: {
         fill: `url()`,
@@ -74,6 +76,7 @@ const useStyles = makeStyles(theme => ({
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
         background: `url(${ExpandMoreIcon})`,
+        cursor: 'pointer',
     },
     input: {
         borderWidth: "2px",
@@ -236,9 +239,9 @@ export default withRouter(function EditPreferencesModal(props) {
                                     className={classes.field}
                                     inputProps = {
                                         {
-                                            classes: {
+                                            /*classes: {
                                                 icon: classes.selectArrow,
-                                            },
+                                            },*/
                                         }
                                     }
                                     id="outlined-select-currency"
@@ -269,9 +272,9 @@ export default withRouter(function EditPreferencesModal(props) {
                                     className={classes.field}
                                     inputProps = {
                                         {
-                                            classes: {
+                                            /*classes: {
                                                 icon: classes.selectArrow,
-                                            },
+                                            },*/
                                         }
                                     }
                                     id="outlined-select-currency"
@@ -296,9 +299,9 @@ export default withRouter(function EditPreferencesModal(props) {
                                     className={classes.field}
                                     inputProps = {
                                         {
-                                            classes: {
+                                            /*classes: {
                                                 icon: classes.selectArrow,
-                                            },
+                                            },*/
                                         }
                                     }
                                     id="outlined-select-currency"
@@ -323,9 +326,9 @@ export default withRouter(function EditPreferencesModal(props) {
                                     className={classes.field}
                                     inputProps = {
                                         {
-                                            classes: {
+                                            /*classes: {
                                                 icon: classes.selectArrow,
-                                            },
+                                            },*/
                                         }
                                     }
                                     id="outlined-select-currency"
