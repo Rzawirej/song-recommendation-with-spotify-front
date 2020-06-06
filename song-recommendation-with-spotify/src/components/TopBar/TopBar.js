@@ -55,12 +55,18 @@ export default function TopBar() {
                 localStorage.setItem('spotifyToken', spotifyToken);
             }
          token = getToken();
-        await axios.get('/user/current', {headers:{
-            'Authorization': `Bearer ${token}`
-        }
-        }).then(({data}) => {
-            setUser(data.user);
-        })
+         if(token){
+            await axios.get('/user/current', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(({
+                data
+            }) => {
+                setUser(data.user);
+            })
+         }
+        
         }
         getUser();
     }, []);

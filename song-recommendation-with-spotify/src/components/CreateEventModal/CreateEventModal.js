@@ -200,17 +200,23 @@ export default function CreateEventModal(props) {
     React.useEffect(() => {
         async function getEventInfo() {
             let token = getToken();
-            const result = await axios.get('/event/' + props.eventId, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            const event = result.data.event;
-            setDuration(event.duration_time+'');
-            event.end_date.split(' ')[0] === '4000-01-01'?setAvailability('1'):(()=>{setAvailability('2'); setEndDate(event.end_date.split(' ')[0])})();
-            setDescription(event.description);
-            setName(event.name);
-            setPhoto(event.image_url);
+            if(props.eventId){
+                const result = await axios.get('/event/' + props.eventId, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const event = result.data.event;
+                setDuration(event.duration_time + '');
+                event.end_date.split(' ')[0] === '4000-01-01' ? setAvailability('1') : (() => {
+                    setAvailability('2');
+                    setEndDate(event.end_date.split(' ')[0])
+                })();
+                setDescription(event.description);
+                setName(event.name);
+                setPhoto(event.image_url);
+            }
+            
             
         }
         getEventInfo();
