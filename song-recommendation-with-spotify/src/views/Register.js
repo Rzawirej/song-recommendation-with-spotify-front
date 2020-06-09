@@ -149,7 +149,7 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'}}>
+                            fontFamily: 'Nunito Sans'}}>
                             lub
                         </div>
                     </Grid>
@@ -158,7 +158,7 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'
+                            fontFamily: 'Nunito Sans'
                         }}>
                         Zarejestruj się przy użyciu swojego adresu e-mail.
                         </div>
@@ -188,7 +188,7 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FFFFFF',
-                            fontFamily: 'NunitoSans'
+                            fontFamily: 'Nunito Sans'
                         }}>
                             Masz już konto?{" "}
                         </div>
@@ -196,7 +196,7 @@ class Register extends React.Component{
                             display: 'inline',
                             alignItems: 'center',
                             color: '#FF0080',
-                            fontFamily: 'NunitoSans',
+                            fontFamily: 'Nunito Sans',
                             fontWeight: 'Bold'
                         }}> 
                         <Link href="/login">
